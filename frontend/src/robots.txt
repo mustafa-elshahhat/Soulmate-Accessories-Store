@@ -1,0 +1,41 @@
+# Soulmate Store — robots.txt
+# https://soulmate-store.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Block admin pages
+Disallow: /admin
+Disallow: /admin/
+
+# Block auth pages
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+
+# Block user-specific pages
+Disallow: /profile
+Disallow: /orders
+Disallow: /orders/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /checkout/
+Disallow: /notifications
+
+# Block builder intermediate steps (only /builder/select is indexed)
+Disallow: /builder/customize
+Disallow: /builder/personalize
+Disallow: /builder/preview
+
+# Block API endpoints
+Disallow: /api/
+Disallow: /api/*
+
+# Block query string params that create duplicate content
+Disallow: /*?sort=
+Disallow: /*?page=
+Disallow: /*?limit=
+
+# Sitemap location
+Sitemap: https://soulmate-store.com/sitemap.xml

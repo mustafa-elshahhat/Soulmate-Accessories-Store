@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoulmateStore", "SoulmateStore.csproj", "{12DD0B5E-0304-C16C-396A-017069492DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoulmateStore.Tests", "Tests\SoulmateStore.Tests.csproj", "{A7427E1B-702E-4224-8076-26A0879E7D9D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12DD0B5E-0304-C16C-396A-017069492DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12DD0B5E-0304-C16C-396A-017069492DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12DD0B5E-0304-C16C-396A-017069492DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12DD0B5E-0304-C16C-396A-017069492DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7427E1B-702E-4224-8076-26A0879E7D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7427E1B-702E-4224-8076-26A0879E7D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7427E1B-702E-4224-8076-26A0879E7D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7427E1B-702E-4224-8076-26A0879E7D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {76359314-AA74-4413-846D-6111FCE911E0}
+	EndGlobalSection
+EndGlobal

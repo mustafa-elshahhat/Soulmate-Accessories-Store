@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- ============================== -->
+  <!-- HOMEPAGE                       -->
+  <!-- ============================== -->
+  <url>
+    <loc>https://soulmate-store.com/</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- ALL PRODUCTS                   -->
+  <!-- ============================== -->
+  <url>
+    <loc>https://soulmate-store.com/products</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/products?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/products?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/products"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- GIFT BOX BUILDER (Entry Only)  -->
+  <!-- ============================== -->
+  <url>
+    <loc>https://soulmate-store.com/builder/select</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/builder/select?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/builder/select?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/builder/select"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- CATEGORY LANDING PAGES         -->
+  <!-- ============================== -->
+
+  <!-- Custom Gift Box -->
+  <url>
+    <loc>https://soulmate-store.com/gifts/custom-gift-box</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/gifts/custom-gift-box?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/gifts/custom-gift-box?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/gifts/custom-gift-box"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Couple Gifts -->
+  <url>
+    <loc>https://soulmate-store.com/gifts/couple-gifts</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/gifts/couple-gifts?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/gifts/couple-gifts?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/gifts/couple-gifts"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Birthday Gifts -->
+  <url>
+    <loc>https://soulmate-store.com/gifts/birthday-gifts</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/gifts/birthday-gifts?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/gifts/birthday-gifts?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/gifts/birthday-gifts"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Anniversary Gifts -->
+  <url>
+    <loc>https://soulmate-store.com/gifts/anniversary-gifts</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/gifts/anniversary-gifts?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/gifts/anniversary-gifts?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/gifts/anniversary-gifts"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Personalized Mug -->
+  <url>
+    <loc>https://soulmate-store.com/gifts/personalized-mug</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/gifts/personalized-mug?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/gifts/personalized-mug?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/gifts/personalized-mug"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Photo Gifts -->
+  <url>
+    <loc>https://soulmate-store.com/gifts/photo-gifts</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/gifts/photo-gifts?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/gifts/photo-gifts?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/gifts/photo-gifts"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- INFO / STATIC PAGES            -->
+  <!-- ============================== -->
+
+  <!-- About -->
+  <url>
+    <loc>https://soulmate-store.com/about</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/about?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/about?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/about"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://soulmate-store.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/contact?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/contact?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/contact"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://soulmate-store.com/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/privacy?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/privacy?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/privacy"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://soulmate-store.com/terms</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/terms?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/terms?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/terms"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Return Policy -->
+  <url>
+    <loc>https://soulmate-store.com/return-policy</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://soulmate-store.com/return-policy?hl=ar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://soulmate-store.com/return-policy?hl=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://soulmate-store.com/return-policy"/>
+    <lastmod>2026-03-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- PRODUCT PAGES (Dynamic)        -->
+  <!-- In production, generate these  -->
+  <!-- from the backend DB.           -->
+  <!-- ============================== -->
+
+</urlset>

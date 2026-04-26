@@ -1,0 +1,22 @@
+@SoulmateStore_HostAddress = http://localhost:5291
+@AuthToken = YOUR_JWT_TOKEN
+
+### Auth
+POST {{SoulmateStore_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@soulmate.com",
+  "password": "Password123!"
+}
+
+### Products
+GET {{SoulmateStore_HostAddress}}/api/products?page=1&limit=10
+
+### Admin - Dashboard
+GET {{SoulmateStore_HostAddress}}/api/admin/dashboard
+Authorization: Bearer {{AuthToken}}
+
+### Admin - Orders
+GET {{SoulmateStore_HostAddress}}/api/admin/orders
+Authorization: Bearer {{AuthToken}}

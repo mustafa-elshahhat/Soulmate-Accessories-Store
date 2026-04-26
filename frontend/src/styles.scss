@@ -1,0 +1,139 @@
+@use 'tailwindcss';
+@config '../tailwind.config.ts';
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Tajawal:wght@500;700;800&display=swap');
+
+// ── Font Metric Fallbacks (reduces CLS from font swap) ──
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  src: local('Georgia');
+  ascent-override: 97%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+  size-adjust: 112%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+  size-adjust: 107%;
+}
+
+// ── Self-hosted Fonts ──
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/assets/fonts/playfair-display-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/assets/fonts/playfair-display-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-playfair: 'Playfair Display', 'Playfair Display Fallback', serif;
+  --font-inter: 'Inter', 'Inter Fallback', sans-serif;
+}
+
+html[lang="ar"] {
+  --font-playfair: 'Tajawal', sans-serif;
+  --font-inter: 'Cairo', sans-serif;
+}
+
+// ── Global Layout: Sticky Footer ──
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-inter);
+  color: #1A1A1A;
+  background-color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-playfair);
+}
+
+// ── Accessibility: Focus ring for keyboard navigation ──
+*:focus-visible {
+  outline: 2px solid #C8A96E;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+// ── Utility: hide scrollbar ──
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// ── Performance: contain paint for heavy components ──
+.contain-paint {
+  contain: paint;
+}
+
+// ── SSR Flash Prevention: hide auth area until Angular hydrates ──
+// When has_session exists in localStorage, body gets .has-session class (set by inline script in index.html).
+// This hides the guest "login" button to prevent a flash before Angular hydrates and shows the real auth state.
+body.has-session [data-auth-guest] {
+  display: none !important;
+}
+
+// ── SSR Flash Prevention: hide prerendered content when language differs ──
+// Prerendered pages are always English. When user prefers Arabic, the inline script in index.html
+// adds .lang-resolving to <html>. This hides content until Angular hydrates and renders the correct language.
+html.lang-resolving app-root {
+  opacity: 0;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+

@@ -1,0 +1,26 @@
+import { Routes } from '@angular/router';
+
+export const adminRoutes: Routes = [
+  { path: '', loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent) },
+  { path: 'orders', loadComponent: () => import('./admin-orders/admin-orders.component').then(m => m.AdminOrdersComponent) },
+  { path: 'orders/:id', loadComponent: () => import('./admin-orders/order-detail/order-detail.component').then(m => m.OrderDetailComponent) },
+  { path: 'products', loadComponent: () => import('./admin-products/admin-products.component').then(m => m.AdminProductsComponent) },
+  { path: 'products/new', loadComponent: () => import('./admin-products/product-form/product-form.component').then(m => m.ProductFormComponent) },
+  { path: 'products/:id/edit', loadComponent: () => import('./admin-products/product-form/product-form.component').then(m => m.ProductFormComponent) },
+  { path: 'box-types', loadComponent: () => import('./admin-box-types/admin-box-types.component').then(m => m.AdminBoxTypesComponent) },
+  { path: 'box-types/new', loadComponent: () => import('./admin-box-types/box-type-form/box-type-form.component').then(m => m.BoxTypeFormComponent) },
+  { path: 'box-types/:id/edit', loadComponent: () => import('./admin-box-types/box-type-form/box-type-form.component').then(m => m.BoxTypeFormComponent) },
+  { path: 'users', loadComponent: () => import('./admin-users/admin-users.component').then(m => m.AdminUsersComponent) },
+  { path: 'analytics', loadComponent: () => import('./admin-analytics/admin-analytics.component').then(m => m.AdminAnalyticsComponent) },
+  { path: 'notifications', loadComponent: () => import('./admin-notifications/admin-notifications.component').then(m => m.AdminNotificationsComponent) },
+  { path: 'shipping', loadComponent: () => import('./admin-shipping/admin-shipping.component').then(m => m.AdminShippingComponent) },
+  { path: 'customization', loadComponent: () => import('./admin-customization/admin-customization.component').then(m => m.AdminCustomizationComponent) },
+  { path: 'promotions', loadComponent: () => import('./admin-promotions/admin-promotions.component').then(m => m.AdminPromotionsComponent) },
+  { path: 'promotions/new', loadComponent: () => import('./admin-promotions/promotion-form/promotion-form.component').then(m => m.PromotionFormComponent) },
+  { path: 'promotions/:id/edit', loadComponent: () => import('./admin-promotions/promotion-form/promotion-form.component').then(m => m.PromotionFormComponent) },
+  { path: 'coupons', loadComponent: () => import('./admin-coupons/admin-coupons.component').then(m => m.AdminCouponsComponent) },
+  { path: 'coupons/new', loadComponent: () => import('./admin-coupons/coupon-form/coupon-form.component').then(m => m.CouponFormComponent) },
+  { path: 'coupons/:id/edit', loadComponent: () => import('./admin-coupons/coupon-form/coupon-form.component').then(m => m.CouponFormComponent) },
+  { path: 'box-reviews', loadComponent: () => import('./admin-box-reviews/admin-box-reviews.component').then(m => m.AdminBoxReviewsComponent) },
+  { path: 'profile', loadComponent: () => import('./admin-profile/admin-profile.component').then(m => m.AdminProfileComponent) },
+];

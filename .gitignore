@@ -1,0 +1,87 @@
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependencies
+node_modules/
+**/node_modules/
+jspm_packages/
+.npm/
+.eslintcache
+
+# Build & Output
+bin/
+obj/
+**/bin/
+**/obj/
+dist/
+**/dist/
+build/
+**/build/
+out/
+**/out/
+publish/
+**/publish/
+.angular/
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/test-results/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*
+!.env.example
+*.pfx
+*.certificate
+*.secret
+backend/appsettings.Development.json
+backend/appsettings.Local.json
+
+# WhatsApp Service Specific
+whatsapp-service/.wwebjs_auth/
+whatsapp-service/.wwebjs_cache/
+whatsapp-service/chrome/
+whatsapp-service/session.json
+**/chrome/
+**/\$PWD/
+
+# Databases
+*.mdf
+*.ldf
+*.db
+*.db-shm
+*.db-wal
+backend/Data/SoulmateStore.db
+
+# Logs
+logs/
+**/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Uploads & Assets
+backend/wwwroot/uploads/*
+!backend/wwwroot/uploads/.gitkeep
+frontend/src/assets/temp/*
+
+# Misc
+tree.txt
+*.bak
+*.tmp
+temp/

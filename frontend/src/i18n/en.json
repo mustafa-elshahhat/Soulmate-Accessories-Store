@@ -1,0 +1,1339 @@
+{
+  "common": {
+    "loading": "Loading",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "goBack": "Back",
+    "optional": "Optional",
+    "note": "Note:",
+    "alert": "Important:",
+    "contactPage": "Contact Page",
+    "gender": {
+      "male": "Men",
+      "female": "Women",
+      "unisex": "Unisex"
+    },
+    "validation": {
+      "required": "Required"
+    }
+  },
+
+  "nav": {
+    "products": "Products",
+    "buildBox": "Build a Box",
+    "cart": "Cart",
+    "wishlist": "Wishlist",
+    "notifications": "Notifications",
+    "myAccount": "My Account",
+    "orders": "My Orders",
+    "account": "Account",
+    "logout": "Logout",
+    "login": "Login",
+    "home": "Home",
+    "shop": "Shop",
+    "box": "Your Box",
+    "more": "More",
+    "backToHome": "Back to Home",
+    "muteSound": "Mute sound",
+    "unmuteSound": "Unmute sound"
+  },
+
+  "announcement": {
+    "freeShipping": "✨ Free shipping on orders over 1,500 EGP"
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "noNotifications": "No notifications right now",
+    "viewAll": "View all notifications",
+    "pageTitle": "Notifications",
+    "markAllReadBtn": "Mark all as read",
+    "empty": "No notifications",
+    "emptySubtitle": "We'll notify you when there's something new",
+    "viewOrder": "View Order",
+    "loadingMore": "Loading...",
+    "loadMore": "Load More"
+  },
+
+  "footer": {
+    "followUs": "Follow us on social media",
+    "followSubtitle": "Be the first to know about our new offers",
+    "description": "We craft unforgettable moments through luxurious, personalized gifts that express your feelings to your loved ones with the finest details.",
+    "securePayment": "Secure Payment",
+    "fastShipping": "Fast Shipping",
+    "quickLinks": "Quick Links",
+    "aboutSoulmate": "About Soulmate",
+    "contactUs": "Contact Us",
+    "shop": "Shop",
+    "buildBox": "Build a Box",
+    "policiesSupport": "Policies & Support",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions",
+    "returnPolicy": "Return Policy",
+    "copyright": "© 2026 Soulmate Store. All rights reserved.",
+    "madeWith": "Made with",
+    "inEgypt": "in Egypt"
+  },
+
+  "home": {
+    "hero": {
+      "badge": "Soulmate Exclusives",
+      "titleLine1": "Discover the Perfect Gift",
+      "titleLine2": "For Every Occasion",
+      "description": "Discover unique, carefully curated gifts that will delight your loved ones. From custom boxes to luxury classics, we have something special for everyone.",
+      "ctaBuildBox": "Build Your Box Now",
+      "ctaBrowse": "Browse Collection",
+      "imageAlt": "Luxury gifts from Soulmate"
+    },
+    "featured": {
+      "title": "Latest Products",
+      "viewAll": "View All Products",
+      "empty": "No products available at the moment"
+    },
+    "howItWorks": {
+      "title": "How to Build Your Box?",
+      "step1Title": "Choose the Box",
+      "step1Desc": "Choose the size and style that suits your occasion, from small elegant boxes to large luxury ones.",
+      "step2Title": "Pick the Products",
+      "step2Desc": "Fill the box with products they'll love from our wide collection: perfumes, candles, luxury chocolates and more.",
+      "step3Title": "Personal Touch",
+      "step3Desc": "Add a gift card with your personal message, and we'll wrap it with the finest standards and deliver it with love."
+    },
+    "cta": {
+      "badge": "Gift Builder",
+      "titlePart1": "Ready to create a",
+      "titlePart2": "special gift?",
+      "description": "Design a unique gift box that expresses your feelings. Start now and create an unforgettable moment.",
+      "boxMaleAria": "Men's Box - For Him",
+      "boxMaleAlt": "Men's Box",
+      "boxMaleTitle": "Men's Box",
+      "boxMaleLabel": "For Him",
+      "boxFemaleAria": "Women's Box - For Her",
+      "boxFemaleAlt": "Women's Box",
+      "boxFemaleTitle": "Women's Box",
+      "boxFemaleLabel": "For Her",
+      "boxCoupleAria": "Couples Box",
+      "boxCoupleAlt": "Couples Box",
+      "boxCoupleTitle": "Couples Box",
+      "boxCoupleLabel": "Couples",
+      "discover": "Discover"
+    },
+    "seo": {
+      "title": "Personalized Gifts & Custom Gift Boxes in Egypt",
+      "description": "Shop luxury personalized gifts, custom gift boxes & engraved couple gifts. Build your own gift box with watches, wallets, mugs & more. Free shipping on orders over 1,500 EGP."
+    }
+  },
+
+  "products": {
+    "title": "Products",
+    "filters": "Filters",
+    "showResults": "Show Results",
+    "clearFilters": "Clear Filters",
+    "searchPlaceholder": "Search for the perfect gift...",
+    "empty": "No products available at the moment",
+    "filter": {
+      "genderAll": "All Types",
+      "genderMale": "Men's Gifts",
+      "genderFemale": "Women's Gifts",
+      "categoryAll": "All Categories",
+      "categoryWatch": "Watches",
+      "categoryWallet": "Wallets",
+      "categoryMug": "Mugs",
+      "categoryNecklace": "Necklaces",
+      "categoryRing": "Rings",
+      "sortNewest": "Newest",
+      "sortPriceAsc": "Lowest Price",
+      "sortPriceDesc": "Highest Price",
+      "sortRating": "Highest Rated",
+      "sortName": "Name",
+      "ratingAll": "All Ratings",
+      "ratingPlaceholder": "Rating",
+      "rating4Plus": "4 Stars & Above",
+      "rating3Plus": "3 Stars & Above",
+      "rating2Plus": "2 Stars & Above",
+      "rating1Plus": "1 Star & Above",
+      "priceAll": "All Prices",
+      "pricePlaceholder": "Price",
+      "priceUnder100": "Under 100 EGP",
+      "price100to250": "100 - 250 EGP",
+      "price250to500": "250 - 500 EGP",
+      "price500to1000": "500 - 1000 EGP",
+      "priceOver1000": "Over 1000 EGP"
+    },
+    "seo": {
+      "title": "Shop Luxury Gifts — Watches, Wallets, Necklaces & More",
+      "description": "Browse our exclusive collection of luxury personalized gifts — watches, wallets, necklaces, rings and mugs. Find the perfect customizable gift for every occasion in Egypt."
+    }
+  },
+
+  "productDetail": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProducts": "Products",
+    "includesCustomization": "Includes Customization",
+    "notCustomizableTitle": "Not Customizable",
+    "notCustomizableDesc": "This product does not support customization currently",
+    "customizeProduct": "Customize This Product",
+    "customizeHint": "Enable customization to add your name, a special date, and a gift message",
+    "customNameLabel": "Name to be engraved / added",
+    "customNamePlaceholder": "e.g. Ahmed",
+    "customDateLabel": "Special date (optional)",
+    "customDatePlaceholder": "e.g. 12.06.2024",
+    "customMessageLabel": "Gift message (written on a luxury card)",
+    "customMessagePlaceholder": "Write your message here...",
+    "addToCart": "Add to Cart",
+    "addToWishlist": "Add to Wishlist",
+    "removeFromWishlist": "Remove from Wishlist",
+    "inStock": "In Stock",
+    "lowStock": "Low Stock",
+    "outOfStock": "Out of Stock",
+    "premiumPackaging": "Premium Storage & Packaging",
+    "reviewsTitle": "Ratings & Reviews",
+    "reviewCountSuffix": "reviews",
+    "editReview": "Edit Your Review",
+    "addReview": "Add Your Review",
+    "ratingLabel": "Rating",
+    "commentLabel": "Your comment (optional)",
+    "commentPlaceholder": "Write your opinion about the product...",
+    "updateReviewBtn": "Update Review",
+    "submitReviewBtn": "Submit Review",
+    "deleteReviewBtn": "Delete",
+    "loginToReview": "Log in to add a review",
+    "loginLink": "Login",
+    "noReviews": "No reviews yet. Be the first to review this product!",
+    "relatedProducts": "You May Also Like",
+    "toast": {
+      "addedToCart": "Product added to cart successfully",
+      "reviewUpdated": "Review updated successfully",
+      "reviewAdded": "Review added successfully",
+      "reviewDeleted": "Review deleted"
+    }
+  },
+
+  "productCard": {
+    "quickView": "Quick View",
+    "ratingAriaLabel": "Rating {{rating}} out of 5",
+    "noRatingsAriaLabel": "No ratings",
+    "noRatings": "No ratings",
+    "priceLabel": "Price",
+    "addToCart": "Add to Cart",
+    "addedToCartSuccess": "Product added to cart successfully",
+    "outOfStock": "Out of Stock",
+    "lowStock": "Only {{count}} left",
+    "addedToWishlist": "Added to wishlist",
+    "removedFromWishlist": "Removed from wishlist"
+  },
+
+  "cart": {
+    "pageSubtitle": "Shopping Cart",
+    "title": "Shopping Cart",
+    "emptyTitle": "Your cart is empty",
+    "emptySubtitle": "Start shopping and enjoy our luxury products",
+    "emptyCta": "Shop Our Luxury Products",
+    "itemTypeBox": "Box",
+    "itemTypeProduct": "Product",
+    "decreaseQuantityAria": "Decrease quantity",
+    "increaseQuantityAria": "Increase quantity",
+    "removeItemAria": "Remove",
+    "totalLabel": "Cart Total",
+    "shippingNote": "Shipping cost will be calculated in the next step",
+    "checkoutBtn": "Secure Checkout",
+    "clearBtn": "Clear Cart"
+  },
+
+  "wishlist": {
+    "pageTitle": "My Wishlist",
+    "empty": "Your wishlist is empty",
+    "emptySubtitle": "Browse products and add your favorites here",
+    "browseCta": "Browse Products",
+    "removeAll": "Clear Wishlist"
+  },
+
+  "checkout": {
+    "pageTitle": "Checkout",
+    "emptyCart": "Your cart is empty",
+    "startShopping": "Start Shopping",
+    "shippingAddress": "Shipping Address",
+    "building": "Building",
+    "floor": "Floor",
+    "apartment": "Apt",
+    "editBtn": "Edit",
+    "deleteBtn": "Delete",
+    "editAddress": "Edit Address",
+    "newAddress": "New Address",
+    "addressLabel": "Label",
+    "addressLabelPlaceholder": "e.g. Home",
+    "governorate": "Governorate",
+    "selectGovernorate": "Select Governorate",
+    "shippingSuffix": "shipping",
+    "city": "City",
+    "district": "District",
+    "street": "Street",
+    "buildingLabel": "Building",
+    "floorLabel": "Floor / Number",
+    "apartmentLabel": "Apartment",
+    "phone": "Phone Number",
+    "saving": "Saving...",
+    "editAddressBtn": "Update Address",
+    "saveAddressBtn": "Save Address",
+    "cancelBtn": "Cancel",
+    "addNewAddress": "Add New Address",
+    "orderSummary": "Order Summary",
+    "products": "Products",
+    "shipping": "Shipping",
+    "total": "Total",
+    "placingOrder": "Placing Order...",
+    "confirmOrder": "Confirm Order",
+    "confirmDeleteAddress": "Are you sure you want to delete this address?",
+    "toast": {
+      "addressDeleted": "Address deleted",
+      "addressUpdated": "Address updated",
+      "orderCreationError": "Error creating order"
+    },
+    "coupon": {
+      "label": "Coupon Code",
+      "placeholder": "Enter coupon code",
+      "apply": "Apply",
+      "applying": "Applying...",
+      "discount": "Discount",
+      "remove": "Remove",
+      "applied": "Coupon applied successfully",
+      "invalid": "Invalid coupon code",
+      "expired": "This coupon has expired",
+      "usageLimitReached": "Coupon usage limit reached",
+      "minOrderNotMet": "Minimum order amount not met"
+    }
+  },
+
+  "confirmation": {
+    "orderCreatedSuccess": "Order created successfully!",
+    "orderNumber": "Order Number:",
+    "orderSummary": "Order Summary",
+    "customBox": "Custom Box",
+    "product": "Product",
+    "products": "Products",
+    "shipping": "Shipping",
+    "totalToTransfer": "Total to Transfer",
+    "nextStep": "Next Step",
+    "transferAmountPrefix": "Transfer the amount",
+    "transferInstruction": "via Vodafone Cash or InstaPay, then upload the receipt image.",
+    "uploadReceipt": "Upload Payment Receipt",
+    "myOrders": "My Orders",
+    "orderNotFound": "Order not found"
+  },
+
+  "payment": {
+    "pageTitle": "Upload Payment Receipt",
+    "amountToTransfer": "Amount to Transfer",
+    "orderNumberPrefix": "Order No.",
+    "paymentSteps": "Payment Steps",
+    "step1": "Choose a payment method (Vodafone Cash or InstaPay)",
+    "step2Prefix": "Transfer the amount",
+    "step2Suffix": "to the number below",
+    "step3": "Take a screenshot of the receipt",
+    "step4": "Upload the receipt image here",
+    "transferNumbers": "Transfer Numbers",
+    "vodafoneCash": "Vodafone Cash",
+    "instapay": "InstaPay",
+    "copyNumber": "Copy Number",
+    "uploadReceiptImage": "Upload Receipt Image",
+    "paymentMethod": "Payment Method",
+    "receiptImage": "Receipt Image",
+    "remove": "Remove",
+    "dragOrClick": "Drag the image here or click to choose",
+    "fileTypeHint": "JPG, PNG or WebP - Max 5MB",
+    "uploading": "Uploading...",
+    "uploadBtn": "Upload Receipt",
+    "backToOrderDetails": "Back to Order Details",
+    "toast": {
+      "numberCopied": "Number copied",
+      "unsupportedFormat": "Unsupported format. Use JPG, PNG or WebP",
+      "fileTooLarge": "File is larger than 5MB",
+      "uploadSuccess": "Receipt uploaded successfully. It will be reviewed shortly",
+      "uploadError": "Error uploading receipt"
+    }
+  },
+
+  "orders": {
+    "pageSubtitle": "My Orders",
+    "pageTitle": "My Orders",
+    "noOrders": "No previous orders",
+    "startShoppingSubtitle": "Start shopping and enjoy our luxury products",
+    "startShopping": "Start Shopping",
+    "productCount": "Products:",
+    "showMore": "Show More"
+  },
+
+  "orderDetail": {
+    "backToOrders": "Back to My Orders",
+    "orderPrefix": "Order",
+    "products": "Products",
+    "customBox": "Custom Box",
+    "product": "Product",
+    "quantity": "Qty:",
+    "shippingAddress": "Shipping Address",
+    "building": "Building",
+    "floor": "Floor",
+    "apartment": "Apt",
+    "paymentStatusSection": "Payment Status",
+    "paymentMethod": "Payment Method",
+    "paymentStatusLabel": "Payment Status",
+    "receiptImage": "Receipt Image",
+    "receiptAlt": "Payment Receipt",
+    "cancelReason": "Cancellation Reason",
+    "orderSummary": "Order Summary",
+    "summaryProducts": "Products",
+    "summaryShipping": "Shipping",
+    "summaryTotal": "Total",
+    "uploadReceipt": "Upload Payment Receipt",
+    "cancelling": "Cancelling...",
+    "cancelOrder": "Cancel Order",
+    "paymentReviewMessage": "Receipt is being reviewed. We'll notify you soon.",
+    "cancelledByCustomer": "Cancelled by customer",
+    "vodafoneCash": "Vodafone Cash",
+    "instapay": "InstaPay",
+    "paymentPending": "Under Review",
+    "paymentVerified": "Verified",
+    "paymentRejected": "Rejected",
+    "toast": {
+      "orderCancelled": "Order cancelled",
+      "cannotCancelOrder": "Cannot cancel this order"
+    }
+  },
+
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Welcome to the world of luxury gifts",
+      "emailLabel": "Email Address",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "passwordLabel": "Password",
+      "passwordRequired": "Password is required",
+      "forgotPassword": "Forgot your password?",
+      "loading": "Logging in...",
+      "submit": "Login",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create a new account",
+      "invalidCredentials": "Invalid email or password"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join us and start an exceptional shopping experience",
+      "nameLabel": "Name",
+      "namePlaceholder": "Full Name",
+      "nameRequired": "Name is required",
+      "emailLabel": "Email Address",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "phoneLabel": "Phone Number",
+      "phoneRequired": "Phone number is required",
+      "phonePattern": "Phone must be 11 digits starting with 010, 011, 012, or 015",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "At least 8 characters",
+      "passwordRequired": "Password is required",
+      "passwordMinlength": "Password must be at least 8 characters",
+      "loading": "Creating account...",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Login",
+      "genericError": "An error occurred, please try again"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email and we'll send you a reset link",
+      "emailLabel": "Email Address",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "loading": "Sending...",
+      "submit": "Send Reset Link",
+      "backToLogin": "Back to Login",
+      "successMessage": "If the email is registered, we'll send you a reset link",
+      "genericError": "An error occurred, please try again"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "loginLink": "Login",
+      "newPasswordLabel": "New Password",
+      "newPasswordPlaceholder": "At least 8 characters",
+      "passwordRequired": "Password is required",
+      "passwordMinlength": "Password must be at least 8 characters",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Re-enter your password",
+      "passwordMismatch": "Passwords don't match",
+      "loading": "Changing...",
+      "submit": "Change Password",
+      "invalidLink": "Invalid link",
+      "successMessage": "Password changed successfully",
+      "expiredLink": "The link is invalid or has expired"
+    }
+  },
+
+  "profile": {
+    "pageSubtitle": "My Account",
+    "pageTitle": "Profile",
+    "personalInfo": "Personal Information",
+    "fullName": "Full Name",
+    "nameRequired": "Name is required",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "phoneRequired": "Phone number is required",
+    "phonePattern": "Phone must be 11 digits starting with 010, 011, 012, or 015",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "togglePasswordVisibility": "Show/hide password",
+    "currentPasswordRequired": "Current password is required",
+    "newPassword": "New Password",
+    "minLengthPlaceholder": "At least 8 characters",
+    "newPasswordRequired": "New password is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "changingPassword": "Changing...",
+    "changePasswordBtn": "Change Password",
+    "toast": {
+      "profileUpdated": "Changes saved successfully",
+      "passwordChanged": "Password changed successfully",
+      "genericError": "An error occurred"
+    }
+  },
+
+  "builder": {
+    "boxSelector": {
+      "pageSubtitle": "Gift Builder",
+      "title": "Build Your Box",
+      "subtitle": "Choose the box type that suits you and start designing your unique gift",
+      "startingFrom": "Starting from"
+    },
+    "slotPicker": {
+      "stepLabel": "Step Two",
+      "title": "Choose Products",
+      "subtitle": "Pick a product for each slot in the box — required slots are marked with a star",
+      "slotsSelected": "slots selected",
+      "customizableBadge": "Customizable",
+      "noProductsAvailable": "No products available",
+      "customizeThisProduct": "Customize this product",
+      "customizationNotAvailable": "Customization not available for this product",
+      "boxTotal": "Box Total",
+      "nextCustomization": "Next: Customization",
+      "customizationPricePrefix": "Customization:"
+    },
+    "customization": {
+      "stepLabel": "Step Three",
+      "title": "Add Your Personal Touch",
+      "subtitle": "Customize the box with your names and special date",
+      "productsToCustomize": "Products to Customize",
+      "firstName": "First Name",
+      "secondName": "Second Name",
+      "additionalDetails": "Additional Details",
+      "specialDate": "Special Date",
+      "specialMessage": "Special Message",
+      "messagePlaceholder": "Happy anniversary! 💕",
+      "showPreview": "Show Preview"
+    },
+    "preview": {
+      "stepLabel": "Final Step",
+      "title": "Review Your Order",
+      "subtitle": "Make sure everything is correct before adding the box to cart",
+      "boxType": "Box Type",
+      "selectedProducts": "Selected Products",
+      "customization": "Customization",
+      "firstName": "First Name",
+      "secondName": "Second Name",
+      "date": "Date",
+      "message": "Message",
+      "customizedProducts": "Customized Products",
+      "customizationPrefix": "Customization",
+      "basePrice": "Box Base Price",
+      "initialTotal": "Initial Total",
+      "addToCart": "Add to Cart",
+      "noPreviewData": "No preview data",
+      "startOver": "Start Over",
+      "edit": "Edit"
+    },
+    "steps": {
+      "step1Label": "Box",
+      "step1Desc": "Choose type",
+      "step2Label": "Products",
+      "step2Desc": "Pick for each slot",
+      "step3Label": "Customize",
+      "step3Desc": "Add your touch",
+      "step4Label": "Review",
+      "step4Desc": "Review & confirm"
+    },
+    "seo": {
+      "boxSelector": {
+        "title": "Build Your Custom Gift Box — Choose Box Type",
+        "description": "Create a personalized gift box — choose from men's, women's or couples box types. Design your luxury gift with custom products and a personal touch."
+      },
+      "slotPicker": {
+        "title": "Choose Products",
+        "description": "Pick products for each slot in the box. Customize your gift with the right products."
+      },
+      "customization": {
+        "title": "Add Your Personal Touch",
+        "description": "Customize the box with your names, special date and a personal message."
+      },
+      "preview": {
+        "title": "Preview Box",
+        "description": "Review the box before adding it to cart. Make sure your selections and customizations are correct."
+      }
+    }
+  },
+
+  "status": {
+    "pending": "Pending",
+    "paymentReview": "Payment Review",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+
+  "errors": {
+    "invalidData": "Invalid data",
+    "forbidden": "Access denied",
+    "conflict": "Data conflict",
+    "tooManyRequests": "Too many requests, please wait",
+    "noConnection": "No server connection",
+    "serverError": "An error occurred, please try again",
+    "unexpected": "An unexpected error occurred"
+  },
+
+  "notFound": {
+    "pageNotFound": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved. You may have mistyped the address or the page has been deleted.",
+    "backToHome": "Back to Home",
+    "browseProducts": "Browse Products",
+    "tryThesePages": "Or try one of these pages:",
+    "buildYourBox": "Build Your Box",
+    "aboutSoulmate": "About Soulmate",
+    "contactUs": "Contact Us",
+    "seo": {
+      "title": "404 - Page Not Found",
+      "description": "The page you're looking for doesn't exist. Go back to the homepage or browse our products."
+    }
+  },
+
+  "about": {
+    "hero": {
+      "label": "Our Story",
+      "title": "About Soulmate",
+      "subtitle": "Your go-to store for unique and personalized gifts for your loved ones"
+    },
+    "story": {
+      "intro": "Soulmate is your go-to store for creating unique and personalized gifts for your loved ones.",
+      "body": "We believe a gift is more than just a material thing — it's a message of love and appreciation. That's why we designed a unique experience that lets you choose and customize your gift box in a way that truly represents you."
+    },
+    "features": {
+      "label": "Our Features",
+      "title": "Why Soulmate?",
+      "variety": {
+        "title": "Wide Variety",
+        "description": "Carefully curated products from the best brands"
+      },
+      "customization": {
+        "title": "Full Customization",
+        "description": "Choose the box, pick the products, add your personal message"
+      },
+      "quality": {
+        "title": "High Quality",
+        "description": "All our products are original and guaranteed"
+      },
+      "delivery": {
+        "title": "Fast Delivery",
+        "description": "We deliver your gift to your doorstep as fast as possible"
+      }
+    },
+    "vision": {
+      "title": "Our Vision",
+      "body": "We strive to be Egypt's premier destination for special occasion gifts — from birthdays and anniversaries to graduation and appreciation gifts. Our goal is for every gift to be a complete experience, starting from choosing the box and ending with a smile on your loved one's face."
+    },
+    "cta": {
+      "title": "Ready to start?",
+      "subtitle": "Build the perfect gift box for your loved ones now",
+      "buildBox": "Build Your Box",
+      "browseProducts": "Browse Products"
+    },
+    "seo": {
+      "title": "About Soulmate — Egypt's Luxury Gift Store",
+      "description": "Discover Soulmate Store — Egypt's premier destination for personalized luxury gifts and custom gift boxes for birthdays, anniversaries & special occasions."
+    }
+  },
+
+  "contact": {
+    "hero": {
+      "label": "We're here to help",
+      "title": "Contact Us",
+      "subtitle": "Have a question or suggestion? Get in touch and we'll respond as soon as possible."
+    },
+    "info": {
+      "label": "Contact Information",
+      "title": "Ways to Reach Us",
+      "email": "Email",
+      "whatsappAriaLabel": "Contact us via WhatsApp",
+      "whatsapp": "WhatsApp",
+      "workingHours": "Working Hours",
+      "workingHoursValue": "Saturday - Thursday: 10 AM - 10 PM"
+    },
+    "faq": {
+      "title": "Common Questions",
+      "hint": "Before reaching out, you might find your answer on our pages:",
+      "returnPolicy": "Return Policy",
+      "terms": "Terms & Conditions",
+      "privacy": "Privacy Policy"
+    },
+    "form": {
+      "label": "Direct Message",
+      "title": "Send Us a Message",
+      "name": "Name",
+      "namePlaceholder": "Your full name",
+      "email": "Email",
+      "message": "Message",
+      "messagePlaceholder": "Write your message here...",
+      "successMessage": "Message sent successfully! We'll get back to you soon.",
+      "sending": "Sending...",
+      "send": "Send",
+      "validationWarning": "Please fill in all fields",
+      "emailSubjectPrefix": "New message from",
+      "emailBodyName": "Name:",
+      "emailBodyEmail": "Email:",
+      "emailBodyMessage": "Message:",
+      "mailClientOpened": "Email client opened"
+    },
+    "seo": {
+      "title": "Contact Soulmate Store — Get Help & Support",
+      "description": "Contact Soulmate Store for help with orders, gift customization, or any questions. Reach us via email, WhatsApp or contact form."
+    }
+  },
+
+  "privacy": {
+    "hero": {
+      "label": "Transparency First",
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: March 2026"
+    },
+    "intro": "At Soulmate, we respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and protect your information.",
+    "section1": {
+      "title": "Data We Collect",
+      "item1": "Name, email, and phone number upon registration",
+      "item2": "Shipping address when placing an order",
+      "item3": "Payment data (receipts only — we don't store card information)",
+      "item4": "Browsing data (cookies) to improve user experience"
+    },
+    "section2": {
+      "title": "How We Use Data",
+      "item1": "Processing and delivering orders",
+      "item2": "Communicating about order status and notifications",
+      "item3": "Improving user experience and developing our services",
+      "item4": "Sending offers and updates (with your consent only)"
+    },
+    "section3": {
+      "title": "Data Protection",
+      "body": "We use SSL/TLS encryption to protect your data during transmission, and store passwords with BCrypt encryption. We do not share your data with any third party without your consent.",
+      "note": "We store payment receipts on secured Cloudinary servers, and delete them after payment verification."
+    },
+    "section4": {
+      "title": "Cookies",
+      "body": "We use essential cookies for login and maintaining your session. We do not use third-party tracking cookies."
+    },
+    "section5": {
+      "title": "Your Rights",
+      "item1": "Access your personal data stored with us",
+      "item2": "Modify or update your data anytime from the profile page",
+      "item3": "Request deletion of your account and all data",
+      "item4": "Unsubscribe from marketing messages"
+    },
+    "section6": {
+      "title": "Contact",
+      "body": "If you have any questions about the privacy policy or wish to exercise your rights, contact us:"
+    },
+    "seo": {
+      "title": "Privacy Policy",
+      "description": "Soulmate's privacy policy — learn how we collect, use, and protect your personal data when using our services."
+    }
+  },
+
+  "terms": {
+    "hero": {
+      "label": "Terms of Use",
+      "title": "Terms & Conditions",
+      "lastUpdated": "Last updated: March 2026"
+    },
+    "intro": "By using the Soulmate website, you agree to the following terms and conditions. Please read them carefully before using our services.",
+    "section1": {
+      "title": "Account & Registration",
+      "item1": "You must provide accurate and correct information upon registration",
+      "item2": "You are responsible for maintaining the confidentiality of your account and password",
+      "item3": "You must be 18 years or older to use the website",
+      "item4": "We reserve the right to suspend or delete your account in case of violation"
+    },
+    "section2": {
+      "title": "Orders & Pricing",
+      "item1": "Prices are displayed in Egyptian Pounds and include tax",
+      "item2": "Orders are confirmed after payment receipt review and verification",
+      "item3": "We may cancel orders due to availability or payment issues",
+      "item4": "Pending orders without payment for over 48 hours are automatically cancelled",
+      "note": "Prices may change at any time, but confirmed orders remain at the price at time of order."
+    },
+    "section3": {
+      "title": "Payment",
+      "item1": "Payment is made via bank transfer and uploading the payment receipt",
+      "item2": "Receipts are reviewed within 24 business hours",
+      "item3": "If a receipt is rejected, you can upload a new one (up to 3 attempts)"
+    },
+    "section4": {
+      "title": "Delivery",
+      "item1": "Delivery is available within Egypt only",
+      "item2": "Delivery time varies by location (usually 3-7 business days)",
+      "item3": "You are responsible for providing an accurate shipping address"
+    },
+    "section5": {
+      "title": "Intellectual Property",
+      "body": "All content on the website (images, text, designs, logos) belongs to Soulmate and is protected by intellectual property rights. Copying or republishing any content without prior written permission is not allowed."
+    },
+    "section6": {
+      "title": "Terms Modification",
+      "body": "We reserve the right to modify the terms and conditions at any time. Changes are effective from the date of publication on the website. Continued use of the website constitutes acceptance of the modified terms."
+    },
+    "section7": {
+      "title": "Contact",
+      "body": "If you have any questions about the terms and conditions:"
+    },
+    "seo": {
+      "title": "Terms & Conditions",
+      "description": "Terms and conditions for using the Soulmate website — learn about account, orders, payment, and delivery terms."
+    }
+  },
+
+  "returnPolicy": {
+    "hero": {
+      "label": "Your Satisfaction is Our Priority",
+      "title": "Return & Exchange Policy",
+      "lastUpdated": "Last updated: March 2026"
+    },
+    "intro": "Your satisfaction is our priority. If you encounter any issues with your order, we're here to help.",
+    "section1": {
+      "title": "Return Conditions",
+      "item1": "The product must be in its original condition with full packaging",
+      "item2Prefix": "Return request must be within",
+      "item2Days": "7 days",
+      "item2Suffix": "of receiving the order",
+      "item3": "The product must be unused and in its original condition",
+      "alert": "Customized products (boxes with personal messages) are non-returnable."
+    },
+    "section2": {
+      "title": "Return Steps",
+      "step1Title": "Contact Us",
+      "step1Desc": "Via the contact page or WhatsApp, explaining the reason for return and order number",
+      "step2Title": "Review Request",
+      "step2Desc": "We'll review your request and respond within 24 business hours",
+      "step3Title": "Arrange Pickup",
+      "step3Desc": "We'll contact you to arrange pickup of the product",
+      "step4Title": "Refund",
+      "step4Desc": "After inspecting the product, we'll refund within 7 business days"
+    },
+    "section3": {
+      "title": "Exchange",
+      "body": "If the product arrived damaged or different from the order, we offer a free exchange at no additional cost. In this case, contact us within 48 hours of receiving the order with photos showing the issue."
+    },
+    "section4": {
+      "title": "Non-Returnable Items",
+      "item1": "Custom boxes with personal messages",
+      "item2": "Used or opened products (perfumes, cosmetics)",
+      "item3": "Return requests after 7 days from delivery"
+    },
+    "cta": {
+      "title": "Need Help?",
+      "subtitle": "Contact us and we'll help you anytime",
+      "contactUs": "Contact Us"
+    },
+    "seo": {
+      "title": "Return & Exchange Policy",
+      "description": "Soulmate's return and exchange policy — learn about the conditions and steps for returning or exchanging products."
+    }
+  },
+
+  "mapPicker": {
+    "label": "Location on Map",
+    "locationSet": "Location set",
+    "clickToSet": "Click on the map to set location",
+    "unavailable": "Location selection is currently unavailable",
+    "pickMe": "Pick Me"
+  },
+
+  "admin": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "orders": "Orders",
+      "products": "Products",
+      "boxTypes": "Box Types",
+      "users": "Users",
+      "analytics": "Analytics",
+      "notifications": "Notifications",
+      "shipping": "Shipping",
+      "customizationPricing": "Customization Pricing",
+      "promotions": "Promotions",
+      "coupons": "Coupons",
+      "boxReviews": "Box Reviews"
+    },
+    "bottomNav": {
+      "more": "More"
+    },
+    "header": {
+      "menuAriaLabel": "Menu",
+      "title": "Admin Dashboard",
+      "notifications": "Notifications",
+      "markAllRead": "Mark all read",
+      "noNotifications": "No notifications",
+      "viewAll": "View all notifications",
+      "defaultName": "Admin"
+    },
+    "profile": {
+      "link": "Profile",
+      "logout": "Logout",
+      "title": "Profile",
+      "personalInfo": "Personal Information",
+      "fullName": "Full Name",
+      "nameRequired": "Name is required",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Phone must be 11 digits starting with 010, 011, 012, or 015",
+      "saving": "Saving...",
+      "saveChanges": "Save Changes",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+      "currentPasswordRequired": "Current password is required",
+      "newPassword": "New Password",
+      "minLengthPlaceholder": "At least 8 characters",
+      "newPasswordRequired": "New password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "changingPassword": "Changing...",
+      "changePasswordBtn": "Change Password",
+      "updateSuccess": "Changes saved successfully",
+      "genericError": "An error occurred",
+      "passwordChangeSuccess": "Password changed successfully"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "totalOrders": "Total Orders",
+      "pendingOrders": "Pending Orders",
+      "paymentReview": "Payment Review",
+      "activeProducts": "Active Products",
+      "revenue": "Revenue",
+      "products": "Products",
+      "users": "Users",
+      "recentOrders": "Recent Orders",
+      "viewOrders": "View Orders",
+      "manageProducts": "Manage Products",
+      "orderNumber": "Order No.",
+      "customer": "Customer",
+      "amount": "Amount",
+      "status": "Status",
+      "date": "Date",
+      "noOrders": "No orders",
+      "loadError": "Failed to load dashboard data",
+      "retry": "Retry"
+    },
+    "analytics": {
+      "title": "Analytics",
+      "revenue": "Revenue",
+      "30days": "30 days",
+      "orders": "Orders",
+      "avgOrder": "Average Order Value",
+      "todayOrders": "Today's Orders",
+      "pendingPayments": "Pending Payments",
+      "orderDistribution": "Order Status Distribution",
+      "topProducts": "Top Selling Products",
+      "noDataAvailable": "Not enough data available"
+    },
+    "orders": {
+      "title": "Manage Orders",
+      "orderNumber": "Order No.",
+      "customer": "Customer",
+      "amount": "Amount",
+      "status": "Status",
+      "date": "Date",
+      "allStatuses": "All Statuses",
+      "searchPlaceholder": "Search by order number or customer...",
+      "view": "View",
+      "actions": "Actions",
+      "viewDetails": "Details",
+      "noOrders": "No orders",
+      "loadMore": "Load More"
+    },
+    "orderDetail": {
+      "orders": "Orders",
+      "orderTitle": "Order",
+      "products": "Products",
+      "customBox": "Custom Box",
+      "product": "Product",
+      "boxContents": "Box Contents",
+      "customizationData": "Customization Data",
+      "customization": "Customization",
+      "quantity": "Qty",
+      "name": "Name",
+      "firstName": "First Name",
+      "secondName": "Second Name",
+      "date": "Date",
+      "message": "Message",
+      "shipping": "Shipping",
+      "total": "Total",
+      "payments": "Payments",
+      "attempt": "Attempt",
+      "viewReceipt": "View Receipt",
+      "adminNote": "Admin Note",
+      "acceptPayment": "Accept Payment",
+      "rejectPayment": "Reject Payment",
+      "noPayments": "No payments",
+      "updateStatus": "Update Order Status",
+      "adminNotePlaceholder": "Note (optional)...",
+      "saveUpdate": "Save Update",
+      "customer": "Customer",
+      "address": "Address",
+      "building": "Building",
+      "floor": "Floor",
+      "viewOnMap": "View on Map",
+      "orderDate": "Order Date",
+      "adminNoteLabel": "Admin Note",
+      "cancelReason": "Cancel Reason",
+      "rejectReason": "Reject Reason",
+      "rejectReasonPlaceholder": "Enter rejection reason...",
+      "cancel": "Cancel",
+      "confirmReject": "Confirm Reject"
+    },
+    "paymentStatus": {
+      "pending": "Pending",
+      "verified": "Verified",
+      "rejected": "Rejected"
+    },
+    "products": {
+      "title": "Manage Products",
+      "addProduct": "+ Add Product",
+      "filterAll": "All",
+      "filterActive": "Active",
+      "filterInactive": "Inactive",
+      "image": "Image",
+      "name": "Name",
+      "price": "Price",
+      "type": "Type",
+      "status": "Status",
+      "standalone": "Standalone",
+      "boxComponent": "Box Component",
+      "active": "Active",
+      "inactive": "Inactive",
+      "edit": "Edit",
+      "loadMore": "Load More"
+    },
+    "productForm": {
+      "backToProducts": "Products",
+      "editTitle": "Edit Product",
+      "addTitle": "Add Product",
+      "nameLabel": "Product Name (Arabic)",
+      "nameEnLabel": "Product Name (English)",
+      "descriptionLabel": "Description (Arabic)",
+      "descriptionEnLabel": "Description (English)",
+      "priceLabel": "Price (EGP)",
+      "categoryLabel": "Category",
+      "genderLabel": "Gender",
+      "standalone": "Standalone Product",
+      "boxComponent": "Box Component",
+      "active": "Active",
+      "customizable": "Customizable",
+      "productImage": "Product Image",
+      "currentImage": "Current Image",
+      "selectNewImage": "Select New Image",
+      "uploading": "Uploading...",
+      "saving": "Saving...",
+      "saveUpdate": "Save Update",
+      "addProduct": "Add Product",
+      "cancel": "Cancel",
+      "selectCategory": "Select Category",
+      "selectGender": "Select Gender",
+      "stockQuantityLabel": "Stock Quantity"
+    },
+    "boxTypes": {
+      "title": "Manage Box Types",
+      "addBoxType": "+ Add Box Type",
+      "active": "Active",
+      "inactive": "Inactive",
+      "genderLabel": "Gender:",
+      "basePrice": "Base Price:",
+      "slotsCount": "Slots:",
+      "edit": "Edit",
+      "deactivate": "Deactivate"
+    },
+    "boxTypeForm": {
+      "backToBoxTypes": "Box Types",
+      "editTitle": "Edit Box Type",
+      "addTitle": "Add Box Type",
+      "boxData": "Box Data",
+      "nameLabel": "Name (Arabic)",
+      "nameEnLabel": "Name (English)",
+      "genderLabel": "Gender",
+      "basePriceLabel": "Base Price (EGP)",
+      "boxImage": "Box Image",
+      "selectImage": "Select Image",
+      "active": "Active",
+      "saving": "Saving...",
+      "saveUpdate": "Save Box Update",
+      "createBox": "Create Box",
+      "slotsTitle": "Box Content Slots",
+      "addSlot": "+ Add Slot",
+      "slotKeyLabel": "Slot Key (English)",
+      "slotDisplayLabel": "Slot Display Name (Arabic)",
+      "slotDisplayLabelEn": "Slot Display Name (English)",
+      "sortOrder": "Sort Order",
+      "slotGenderFilter": "Slot Product Gender Filter",
+      "slotRequired": "This slot is required",
+      "saveChanges": "Save Changes",
+      "deleteSlot": "Delete Slot",
+      "slotGenderAll": "No filter (All Products)",
+      "slotGenderMaleOnly": "Men's Products Only",
+      "slotGenderFemaleOnly": "Women's Products Only"
+    },
+    "users": {
+      "title": "Users",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "status": "Status",
+      "registrationDate": "Registration Date",
+      "active": "Active",
+      "blocked": "Blocked",
+      "noUsers": "No users found",
+      "empty": "No users found",
+      "total": "Total:",
+      "user": "users"
+    },
+    "shipping": {
+      "title": "Manage Shipping Fees",
+      "governorate": "Governorate",
+      "shippingCost": "Shipping Fee",
+      "status": "Status",
+      "actions": "Actions",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "activate": "Activate",
+      "noGovernorates": "No governorates found",
+      "updateSuccess": "Shipping fee updated successfully",
+      "updateError": "Error updating shipping fee",
+      "activateSuccess": "Governorate activated",
+      "deactivateSuccess": "Governorate deactivated",
+      "genericError": "An error occurred"
+    },
+    "customization": {
+      "title": "Customization Pricing",
+      "category": "Category",
+      "price": "Customization Price",
+      "actions": "Actions",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noPrices": "No customization prices yet",
+      "addPriceTitle": "Add Customization Price for Category",
+      "selectCategory": "Select Category",
+      "priceLabel": "Price (EGP)",
+      "add": "Add",
+      "updateSuccess": "Price updated successfully",
+      "updateError": "Error updating price",
+      "deleteSuccess": "Customization price deleted",
+      "deleteError": "Error deleting price",
+      "addSuccess": "Customization price added successfully",
+      "addError": "Error adding price"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "markAllRead": "Mark all as read",
+      "empty": "No notifications",
+      "viewOrder": "View Order",
+      "loading": "Loading...",
+      "loadMore": "Load More"
+    },
+    "categories": {
+      "watch": "Watch",
+      "wallet": "Wallet",
+      "mug": "Mug",
+      "necklace": "Necklace",
+      "ring": "Ring"
+    },
+    "genders": {
+      "male": "Men",
+      "female": "Women",
+      "unisex": "Unisex"
+    },
+    "promotions": {
+      "title": "Manage Promotions",
+      "addPromotion": "+ Add Promotion",
+      "name": "Name",
+      "discount": "Discount",
+      "period": "Period",
+      "target": "Target",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noPromotions": "No promotions yet",
+      "deleteConfirm": "Are you sure you want to delete this promotion?",
+      "deleteSuccess": "Promotion deleted",
+      "addSuccess": "Promotion added successfully",
+      "updateSuccess": "Promotion updated successfully",
+      "genericError": "An error occurred",
+      "allProducts": "All Products",
+      "form": {
+        "backToPromotions": "Promotions",
+        "addTitle": "Add Promotion",
+        "editTitle": "Edit Promotion",
+        "nameLabel": "Promotion Name (Arabic)",
+        "nameEnLabel": "Promotion Name (English)",
+        "discountTypeLabel": "Discount Type",
+        "percentage": "Percentage",
+        "fixed": "Fixed Amount",
+        "valueLabel": "Discount Value",
+        "startDateLabel": "Start Date",
+        "endDateLabel": "End Date",
+        "productLabel": "Specific Product (optional)",
+        "categoryLabel": "Category (optional)",
+        "selectProduct": "All Products",
+        "selectCategory": "All Categories",
+        "isActive": "Active",
+        "saving": "Saving...",
+        "save": "Save Promotion",
+        "update": "Update Promotion"
+      }
+    },
+    "coupons": {
+      "title": "Manage Coupons",
+      "addCoupon": "+ Add Coupon",
+      "code": "Code",
+      "discount": "Discount",
+      "usage": "Usage",
+      "expiration": "Expiration",
+      "minOrder": "Min Order",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noCoupons": "No coupons yet",
+      "deleteConfirm": "Are you sure you want to delete this coupon?",
+      "deleteSuccess": "Coupon deleted",
+      "addSuccess": "Coupon added successfully",
+      "updateSuccess": "Coupon updated successfully",
+      "genericError": "An error occurred",
+      "unlimited": "Unlimited",
+      "form": {
+        "backToCoupons": "Coupons",
+        "addTitle": "Add Coupon",
+        "editTitle": "Edit Coupon",
+        "codeLabel": "Coupon Code",
+        "discountTypeLabel": "Discount Type",
+        "percentage": "Percentage",
+        "fixed": "Fixed Amount",
+        "valueLabel": "Discount Value",
+        "maxUsesLabel": "Max Uses (0 = unlimited)",
+        "expirationLabel": "Expiration Date",
+        "minOrderLabel": "Minimum Order Amount (optional)",
+        "isActive": "Active",
+        "saving": "Saving...",
+        "save": "Save Coupon",
+        "update": "Update Coupon"
+      }
+    },
+    "boxReviews": {
+      "title": "Box Reviews",
+      "user": "User",
+      "boxType": "Box Type",
+      "rating": "Rating",
+      "comment": "Comment",
+      "date": "Date",
+      "delete": "Delete",
+      "noReviews": "No box reviews yet",
+      "deleteConfirm": "Are you sure you want to delete this review?",
+      "deleteSuccess": "Review deleted"
+    }
+  },
+
+  "gifts": {
+    "exploreMore": "Explore More Gift Categories",
+    "viewCategory": "Browse",
+    "customGiftBox": {
+      "title": "Custom Gift Boxes",
+      "heading": "Build Your Custom Gift Box",
+      "description": "Create the perfect personalized gift box for your loved ones. Choose from men's, women's, or couples gift boxes, fill them with luxury products, and add your personal message.",
+      "cta": "Start Building Your Box",
+      "features": {
+        "title": "Why Choose Custom Gift Boxes?",
+        "personalized": "Fully personalized with names, dates & messages",
+        "curated": "Hand-curated products from premium brands",
+        "packaging": "Premium luxury packaging included",
+        "delivery": "Fast delivery across Egypt"
+      },
+      "seo": {
+        "title": "Custom Gift Boxes — Build Your Personalized Gift Box",
+        "description": "Build a custom gift box with personalized products, engraved names & special messages. Choose men's, women's or couples boxes. Premium packaging & fast delivery in Egypt."
+      }
+    },
+    "coupleGifts": {
+      "title": "Couple Gifts",
+      "heading": "Couple Gift Boxes & Matching Gifts",
+      "description": "Celebrate your love with matching couple gifts. From personalized couple mugs to engraved watches and necklaces — the perfect gift for anniversaries and special moments.",
+      "cta": "Browse Couple Gifts",
+      "seo": {
+        "title": "Couple Gifts Egypt — Matching Personalized Gifts for Couples",
+        "description": "Shop the best couple gifts in Egypt — matching personalized mugs, engraved watches, necklaces & custom gift boxes. Perfect for anniversaries, Valentine's & special occasions."
+      }
+    },
+    "birthdayGifts": {
+      "title": "Birthday Gifts",
+      "heading": "Birthday Gift Boxes & Personalized Birthday Presents",
+      "description": "Make birthdays unforgettable with a personalized gift box. Custom engraved gifts with names, dates & personal messages delivered in luxury packaging.",
+      "cta": "Shop Birthday Gifts",
+      "seo": {
+        "title": "Birthday Gifts Egypt — Personalized Birthday Gift Boxes",
+        "description": "Find the perfect birthday gift — personalized gift boxes, engraved watches, custom mugs & more. Luxury packaging & fast delivery across Egypt."
+      }
+    },
+    "anniversaryGifts": {
+      "title": "Anniversary Gifts",
+      "heading": "Anniversary Gift Boxes & Romantic Gifts",
+      "description": "Celebrate your special moments with luxury anniversary gifts. Personalized boxes with engraved names, dates, and heartfelt messages for your partner.",
+      "cta": "Shop Anniversary Gifts",
+      "seo": {
+        "title": "Anniversary Gifts Egypt — Personalized Romantic Gift Boxes",
+        "description": "Shop luxury anniversary gifts — personalized gift boxes with engraved names & dates, matching couple gifts, and romantic presents. Fast delivery across Egypt."
+      }
+    },
+    "personalizedMug": {
+      "title": "Personalized Mugs",
+      "heading": "Custom Engraved Mugs — Personalized with Names & Dates",
+      "description": "Our premium personalized mugs make the perfect gift for any occasion. Custom engraved with names, dates, and special messages on premium quality mugs.",
+      "cta": "Browse Personalized Mugs",
+      "seo": {
+        "title": "Personalized Mugs Egypt — Custom Engraved Mugs with Names",
+        "description": "Order personalized mugs with custom engraving — names, dates & messages. Perfect couples' mugs, birthday mugs & gift mugs. Premium quality & fast delivery in Egypt."
+      }
+    },
+    "photoGifts": {
+      "title": "Photo Gifts",
+      "heading": "Photo Gifts — Personalized with Your Special Moments",
+      "description": "Turn your favorite memories into beautiful personalized gifts. Custom photo gifts including mugs, frames, and more — perfect for preserving special moments.",
+      "cta": "Browse Photo Gifts",
+      "seo": {
+        "title": "Photo Gifts Egypt — Custom Photo Personalized Gifts",
+        "description": "Create personalized photo gifts — custom photo mugs, frames & engraved gifts with your favorite images. Perfect keepsake gifts with fast delivery in Egypt."
+      }
+    }
+  }
+}

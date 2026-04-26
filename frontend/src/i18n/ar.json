@@ -1,0 +1,1339 @@
+{
+  "common": {
+    "loading": "جاري التحميل",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "goBack": "الرجوع",
+    "optional": "اختياري",
+    "note": "ملاحظة:",
+    "alert": "تنبيه:",
+    "contactPage": "صفحة التواصل",
+    "gender": {
+      "male": "رجالي",
+      "female": "حريمي",
+      "unisex": "مشترك"
+    },
+    "validation": {
+      "required": "مطلوب"
+    }
+  },
+
+  "nav": {
+    "products": "المنتجات",
+    "buildBox": "ابني بوكسك",
+    "cart": "السلة",
+    "wishlist": "المفضلة",
+    "notifications": "الإشعارات",
+    "myAccount": "حسابي",
+    "orders": "طلباتي",
+    "account": "الحساب",
+    "logout": "تسجيل الخروج",
+    "login": "تسجيل الدخول",
+    "home": "الرئيسية",
+    "shop": "المتجر",
+    "box": "بوكسك",
+    "more": "المزيد",
+    "backToHome": "العودة للرئيسية",
+    "muteSound": "كتم الصوت",
+    "unmuteSound": "تشغيل الصوت"
+  },
+
+  "announcement": {
+    "freeShipping": "✨ شحن مجاني للطلبات أكثر من 1,500 ج.م"
+  },
+
+  "notifications": {
+    "title": "الإشعارات",
+    "markAllRead": "قراءة الكل",
+    "noNotifications": "لا توجد إشعارات حالياً",
+    "viewAll": "عرض كل الإشعارات",
+    "pageTitle": "الإشعارات",
+    "markAllReadBtn": "تعليم الكل كمقروء",
+    "empty": "مفيش إشعارات",
+    "emptySubtitle": "هنبلغك لما يكون في جديد",
+    "viewOrder": "عرض الطلب",
+    "loadingMore": "جاري التحميل...",
+    "loadMore": "تحميل المزيد"
+  },
+
+  "footer": {
+    "followUs": "تابعنا على السوشيال ميديا",
+    "followSubtitle": "عشان تكون أول واحد يعرف عروضنا الجديدة",
+    "description": "نصنع لحظات لا تُنسى من خلال هدايا فاخرة ومخصصة تعبر عن مشاعرك لمن تحب بأرقى التفاصيل.",
+    "securePayment": "دفع آمن",
+    "fastShipping": "شحن سريع",
+    "quickLinks": "روابط سريعة",
+    "aboutSoulmate": "عن Soulmate",
+    "contactUs": "تواصل معنا",
+    "shop": "المتجر",
+    "buildBox": "ابني بوكسك",
+    "policiesSupport": "السياسات والدعم",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsConditions": "الشروط والأحكام",
+    "returnPolicy": "سياسة الإرجاع",
+    "copyright": "© 2026 Soulmate Store. جميع الحقوق محفوظة.",
+    "madeWith": "صُنع بـ",
+    "inEgypt": "في مصر"
+  },
+
+  "home": {
+    "hero": {
+      "badge": "حصريات Soulmate",
+      "titleLine1": "اكتشف الهدية المثالية",
+      "titleLine2": "لكل مناسبة",
+      "description": "اكتشف هدايا فريدة ومختارة بعناية هتسعد أحبابك. من بوكسات مخصصة لكلاسيكيات فاخرة، عندنا حاجة مميزة لكل شخص.",
+      "ctaBuildBox": "ابني بوكسك الآن",
+      "ctaBrowse": "تصفح التشكيلة",
+      "imageAlt": "هدايا فاخرة من Soulmate"
+    },
+    "featured": {
+      "title": "أحدث المنتجات",
+      "viewAll": "عرض جميع المنتجات",
+      "empty": "لا توجد منتجات متاحة حالياً"
+    },
+    "howItWorks": {
+      "title": "إزاي تبني بوكسك؟",
+      "step1Title": "إختيار البوكس",
+      "step1Desc": "اختر حجم وشكل البوكس المناسب لمناسبتك، من بوكسات صغيرة أنيقة إلى بوكسات كبيرة فاخرة.",
+      "step2Title": "تنسيق المنتجات",
+      "step2Desc": "املأ البوكس بمنتجات تنال إعجابهم من تشكيلتنا الواسعة: عطور، شموع، وشوكولاتة فاخرة وأكثر.",
+      "step3Title": "اللمسة الشخصية",
+      "step3Desc": "أضف كارت إهداء برسالتك الخاصة، وسنقوم بتغليفها بأرقى المعايير وإيصالها بحب إلى باب البيت."
+    },
+    "cta": {
+      "badge": "صانع الهدايا",
+      "titlePart1": "جاهز تصنع هدية",
+      "titlePart2": "مميزة؟",
+      "description": "صمّم بوكس هدايا فريد من نوعه يعبّر عن مشاعرك. ابدأ دلوقتي واصنع لحظة لا تُنسى.",
+      "boxMaleAria": "بوكس رجالي - For Him",
+      "boxMaleAlt": "بوكس رجالي",
+      "boxMaleTitle": "بوكس رجالي",
+      "boxMaleLabel": "ليه",
+      "boxFemaleAria": "بوكس حريمي - For Her",
+      "boxFemaleAlt": "بوكس حريمي",
+      "boxFemaleTitle": "بوكس حريمي",
+      "boxFemaleLabel": "ليها",
+      "boxCoupleAria": "بوكس كابلز - Couples",
+      "boxCoupleAlt": "بوكس كابلز",
+      "boxCoupleTitle": "بوكس كابلز",
+      "boxCoupleLabel": "كابلز",
+      "discover": "اكتشف"
+    },
+    "seo": {
+      "title": "هدايا مخصصة وبوكسات هدايا فاخرة في مصر",
+      "description": "تسوق هدايا فاخرة ومخصصة، بوكسات هدايا مخصصة وهدايا كابلز محفورة. صمم بوكس هديتك بنفسك مع ساعات ومحافظ ومجات وأكتر. شحن مجاني للطلبات أكتر من 1,500 ج.م."
+    }
+  },
+
+  "products": {
+    "title": "المنتجات",
+    "filters": "الفلاتر",
+    "showResults": "عرض النتائج",
+    "clearFilters": "مسح الفلاتر",
+    "searchPlaceholder": "ابحث عن هديتك المثالية...",
+    "empty": "مفيش منتجات متاحة حالياً",
+    "filter": {
+      "genderAll": "كل الأنواع",
+      "genderMale": "هدايا رجالي",
+      "genderFemale": "هدايا نسائي",
+      "categoryAll": "كل الفئات",
+      "categoryWatch": "ساعات",
+      "categoryWallet": "محافظ",
+      "categoryMug": "مجات",
+      "categoryNecklace": "عقود",
+      "categoryRing": "خواتم",
+      "sortNewest": "وصل حديثاً",
+      "sortPriceAsc": "الأقل سعراً",
+      "sortPriceDesc": "الأعلى سعراً",
+      "sortRating": "الأعلى تقييماً",
+      "sortName": "الاسم",
+      "ratingAll": "كل التقييمات",
+      "ratingPlaceholder": "التقييم",
+      "rating4Plus": "4 نجوم فأكثر",
+      "rating3Plus": "3 نجوم فأكثر",
+      "rating2Plus": "2 نجمة فأكثر",
+      "rating1Plus": "1 نجمة فأكثر",
+      "priceAll": "كل الأسعار",
+      "pricePlaceholder": "السعر",
+      "priceUnder100": "أقل من 100 جنيه",
+      "price100to250": "100 - 250 جنيه",
+      "price250to500": "250 - 500 جنيه",
+      "price500to1000": "500 - 1000 جنيه",
+      "priceOver1000": "أكثر من 1000 جنيه"
+    },
+    "seo": {
+      "title": "تسوق هدايا فاخرة — ساعات، محافظ، عقود وأكتر",
+      "description": "تصفح مجموعتنا المميزة من الهدايا الفاخرة المخصصة — ساعات، محافظ، عقود، خواتم ومجات. اختار الهدية المثالية القابلة للتخصيص لكل مناسبة في مصر."
+    }
+  },
+
+  "productDetail": {
+    "breadcrumbHome": "الرئيسية",
+    "breadcrumbProducts": "المنتجات",
+    "includesCustomization": "شامل التخصيص",
+    "notCustomizableTitle": "غير قابل للتخصيص",
+    "notCustomizableDesc": "هذا المنتج لا يدعم التخصيص حالياً",
+    "customizeProduct": "خصّص هذا المنتج",
+    "customizeHint": "فعّل التخصيص لإضافة اسمك وتاريخ مميز ورسالة إهداء",
+    "customNameLabel": "الاسم المراد حفره / إضافته",
+    "customNamePlaceholder": "مثال: أحمد",
+    "customDateLabel": "تاريخ مميز (اختياري)",
+    "customDatePlaceholder": "مثال: 12.06.2024",
+    "customMessageLabel": "رسالة الإهداء (تُكتب على كارت فاخر)",
+    "customMessagePlaceholder": "اكتب رسالتك هنا...",
+    "addToCart": "إضافة إلى السلة",
+    "addToWishlist": "أضف إلى المفضلة",
+    "removeFromWishlist": "إزالة من المفضلة",
+    "inStock": "متوفر في المخزون",
+    "lowStock": "كمية محدودة",
+    "outOfStock": "نفذ من المخزون",
+    "premiumPackaging": "تخزين وتغليف فاخر",
+    "reviewsTitle": "التقييمات والمراجعات",
+    "reviewCountSuffix": "تقييم",
+    "editReview": "تعديل تقييمك",
+    "addReview": "أضف تقييمك",
+    "ratingLabel": "التقييم",
+    "commentLabel": "تعليقك (اختياري)",
+    "commentPlaceholder": "اكتب رأيك عن المنتج...",
+    "updateReviewBtn": "تحديث التقييم",
+    "submitReviewBtn": "إرسال التقييم",
+    "deleteReviewBtn": "حذف",
+    "loginToReview": "سجل دخولك لتتمكن من إضافة تقييم",
+    "loginLink": "تسجيل الدخول",
+    "noReviews": "لا توجد تقييمات بعد. كن أول من يقيّم هذا المنتج!",
+    "relatedProducts": "منتجات قد تعجبك",
+    "toast": {
+      "addedToCart": "تمت إضافة المنتج للسلة بنجاح",
+      "reviewUpdated": "تم تحديث التقييم بنجاح",
+      "reviewAdded": "تم إضافة التقييم بنجاح",
+      "reviewDeleted": "تم حذف التقييم"
+    }
+  },
+
+  "productCard": {
+    "quickView": "نظرة سريعة",
+    "ratingAriaLabel": "تقييم {{rating}} من 5",
+    "noRatingsAriaLabel": "لا توجد تقييمات",
+    "noRatings": "لا توجد تقييمات",
+    "priceLabel": "السعر",
+    "addToCart": "إضافة للسلة",
+    "addedToCartSuccess": "تمت إضافة المنتج للسلة بنجاح",
+    "outOfStock": "نفذ من المخزون",
+    "lowStock": "متبقي {{count}} فقط",
+    "addedToWishlist": "تمت الإضافة للمفضلة",
+    "removedFromWishlist": "تمت الإزالة من المفضلة"
+  },
+
+  "cart": {
+    "pageSubtitle": "سلة المشتريات",
+    "title": "سلة المشتريات",
+    "emptyTitle": "سلة المشتريات فارغة",
+    "emptySubtitle": "ابدأ التسوق واستمتع بمنتجاتنا الفاخرة",
+    "emptyCta": "تسوق منتجاتنا الفاخرة",
+    "itemTypeBox": "بوكس",
+    "itemTypeProduct": "منتج",
+    "decreaseQuantityAria": "تقليل الكمية",
+    "increaseQuantityAria": "زيادة الكمية",
+    "removeItemAria": "حذف",
+    "totalLabel": "إجمالي السلة",
+    "shippingNote": "تكلفة الشحن سيتم حسابها في الخطوة القادمة",
+    "checkoutBtn": "إتمام الطلب بأمان",
+    "clearBtn": "إفراغ السلة"
+  },
+
+  "wishlist": {
+    "pageTitle": "المفضلة",
+    "empty": "المفضلة فارغة",
+    "emptySubtitle": "تصفح المنتجات وأضف المفضلين هنا",
+    "browseCta": "تصفح المنتجات",
+    "removeAll": "مسح المفضلة"
+  },
+
+  "checkout": {
+    "pageTitle": "إتمام الطلب",
+    "emptyCart": "عربة التسوق فارغة",
+    "startShopping": "ابدأ التسوق",
+    "shippingAddress": "عنوان التوصيل",
+    "building": "مبنى",
+    "floor": "دور",
+    "apartment": "شقة",
+    "editBtn": "تعديل",
+    "deleteBtn": "حذف",
+    "editAddress": "تعديل العنوان",
+    "newAddress": "عنوان جديد",
+    "addressLabel": "الاسم",
+    "addressLabelPlaceholder": "مثال: المنزل",
+    "governorate": "المحافظة",
+    "selectGovernorate": "اختر المحافظة",
+    "shippingSuffix": "شحن",
+    "city": "المدينة",
+    "district": "الحي",
+    "street": "الشارع",
+    "buildingLabel": "المبنى",
+    "floorLabel": "الرقم/الدور",
+    "apartmentLabel": "الشقة",
+    "phone": "رقم الهاتف",
+    "saving": "جاري الحفظ...",
+    "editAddressBtn": "تعديل العنوان",
+    "saveAddressBtn": "حفظ العنوان",
+    "cancelBtn": "إلغاء",
+    "addNewAddress": "إضافة عنوان جديد",
+    "orderSummary": "ملخص الطلب",
+    "products": "المنتجات",
+    "shipping": "الشحن",
+    "total": "الإجمالي",
+    "placingOrder": "جاري إنشاء الطلب...",
+    "confirmOrder": "تأكيد الطلب",
+    "confirmDeleteAddress": "هل أنت متأكد من حذف هذا العنوان؟",
+    "toast": {
+      "addressDeleted": "تم حذف العنوان",
+      "addressUpdated": "تم تعديل العنوان",
+      "orderCreationError": "حصل خطأ في إنشاء الطلب"
+    },
+    "coupon": {
+      "label": "كود الخصم",
+      "placeholder": "أدخل كود الخصم",
+      "apply": "تطبيق",
+      "applying": "جاري التطبيق...",
+      "discount": "الخصم",
+      "remove": "حذف",
+      "applied": "تم تطبيق كود الخصم بنجاح",
+      "invalid": "كود خصم غير صالح",
+      "expired": "كود الخصم منتهي الصلاحية",
+      "usageLimitReached": "تم استنفاد عدد الاستخدامات",
+      "minOrderNotMet": "الحد الأدنى للطلب غير مستوفي"
+    }
+  },
+
+  "confirmation": {
+    "orderCreatedSuccess": "تم إنشاء الطلب بنجاح!",
+    "orderNumber": "رقم الطلب:",
+    "orderSummary": "ملخص الطلب",
+    "customBox": "بوكس مخصص",
+    "product": "منتج",
+    "products": "المنتجات",
+    "shipping": "الشحن",
+    "totalToTransfer": "الإجمالي المطلوب تحويله",
+    "nextStep": "الخطوة التالية",
+    "transferAmountPrefix": "قم بتحويل المبلغ",
+    "transferInstruction": "عبر فودافون كاش أو إنستا باي، ثم ارفع صورة الإيصال.",
+    "uploadReceipt": "رفع إيصال الدفع",
+    "myOrders": "طلباتي",
+    "orderNotFound": "الطلب مش موجود"
+  },
+
+  "payment": {
+    "pageTitle": "رفع إيصال الدفع",
+    "amountToTransfer": "المبلغ المطلوب تحويله",
+    "orderNumberPrefix": "طلب رقم",
+    "paymentSteps": "خطوات الدفع",
+    "step1": "اختر طريقة الدفع (فودافون كاش أو إنستا باي)",
+    "step2Prefix": "حوّل المبلغ",
+    "step2Suffix": "للرقم الموجود أسفل",
+    "step3": "خد سكرين شوت للإيصال",
+    "step4": "ارفع صورة الإيصال هنا",
+    "transferNumbers": "أرقام التحويل",
+    "vodafoneCash": "فودافون كاش",
+    "instapay": "إنستا باي",
+    "copyNumber": "نسخ الرقم",
+    "uploadReceiptImage": "رفع صورة الإيصال",
+    "paymentMethod": "طريقة الدفع",
+    "receiptImage": "صورة الإيصال",
+    "remove": "إزالة",
+    "dragOrClick": "اسحب الصورة هنا أو اضغط للاختيار",
+    "fileTypeHint": "JPG, PNG أو WebP - حد أقصى 5 ميجا",
+    "uploading": "جاري الرفع...",
+    "uploadBtn": "رفع الإيصال",
+    "backToOrderDetails": "العودة لتفاصيل الطلب",
+    "toast": {
+      "numberCopied": "تم نسخ الرقم",
+      "unsupportedFormat": "الصيغة مش مدعومة. استخدم JPG أو PNG أو WebP",
+      "fileTooLarge": "الملف أكبر من 5MB",
+      "uploadSuccess": "تم رفع الإيصال بنجاح. سيتم مراجعته قريباً",
+      "uploadError": "حصل خطأ في رفع الإيصال"
+    }
+  },
+
+  "orders": {
+    "pageSubtitle": "طلباتي",
+    "pageTitle": "طلباتي",
+    "noOrders": "لا توجد طلبات سابقة",
+    "startShoppingSubtitle": "ابدأ التسوق واستمتع بمنتجاتنا الفاخرة",
+    "startShopping": "بدأ التسوق",
+    "productCount": "عدد المنتجات:",
+    "showMore": "عرض المزيد"
+  },
+
+  "orderDetail": {
+    "backToOrders": "العودة لطلباتي",
+    "orderPrefix": "طلب",
+    "products": "المنتجات",
+    "customBox": "بوكس مخصص",
+    "product": "منتج",
+    "quantity": "الكمية:",
+    "shippingAddress": "عنوان التوصيل",
+    "building": "مبنى",
+    "floor": "دور",
+    "apartment": "شقة",
+    "paymentStatusSection": "حالة الدفع",
+    "paymentMethod": "طريقة الدفع",
+    "paymentStatusLabel": "حالة الدفع",
+    "receiptImage": "صورة الإيصال",
+    "receiptAlt": "إيصال الدفع",
+    "cancelReason": "سبب الإلغاء",
+    "orderSummary": "ملخص الطلب",
+    "summaryProducts": "المنتجــات",
+    "summaryShipping": "الشحـــن",
+    "summaryTotal": "الإجمالـي",
+    "uploadReceipt": "رفع إيصال الدفع",
+    "cancelling": "جاري الإلغاء...",
+    "cancelOrder": "إلغاء الطلب",
+    "paymentReviewMessage": "جاري مراجعة الإيصال. هنبلغك بالنتيجة قريباً.",
+    "cancelledByCustomer": "تم الإلغاء بواسطة العميل",
+    "vodafoneCash": "فودافون كاش",
+    "instapay": "إنستا باي",
+    "paymentPending": "قيد المراجعة",
+    "paymentVerified": "تم التأكيد",
+    "paymentRejected": "مرفوض",
+    "toast": {
+      "orderCancelled": "تم إلغاء الطلب",
+      "cannotCancelOrder": "مش ممكن إلغاء الطلب"
+    }
+  },
+
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "subtitle": "مرحباً بك في عالم الهدايا الفاخرة",
+      "emailLabel": "البريد الإلكتروني",
+      "emailRequired": "الإيميل مطلوب",
+      "emailInvalid": "صيغة الإيميل غير صحيحة",
+      "passwordLabel": "كلمة المرور",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "loading": "جاري تسجيل الدخول...",
+      "submit": "تسجيل الدخول",
+      "noAccount": "ليس لديك حساب؟",
+      "createAccount": "إنشاء حساب جديد",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "انضم إلينا وابدأ تجربة تسوق استثنائية",
+      "nameLabel": "الاسم",
+      "namePlaceholder": "الاسم الكامل",
+      "nameRequired": "الاسم مطلوب",
+      "emailLabel": "البريد الإلكتروني",
+      "emailRequired": "الإيميل مطلوب",
+      "emailInvalid": "صيغة الإيميل غير صحيحة",
+      "phoneLabel": "رقم الهاتف",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phonePattern": "رقم الهاتف لازم يكون 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015",
+      "passwordLabel": "كلمة المرور",
+      "passwordPlaceholder": "8 حروف على الأقل",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordMinlength": "كلمة المرور يجب أن تكون 8 حروف على الأقل",
+      "loading": "جاري إنشاء الحساب...",
+      "submit": "إنشاء حساب",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "loginLink": "تسجيل الدخول",
+      "genericError": "حصل خطأ، يرجى المحاولة مرة أخرى"
+    },
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور",
+      "subtitle": "اكتب الإيميل بتاعك وهنبعتلك رابط لإعادة تعيين كلمة المرور",
+      "emailLabel": "البريد الإلكتروني",
+      "emailRequired": "الإيميل مطلوب",
+      "emailInvalid": "صيغة الإيميل غلط",
+      "loading": "جاري الإرسال...",
+      "submit": "إرسال رابط إعادة التعيين",
+      "backToLogin": "الرجوع لتسجيل الدخول",
+      "successMessage": "لو الإيميل مسجل عندنا، هنبعتلك رابط إعادة تعيين",
+      "genericError": "حصل خطأ، حاول تاني"
+    },
+    "resetPassword": {
+      "title": "إعادة تعيين كلمة المرور",
+      "loginLink": "تسجيل الدخول",
+      "newPasswordLabel": "كلمة المرور الجديدة",
+      "newPasswordPlaceholder": "8 حروف على الأقل",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordMinlength": "كلمة المرور لازم 8 حروف على الأقل",
+      "confirmPasswordLabel": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "أعد كتابة كلمة المرور",
+      "passwordMismatch": "كلمات المرور مش متطابقة",
+      "loading": "جاري التغيير...",
+      "submit": "تغيير كلمة المرور",
+      "invalidLink": "رابط غير صالح",
+      "successMessage": "تم تغيير كلمة المرور بنجاح",
+      "expiredLink": "الرابط مش صالح أو انتهت صلاحيته"
+    }
+  },
+
+  "profile": {
+    "pageSubtitle": "حسابي",
+    "pageTitle": "الملف الشخصي",
+    "personalInfo": "البيانات الشخصية",
+    "fullName": "الاسم بالكامل",
+    "nameRequired": "الاسم مطلوب",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم التليفون",
+    "phoneRequired": "رقم التليفون مطلوب",
+    "phonePattern": "رقم التليفون لازم يكون 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015",
+    "saving": "جاري الحفظ...",
+    "saveChanges": "حفظ التعديلات",
+    "changePassword": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "togglePasswordVisibility": "إظهار/إخفاء كلمة المرور",
+    "currentPasswordRequired": "كلمة المرور الحالية مطلوبة",
+    "newPassword": "كلمة المرور الجديدة",
+    "minLengthPlaceholder": "8 حروف على الأقل",
+    "newPasswordRequired": "كلمة المرور الجديدة مطلوبة",
+    "passwordMinLength": "كلمة المرور لازم 8 حروف على الأقل",
+    "changingPassword": "جاري التغيير...",
+    "changePasswordBtn": "تغيير كلمة المرور",
+    "toast": {
+      "profileUpdated": "تم حفظ التعديلات بنجاح",
+      "passwordChanged": "تم تغيير كلمة المرور بنجاح",
+      "genericError": "حصل خطأ"
+    }
+  },
+
+  "builder": {
+    "boxSelector": {
+      "pageSubtitle": "صانع الهدايا",
+      "title": "ابني بوكسك",
+      "subtitle": "اختر نوع البوكس اللي يناسبك وابدأ تصمم هديتك الفريدة",
+      "startingFrom": "يبدأ من"
+    },
+    "slotPicker": {
+      "stepLabel": "الخطوة الثانية",
+      "title": "اختار المنتجات",
+      "subtitle": "اختار منتج لكل خانة في البوكس — الخانات المطلوبة معلّمة بنجمة",
+      "slotsSelected": "خانات مختارة",
+      "customizableBadge": "قابل للتخصيص",
+      "noProductsAvailable": "لا توجد منتجات متاحة",
+      "customizeThisProduct": "خصّص هذا المنتج",
+      "customizationNotAvailable": "التخصيص غير متاح لهذا المنتج",
+      "boxTotal": "إجمالي البوكس",
+      "nextCustomization": "التالي: التخصيص",
+      "customizationPricePrefix": "تخصيص:"
+    },
+    "customization": {
+      "stepLabel": "الخطوة الثالثة",
+      "title": "أضف لمستك الشخصية",
+      "subtitle": "خصّص البوكس بأسمائكم وتاريخكم المميز",
+      "productsToCustomize": "منتجات للتخصيص",
+      "firstName": "الاسم الأول",
+      "secondName": "الاسم الثاني",
+      "additionalDetails": "تفاصيل إضافية",
+      "specialDate": "التاريخ المميز",
+      "specialMessage": "رسالة خاصة",
+      "messagePlaceholder": "كل سنة وانتم طيبين 💕",
+      "showPreview": "عرض البريفيو"
+    },
+    "preview": {
+      "stepLabel": "الخطوة الأخيرة",
+      "title": "راجع طلبك",
+      "subtitle": "تأكد من كل التفاصيل قبل ما تضيف البوكس للسلة",
+      "boxType": "نوع البوكس",
+      "selectedProducts": "المنتجات المختارة",
+      "customization": "التخصيص",
+      "firstName": "الاسم الأول",
+      "secondName": "الاسم الثاني",
+      "date": "التاريخ",
+      "message": "الرسالة",
+      "customizedProducts": "منتجات مخصصة",
+      "customizationPrefix": "تخصيص",
+      "basePrice": "سعر البوكس الأساسي",
+      "initialTotal": "الإجمالي المبدئي",
+      "addToCart": "أضف للسلة",
+      "noPreviewData": "مفيش بيانات بريفيو",
+      "startOver": "ابدأ من الأول",
+      "edit": "تعديل"
+    },
+    "steps": {
+      "step1Label": "البوكس",
+      "step1Desc": "اختار النوع",
+      "step2Label": "المنتجات",
+      "step2Desc": "اختار لكل خانة",
+      "step3Label": "التخصيص",
+      "step3Desc": "أضف لمستك",
+      "step4Label": "المراجعة",
+      "step4Desc": "راجع وأكد"
+    },
+    "seo": {
+      "boxSelector": {
+        "title": "صمم بوكس هديتك المخصص — اختر نوع البوكس",
+        "description": "اصنع بوكس هدايا مخصص — اختر من بوكسات رجالي أو حريمي أو كابلز. صمم هديتك الفاخرة بمنتجات مخصصة ولمستك الشخصية."
+      },
+      "slotPicker": {
+        "title": "اختر المنتجات",
+        "description": "اختر المنتجات لكل خانة في البوكس. خصّص هديتك بالمنتجات المناسبة."
+      },
+      "customization": {
+        "title": "أضف لمستك الشخصية",
+        "description": "خصّص البوكس بأسمائكم وتاريخكم المميز ورسالة خاصة."
+      },
+      "preview": {
+        "title": "معاينة البوكس",
+        "description": "راجع البوكس قبل إضافته للسلة. تأكد من اختياراتك والتخصيصات."
+      }
+    }
+  },
+
+  "status": {
+    "pending": "في الانتظار",
+    "paymentReview": "مراجعة الدفع",
+    "processing": "قيد التجهيز",
+    "shipped": "تم الشحن",
+    "delivered": "تم التسليم",
+    "cancelled": "ملغي"
+  },
+
+  "errors": {
+    "invalidData": "بيانات غير صالحة",
+    "forbidden": "مش مسموح بالوصول",
+    "conflict": "تعارض في البيانات",
+    "tooManyRequests": "طلبات كتير، استنى شوية",
+    "noConnection": "مفيش اتصال بالسيرفر",
+    "serverError": "حصل خطأ، حاول تاني",
+    "unexpected": "حصل خطأ غير متوقع"
+  },
+
+  "notFound": {
+    "pageNotFound": "الصفحة غير موجودة",
+    "description": "الصفحة اللي بتدور عليها مش موجودة أو تم نقلها. ممكن تكون كتبت العنوان غلط أو الصفحة اتحذفت.",
+    "backToHome": "العودة للرئيسية",
+    "browseProducts": "تصفح المنتجات",
+    "tryThesePages": "أو جرب واحدة من الصفحات دي:",
+    "buildYourBox": "ابني بوكسك",
+    "aboutSoulmate": "عن Soulmate",
+    "contactUs": "تواصل معنا",
+    "seo": {
+      "title": "404 - الصفحة غير موجودة",
+      "description": "الصفحة اللي بتدور عليها مش موجودة. ارجع للصفحة الرئيسية أو تصفح منتجاتنا."
+    }
+  },
+
+  "about": {
+    "hero": {
+      "label": "قصتنا",
+      "title": "عن Soulmate",
+      "subtitle": "متجرك المميز لتجهيز هدايا فريدة ومخصصة لأحبابك"
+    },
+    "story": {
+      "intro": "Soulmate هو متجرك المميز لتجهيز هدايا فريدة ومخصصة لأحبابك.",
+      "body": "نؤمن إن الهدية مش مجرد حاجة مادية — هي رسالة حب وتقدير. عشان كده صممنا تجربة فريدة تخليك تختار وتخصص بوكس الهدية بالطريقة اللي تعبر عنك."
+    },
+    "features": {
+      "label": "مميزاتنا",
+      "title": "ليه Soulmate؟",
+      "variety": {
+        "title": "تنوع كبير",
+        "description": "منتجات مختارة بعناية من أفضل البراندات"
+      },
+      "customization": {
+        "title": "تخصيص كامل",
+        "description": "اختار البوكس، اختار المنتجات، أضف رسالتك الشخصية"
+      },
+      "quality": {
+        "title": "جودة عالية",
+        "description": "كل منتجاتنا أصلية ومضمونة"
+      },
+      "delivery": {
+        "title": "توصيل سريع",
+        "description": "نوصلك الهدية لحد الباب في أسرع وقت"
+      }
+    },
+    "vision": {
+      "title": "رؤيتنا",
+      "body": "نسعى نكون الوجهة الأولى في مصر لهدايا المناسبات المميزة — من أعياد الميلاد والذكرى السنوية لحد هدايا التخرج والتقدير. هدفنا إن كل هدية تكون تجربة متكاملة تبدأ من اختيار البوكس وتنتهي بابتسامة على وش اللي بتحبه."
+    },
+    "cta": {
+      "title": "جاهز تبدأ؟",
+      "subtitle": "ابني بوكس الهدية المثالي لحبايبك دلوقتي",
+      "buildBox": "ابني بوكسك",
+      "browseProducts": "تصفح المنتجات"
+    },
+    "seo": {
+      "title": "عن سولميت — متجر الهدايا الفاخرة في مصر",
+      "description": "اكتشف سولميت ستور — الوجهة الأولى في مصر للهدايا الفاخرة المخصصة وبوكسات الهدايا لأعياد الميلاد والذكرى السنوية والمناسبات الخاصة."
+    }
+  },
+
+  "contact": {
+    "hero": {
+      "label": "نحن هنا لمساعدتك",
+      "title": "تواصل معنا",
+      "subtitle": "عندك سؤال أو اقتراح؟ تواصل معانا وهنرد عليك في أسرع وقت."
+    },
+    "info": {
+      "label": "معلومات التواصل",
+      "title": "طرق الوصول إلينا",
+      "email": "البريد الإلكتروني",
+      "whatsappAriaLabel": "تواصل معنا عبر واتساب",
+      "whatsapp": "واتساب",
+      "workingHours": "ساعات العمل",
+      "workingHoursValue": "السبت - الخميس: 10 صباحاً - 10 مساءً"
+    },
+    "faq": {
+      "title": "أسئلة شائعة",
+      "hint": "قبل ما تتواصل معانا، ممكن تلاقي إجابة سؤالك في صفحاتنا:",
+      "returnPolicy": "سياسة الإرجاع",
+      "terms": "الشروط والأحكام",
+      "privacy": "سياسة الخصوصية"
+    },
+    "form": {
+      "label": "رسالة مباشرة",
+      "title": "ابعتلنا رسالة",
+      "name": "الاسم",
+      "namePlaceholder": "اسمك الكامل",
+      "email": "البريد الإلكتروني",
+      "message": "الرسالة",
+      "messagePlaceholder": "اكتب رسالتك هنا...",
+      "successMessage": "تم إرسال رسالتك بنجاح! هنتواصل معاك قريباً.",
+      "sending": "جاري الإرسال...",
+      "send": "إرسال",
+      "validationWarning": "من فضلك املأ كل الحقول",
+      "emailSubjectPrefix": "رسالة جديدة من",
+      "emailBodyName": "الاسم:",
+      "emailBodyEmail": "الإيميل:",
+      "emailBodyMessage": "الرسالة:",
+      "mailClientOpened": "تم فتح برنامج البريد الإلكتروني"
+    },
+    "seo": {
+      "title": "تواصل مع سولميت ستور — مساعدة ودعم",
+      "description": "تواصل مع سولميت ستور للمساعدة في الطلبات، تخصيص الهدايا، أو أي استفسار. تواصل معنا عبر البريد الإلكتروني أو الواتساب أو نموذج التواصل."
+    }
+  },
+
+  "privacy": {
+    "hero": {
+      "label": "الشفافية أولاً",
+      "title": "سياسة الخصوصية",
+      "lastUpdated": "آخر تحديث: مارس 2026"
+    },
+    "intro": "نحن في Soulmate نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. السياسة دي بتوضح إزاي بنجمع ونستخدم ونحمي بياناتك.",
+    "section1": {
+      "title": "البيانات اللي بنجمعها",
+      "item1": "الاسم والبريد الإلكتروني ورقم الموبايل عند التسجيل",
+      "item2": "عنوان التوصيل عند إتمام الطلب",
+      "item3": "بيانات الدفع (إيصالات فقط — مش بنحفظ بيانات بطاقات)",
+      "item4": "بيانات التصفح (cookies) لتحسين تجربة الاستخدام"
+    },
+    "section2": {
+      "title": "استخدام البيانات",
+      "item1": "معالجة وتوصيل الطلبات",
+      "item2": "التواصل بخصوص حالة الطلب والإشعارات",
+      "item3": "تحسين تجربة الاستخدام وتطوير خدماتنا",
+      "item4": "إرسال عروض وتحديثات (بموافقتك فقط)"
+    },
+    "section3": {
+      "title": "حماية البيانات",
+      "body": "بنستخدم تشفير SSL/TLS لحماية بياناتك أثناء النقل، وبنخزن كلمات المرور بتشفير BCrypt. مش بنشارك بياناتك مع أي طرف تالت بدون موافقتك.",
+      "note": "بنحفظ إيصالات الدفع على خوادم Cloudinary المؤمنة، وبنحذفها بعد التحقق من الدفع."
+    },
+    "section4": {
+      "title": "ملفات تعريف الارتباط (Cookies)",
+      "body": "بنستخدم cookies أساسية لتسجيل الدخول والحفاظ على جلستك. مش بنستخدم cookies تتبع من طرف تالت."
+    },
+    "section5": {
+      "title": "حقوقك",
+      "item1": "الوصول لبياناتك الشخصية المخزنة عندنا",
+      "item2": "تعديل أو تحديث بياناتك في أي وقت من صفحة الملف الشخصي",
+      "item3": "طلب حذف حسابك وبياناتك بالكامل",
+      "item4": "إلغاء الاشتراك في الرسائل التسويقية"
+    },
+    "section6": {
+      "title": "التواصل",
+      "body": "لو عندك أي سؤال عن سياسة الخصوصية أو حابب تمارس حقوقك، تواصل معانا:"
+    },
+    "seo": {
+      "title": "سياسة الخصوصية",
+      "description": "سياسة خصوصية Soulmate — تعرف على كيفية جمع واستخدام وحماية بياناتك الشخصية عند استخدام خدماتنا."
+    }
+  },
+
+  "terms": {
+    "hero": {
+      "label": "اتفاقية الاستخدام",
+      "title": "الشروط والأحكام",
+      "lastUpdated": "آخر تحديث: مارس 2026"
+    },
+    "intro": "باستخدامك لموقع Soulmate، أنت موافق على الشروط والأحكام التالية. من فضلك اقرأها بعناية قبل استخدام خدماتنا.",
+    "section1": {
+      "title": "الحساب والتسجيل",
+      "item1": "لازم تقدم بيانات صحيحة ودقيقة عند التسجيل",
+      "item2": "أنت المسؤول عن الحفاظ على سرية بيانات حسابك وكلمة المرور",
+      "item3": "لازم يكون عمرك 18 سنة أو أكتر لاستخدام الموقع",
+      "item4": "يحق لنا تعليق أو إلغاء حسابك في حالة مخالفة الشروط"
+    },
+    "section2": {
+      "title": "الطلبات والأسعار",
+      "item1": "الأسعار المعروضة بالجنيه المصري وشاملة الضريبة",
+      "item2": "الطلب بيتأكد بعد مراجعة إيصال الدفع والتحقق منه",
+      "item3": "ممكن نلغي طلبات لأسباب تتعلق بالتوفر أو مشاكل الدفع",
+      "item4": "الطلبات المعلقة أكتر من 48 ساعة بدون دفع بتتلغي تلقائياً",
+      "note": "الأسعار ممكن تتغير في أي وقت، لكن الطلبات المؤكدة بتفضل بالسعر وقت الطلب."
+    },
+    "section3": {
+      "title": "الدفع",
+      "item1": "الدفع يتم عن طريق تحويل بنكي ورفع إيصال الدفع",
+      "item2": "يتم مراجعة الإيصال خلال 24 ساعة عمل",
+      "item3": "في حالة رفض الإيصال، يمكنك رفع إيصال جديد (حتى 3 محاولات)"
+    },
+    "section4": {
+      "title": "التوصيل",
+      "item1": "التوصيل متاح داخل مصر فقط",
+      "item2": "مدة التوصيل تختلف حسب المنطقة (عادةً 3-7 أيام عمل)",
+      "item3": "أنت المسؤول عن تقديم عنوان توصيل صحيح ودقيق"
+    },
+    "section5": {
+      "title": "الملكية الفكرية",
+      "body": "كل المحتوى على الموقع (صور، نصوص، تصاميم، شعارات) ملك لـ Soulmate ومحمي بحقوق الملكية الفكرية. مش مسموح نسخ أو إعادة نشر أي محتوى بدون إذن كتابي مسبق."
+    },
+    "section6": {
+      "title": "تعديل الشروط",
+      "body": "يحق لنا تعديل الشروط والأحكام في أي وقت. التعديلات بتكون سارية من تاريخ نشرها على الموقع. استمرارك في استخدام الموقع بيعتبر موافقة على الشروط المعدلة."
+    },
+    "section7": {
+      "title": "التواصل",
+      "body": "لو عندك أي استفسار عن الشروط والأحكام:"
+    },
+    "seo": {
+      "title": "الشروط والأحكام",
+      "description": "الشروط والأحكام لاستخدام موقع Soulmate — تعرف على شروط الحساب والطلبات والدفع والتوصيل."
+    }
+  },
+
+  "returnPolicy": {
+    "hero": {
+      "label": "رضاك أولويتنا",
+      "title": "سياسة الإرجاع والاستبدال",
+      "lastUpdated": "آخر تحديث: مارس 2026"
+    },
+    "intro": "رضاك هو أولويتنا. لو حصلت أي مشكلة مع طلبك، إحنا هنا نساعدك.",
+    "section1": {
+      "title": "شروط الإرجاع",
+      "item1": "المنتج لازم يكون في حالته الأصلية وبالتغليف الكامل",
+      "item2Prefix": "طلب الإرجاع لازم يكون خلال",
+      "item2Days": "7 أيام",
+      "item2Suffix": "من استلام الطلب",
+      "item3": "المنتج لازم يكون غير مستخدم وبحالته الأصلية",
+      "alert": "المنتجات المخصصة (البوكسات المخصصة مع رسائل شخصية) مش قابلة للإرجاع."
+    },
+    "section2": {
+      "title": "خطوات الإرجاع",
+      "step1Title": "تواصل معانا",
+      "step1Desc": "عبر صفحة التواصل أو الواتساب ووضح سبب الإرجاع ورقم الطلب",
+      "step2Title": "مراجعة الطلب",
+      "step2Desc": "هنراجع طلبك ونرد عليك خلال 24 ساعة عمل",
+      "step3Title": "ترتيب الاستلام",
+      "step3Desc": "هنتواصل معاك لترتيب استلام المنتج من عندك",
+      "step4Title": "استرداد المبلغ",
+      "step4Desc": "بعد فحص المنتج، هنرجعلك المبلغ خلال 7 أيام عمل"
+    },
+    "section3": {
+      "title": "الاستبدال",
+      "body": "لو المنتج وصل تالف أو مختلف عن الطلب، بنوفرلك استبدال مجاني بدون أي تكلفة إضافية. في الحالة دي، تواصل معانا خلال 48 ساعة من الاستلام مع صور توضح المشكلة."
+    },
+    "section4": {
+      "title": "حالات لا يمكن فيها الإرجاع",
+      "item1": "البوكسات المخصصة برسائل شخصية",
+      "item2": "المنتجات المستخدمة أو المفتوحة (العطور، مستحضرات التجميل)",
+      "item3": "طلبات الإرجاع بعد مرور 7 أيام من الاستلام"
+    },
+    "cta": {
+      "title": "محتاج مساعدة؟",
+      "subtitle": "تواصل معانا وهنساعدك في أي وقت",
+      "contactUs": "تواصل معنا"
+    },
+    "seo": {
+      "title": "سياسة الإرجاع والاستبدال",
+      "description": "سياسة الإرجاع والاستبدال في Soulmate — تعرف على شروط وخطوات إرجاع أو استبدال المنتجات."
+    }
+  },
+
+  "mapPicker": {
+    "label": "الموقع على الخريطة",
+    "pickMe": "حدد الموقع",
+    "locationSet": "تم تحديد الموقع",
+    "clickToSet": "اضغط على الخريطة لتحديد الموقع",
+    "unavailable": "تحديد الموقع غير متاح حالياً"
+  },
+
+  "admin": {
+    "sidebar": {
+      "dashboard": "لوحة التحكم",
+      "orders": "الطلبات",
+      "products": "المنتجات",
+      "boxTypes": "البوكسات",
+      "users": "المستخدمين",
+      "analytics": "الإحصائيات",
+      "notifications": "الإشعارات",
+      "shipping": "الشحن",
+      "customizationPricing": "أسعار التخصيص",
+      "promotions": "العروض",
+      "coupons": "الكوبونات",
+      "boxReviews": "تقييمات البوكس"
+    },
+    "bottomNav": {
+      "more": "المزيد"
+    },
+    "header": {
+      "menuAriaLabel": "القائمة",
+      "title": "لوحة تحكم الأدمن",
+      "notifications": "الإشعارات",
+      "markAllRead": "قراءة الكل",
+      "noNotifications": "لا توجد إشعارات",
+      "viewAll": "عرض كل الإشعارات",
+      "defaultName": "الأدمن"
+    },
+    "profile": {
+      "link": "الملف الشخصي",
+      "logout": "تسجيل الخروج",
+      "title": "الملف الشخصي",
+      "personalInfo": "البيانات الشخصية",
+      "fullName": "الاسم بالكامل",
+      "nameRequired": "الاسم مطلوب",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم التليفون",
+      "phoneRequired": "رقم التليفون مطلوب",
+      "phoneInvalid": "رقم التليفون لازم يكون 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015",
+      "saving": "جاري الحفظ...",
+      "saveChanges": "حفظ التعديلات",
+      "changePassword": "تغيير كلمة المرور",
+      "currentPassword": "كلمة المرور الحالية",
+      "currentPasswordRequired": "كلمة المرور الحالية مطلوبة",
+      "newPassword": "كلمة المرور الجديدة",
+      "minLengthPlaceholder": "8 حروف على الأقل",
+      "newPasswordRequired": "كلمة المرور الجديدة مطلوبة",
+      "passwordMinLength": "كلمة المرور لازم 8 حروف على الأقل",
+      "changingPassword": "جاري التغيير...",
+      "changePasswordBtn": "تغيير كلمة المرور",
+      "updateSuccess": "تم حفظ التعديلات بنجاح",
+      "genericError": "حصل خطأ",
+      "passwordChangeSuccess": "تم تغيير كلمة المرور بنجاح"
+    },
+    "dashboard": {
+      "title": "لوحة التحكم",
+      "totalOrders": "إجمالي الطلبات",
+      "pendingOrders": "طلبات معلقة",
+      "paymentReview": "مراجعة الدفع",
+      "activeProducts": "المنتجات النشطة",
+      "revenue": "الإيرادات",
+      "products": "المنتجات",
+      "users": "المستخدمين",
+      "recentOrders": "أحدث الطلبات",
+      "viewOrders": "عرض الطلبات",
+      "manageProducts": "إدارة المنتجات",
+      "orderNumber": "رقم الطلب",
+      "customer": "العميل",
+      "amount": "المبلغ",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "noOrders": "لا توجد طلبات",
+      "loadError": "فشل تحميل بيانات لوحة التحكم",
+      "retry": "إعادة المحاولة"
+    },
+    "analytics": {
+      "title": "الإحصائيات",
+      "revenue": "الإيرادات",
+      "30days": "30 يوم",
+      "orders": "الطلبات",
+      "avgOrder": "متوسط قيمة الطلب",
+      "todayOrders": "طلبات اليوم",
+      "pendingPayments": "مدفوعات معلقة",
+      "orderDistribution": "توزيع حالات الطلبات",
+      "topProducts": "المنتجات الأكثر مبيعاً",
+      "noDataAvailable": "لا توجد بيانات كافية"
+    },
+    "orders": {
+      "title": "إدارة الطلبات",
+      "orderNumber": "رقم الطلب",
+      "customer": "العميل",
+      "amount": "المبلغ",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "allStatuses": "كل الحالات",
+      "searchPlaceholder": "ابحث برقم الطلب أو اسم العميل...",
+      "view": "عرض",
+      "actions": "الإجراءات",
+      "viewDetails": "التفاصيل",
+      "noOrders": "لا توجد طلبات",
+      "loadMore": "تحميل المزيد"
+    },
+    "orderDetail": {
+      "orders": "الطلبات",
+      "orderTitle": "طلب",
+      "products": "المنتجات",
+      "customBox": "بوكس مخصص",
+      "product": "منتج",
+      "boxContents": "محتويات البوكس",
+      "customizationData": "بيانات التخصيص",
+      "customization": "تخصيص",
+      "quantity": "الكمية",
+      "name": "الاسم",
+      "firstName": "الاسم الأول",
+      "secondName": "الاسم الثاني",
+      "date": "التاريخ",
+      "message": "الرسالة",
+      "shipping": "الشحن",
+      "total": "الإجمالي",
+      "payments": "المدفوعات",
+      "attempt": "محاولة",
+      "viewReceipt": "عرض الإيصال",
+      "adminNote": "ملاحظة الأدمن",
+      "acceptPayment": "قبول الدفع",
+      "rejectPayment": "رفض الدفع",
+      "noPayments": "لا توجد مدفوعات",
+      "updateStatus": "تحديث حالة الطلب",
+      "adminNotePlaceholder": "ملاحظة (اختياري)...",
+      "saveUpdate": "حفظ التحديث",
+      "customer": "العميل",
+      "address": "العنوان",
+      "building": "مبنى",
+      "floor": "الدور",
+      "viewOnMap": "عرض على الخريطة",
+      "orderDate": "تاريخ الطلب",
+      "adminNoteLabel": "ملاحظة الأدمن",
+      "cancelReason": "سبب الإلغاء",
+      "rejectReason": "سبب الرفض",
+      "rejectReasonPlaceholder": "اكتب سبب الرفض...",
+      "cancel": "إلغاء",
+      "confirmReject": "تأكيد الرفض"
+    },
+    "paymentStatus": {
+      "pending": "في الانتظار",
+      "verified": "مقبول",
+      "rejected": "مرفوض"
+    },
+    "products": {
+      "title": "إدارة المنتجات",
+      "addProduct": "+ إضافة منتج",
+      "filterAll": "الكل",
+      "filterActive": "نشط",
+      "filterInactive": "غير نشط",
+      "image": "الصورة",
+      "name": "الاسم",
+      "price": "السعر",
+      "type": "النوع",
+      "status": "الحالة",
+      "standalone": "منتج منفرد",
+      "boxComponent": "مكون بوكس",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "edit": "تعديل",
+      "loadMore": "تحميل المزيد"
+    },
+    "productForm": {
+      "backToProducts": "المنتجات",
+      "editTitle": "تعديل منتج",
+      "addTitle": "إضافة منتج",
+      "nameLabel": "اسم المنتج (عربي)",
+      "nameEnLabel": "اسم المنتج (إنجليزي)",
+      "descriptionLabel": "الوصف (عربي)",
+      "descriptionEnLabel": "الوصف (إنجليزي)",
+      "priceLabel": "السعر (ج.م)",
+      "categoryLabel": "الفئة",
+      "genderLabel": "الجنس",
+      "standalone": "منتج منفرد",
+      "boxComponent": "مكون بوكس",
+      "active": "نشط",
+      "customizable": "قابل للتخصيص",
+      "productImage": "صورة المنتج",
+      "currentImage": "الصورة الحالية",
+      "selectNewImage": "اختيار صورة جديدة",
+      "uploading": "جاري الرفع...",
+      "saving": "جاري الحفظ...",
+      "saveUpdate": "حفظ التحديث",
+      "addProduct": "إضافة المنتج",
+      "cancel": "إلغاء",
+      "selectCategory": "اختر الفئة",
+      "selectGender": "اختر الجنس",
+      "stockQuantityLabel": "الكمية المتاحة"
+    },
+    "boxTypes": {
+      "title": "إدارة البوكسات",
+      "addBoxType": "+ إضافة نوع بوكس",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "genderLabel": "الجنس:",
+      "basePrice": "السعر الأساسي:",
+      "slotsCount": "عدد السلوتات:",
+      "edit": "تعديل",
+      "deactivate": "تعطيل"
+    },
+    "boxTypeForm": {
+      "backToBoxTypes": "البوكسات",
+      "editTitle": "تعديل نوع بوكس",
+      "addTitle": "إضافة نوع بوكس",
+      "boxData": "بيانات البوكس",
+      "nameLabel": "الاسم (عربي)",
+      "nameEnLabel": "الاسم (إنجليزي)",
+      "genderLabel": "الجنس",
+      "basePriceLabel": "السعر الأساسي (ج.م)",
+      "boxImage": "صورة البوكس",
+      "selectImage": "اختيار صورة",
+      "active": "نشط",
+      "saving": "جاري الحفظ...",
+      "saveUpdate": "حفظ تحديث البوكس",
+      "createBox": "إنشاء البوكس",
+      "slotsTitle": "سلوتات محتوى البوكس",
+      "addSlot": "+ إضافة سلوت",
+      "slotKeyLabel": "مفتاح السلوت (إنجليزي)",
+      "slotDisplayLabel": "اسم السلوت (عربي)",
+      "slotDisplayLabelEn": "اسم السلوت (إنجليزي)",
+      "sortOrder": "الترتيب",
+      "slotGenderFilter": "فلتر الجنس لمنتجات السلوت",
+      "slotRequired": "هذا السلوت إجباري للاكتمال",
+      "saveChanges": "حفظ التغييرات",
+      "deleteSlot": "حذف السلوت",
+      "slotGenderAll": "بدون تحديد (كل المنتجات)",
+      "slotGenderMaleOnly": "منتجات رجالي فقط",
+      "slotGenderFemaleOnly": "منتجات نسائي فقط"
+    },
+    "users": {
+      "title": "المستخدمين",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "role": "الدور",
+      "status": "الحالة",
+      "registrationDate": "تاريخ التسجيل",
+      "active": "نشط",
+      "blocked": "محظور",
+      "noUsers": "لا يوجد مستخدمين",
+      "empty": "لا يوجد مستخدمين",
+      "total": "الإجمالي:",
+      "user": "مستخدمين"
+    },
+    "shipping": {
+      "title": "إدارة رسوم الشحن",
+      "governorate": "المحافظة",
+      "shippingCost": "رسوم الشحن",
+      "status": "الحالة",
+      "actions": "الإجراءات",
+      "enabled": "مفعّل",
+      "disabled": "معطّل",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "edit": "تعديل",
+      "deactivate": "تعطيل",
+      "activate": "تفعيل",
+      "noGovernorates": "لا يوجد محافظات",
+      "updateSuccess": "تم تحديث رسوم الشحن بنجاح",
+      "updateError": "حدث خطأ أثناء التحديث",
+      "activateSuccess": "تم تفعيل المحافظة",
+      "deactivateSuccess": "تم تعطيل المحافظة",
+      "genericError": "حدث خطأ"
+    },
+    "customization": {
+      "title": "أسعار التخصيص",
+      "category": "الفئة",
+      "price": "سعر التخصيص",
+      "actions": "الإجراءات",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "noPrices": "لا توجد أسعار تخصيص بعد",
+      "addPriceTitle": "إضافة سعر تخصيص لفئة",
+      "selectCategory": "اختر الفئة",
+      "priceLabel": "السعر (ج.م)",
+      "add": "إضافة",
+      "updateSuccess": "تم تحديث السعر بنجاح",
+      "updateError": "حدث خطأ أثناء التحديث",
+      "deleteSuccess": "تم حذف سعر التخصيص",
+      "deleteError": "حدث خطأ أثناء الحذف",
+      "addSuccess": "تم إضافة سعر التخصيص بنجاح",
+      "addError": "حدث خطأ أثناء الإضافة"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "markAllRead": "تعليم الكل كمقروء",
+      "empty": "مفيش إشعارات",
+      "viewOrder": "عرض الطلب",
+      "loading": "جاري التحميل...",
+      "loadMore": "تحميل المزيد"
+    },
+    "categories": {
+      "watch": "ساعة",
+      "wallet": "محفظة",
+      "mug": "مج",
+      "necklace": "عقد",
+      "ring": "خاتم"
+    },
+    "genders": {
+      "male": "رجالي",
+      "female": "نسائي",
+      "unisex": "للجنسين"
+    },
+    "promotions": {
+      "title": "إدارة العروض",
+      "addPromotion": "+ إضافة عرض",
+      "name": "الاسم",
+      "discount": "الخصم",
+      "period": "الفترة",
+      "target": "الهدف",
+      "status": "الحالة",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "noPromotions": "لا يوجد عروض حالياً",
+      "deleteConfirm": "هل أنت متأكد من حذف هذا العرض؟",
+      "deleteSuccess": "تم حذف العرض",
+      "addSuccess": "تم إضافة العرض بنجاح",
+      "updateSuccess": "تم تحديث العرض بنجاح",
+      "genericError": "حدث خطأ",
+      "allProducts": "كل المنتجات",
+      "form": {
+        "backToPromotions": "العروض",
+        "addTitle": "إضافة عرض",
+        "editTitle": "تعديل عرض",
+        "nameLabel": "اسم العرض (عربي)",
+        "nameEnLabel": "اسم العرض (إنجليزي)",
+        "discountTypeLabel": "نوع الخصم",
+        "percentage": "نسبة مئوية",
+        "fixed": "مبلغ ثابت",
+        "valueLabel": "قيمة الخصم",
+        "startDateLabel": "تاريخ البداية",
+        "endDateLabel": "تاريخ النهاية",
+        "productLabel": "منتج محدد (اختياري)",
+        "categoryLabel": "فئة (اختياري)",
+        "selectProduct": "كل المنتجات",
+        "selectCategory": "كل الفئات",
+        "isActive": "نشط",
+        "saving": "جاري الحفظ...",
+        "save": "حفظ العرض",
+        "update": "تحديث العرض"
+      }
+    },
+    "coupons": {
+      "title": "إدارة الكوبونات",
+      "addCoupon": "+ إضافة كوبون",
+      "code": "الكود",
+      "discount": "الخصم",
+      "usage": "الاستخدام",
+      "expiration": "تاريخ الانتهاء",
+      "minOrder": "الحد الأدنى",
+      "status": "الحالة",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "noCoupons": "لا يوجد كوبونات حالياً",
+      "deleteConfirm": "هل أنت متأكد من حذف هذا الكوبون؟",
+      "deleteSuccess": "تم حذف الكوبون",
+      "addSuccess": "تم إضافة الكوبون بنجاح",
+      "updateSuccess": "تم تحديث الكوبون بنجاح",
+      "genericError": "حدث خطأ",
+      "unlimited": "غير محدود",
+      "form": {
+        "backToCoupons": "الكوبونات",
+        "addTitle": "إضافة كوبون",
+        "editTitle": "تعديل كوبون",
+        "codeLabel": "كود الكوبون",
+        "discountTypeLabel": "نوع الخصم",
+        "percentage": "نسبة مئوية",
+        "fixed": "مبلغ ثابت",
+        "valueLabel": "قيمة الخصم",
+        "maxUsesLabel": "الحد الأقصى للاستخدام (0 = غير محدود)",
+        "expirationLabel": "تاريخ الانتهاء",
+        "minOrderLabel": "الحد الأدنى للطلب (اختياري)",
+        "isActive": "نشط",
+        "saving": "جاري الحفظ...",
+        "save": "حفظ الكوبون",
+        "update": "تحديث الكوبون"
+      }
+    },
+    "boxReviews": {
+      "title": "تقييمات البوكس",
+      "user": "المستخدم",
+      "boxType": "نوع البوكس",
+      "rating": "التقييم",
+      "comment": "التعليق",
+      "date": "التاريخ",
+      "delete": "حذف",
+      "noReviews": "لا يوجد تقييمات حالياً",
+      "deleteConfirm": "هل أنت متأكد من حذف هذا التقييم؟",
+      "deleteSuccess": "تم حذف التقييم"
+    }
+  },
+
+  "gifts": {
+    "exploreMore": "استكشف مزيد من فئات الهدايا",
+    "viewCategory": "تصفح",
+    "customGiftBox": {
+      "title": "بوكسات هدايا مخصصة",
+      "heading": "صمم بوكس هديتك المخصص",
+      "description": "اصنع بوكس هدايا مثالي ومخصص لأحبابك. اختر من بوكسات رجالي أو حريمي أو كابلز، واملأها بمنتجات فاخرة، وأضف رسالتك الشخصية.",
+      "cta": "ابدأ تصميم بوكسك",
+      "features": {
+        "title": "ليه تختار بوكسات الهدايا المخصصة؟",
+        "personalized": "مخصص بالكامل بالأسماء والتواريخ والرسائل",
+        "curated": "منتجات منتقاة بعناية من أفضل البراندات",
+        "packaging": "تغليف فاخر متضمن",
+        "delivery": "توصيل سريع في كل أنحاء مصر"
+      },
+      "seo": {
+        "title": "بوكسات هدايا مخصصة — صمم بوكس هديتك الشخصي",
+        "description": "صمم بوكس هدايا مخصص بمنتجات فاخرة وأسماء محفورة ورسائل خاصة. اختر بوكس رجالي أو حريمي أو كابلز. تغليف فاخر وتوصيل سريع في مصر."
+      }
+    },
+    "coupleGifts": {
+      "title": "هدايا كابلز",
+      "heading": "بوكسات هدايا كابلز وهدايا متطابقة",
+      "description": "احتفل بحبكم مع هدايا كابلز متطابقة. من مجات كابلز مخصصة لساعات وعقود محفورة — الهدية المثالية لذكرى الزواج واللحظات المميزة.",
+      "cta": "تصفح هدايا كابلز",
+      "seo": {
+        "title": "هدايا كابلز مصر — هدايا مخصصة متطابقة للأزواج",
+        "description": "تسوق أفضل هدايا كابلز في مصر — مجات مخصصة متطابقة وساعات محفورة وعقود وبوكسات هدايا مخصصة. مثالية للذكرى السنوية وعيد الحب والمناسبات الخاصة."
+      }
+    },
+    "birthdayGifts": {
+      "title": "هدايا أعياد الميلاد",
+      "heading": "بوكسات هدايا عيد ميلاد وهدايا مخصصة",
+      "description": "اجعل أعياد الميلاد لا تُنسى مع بوكس هدايا مخصص. هدايا محفورة بالأسماء والتواريخ والرسائل الشخصية مقدمة في تغليف فاخر.",
+      "cta": "تسوق هدايا عيد الميلاد",
+      "seo": {
+        "title": "هدايا عيد الميلاد مصر — بوكسات هدايا مخصصة لعيد الميلاد",
+        "description": "اختار هدية عيد ميلاد مثالية — بوكسات هدايا مخصصة وساعات محفورة ومجات مخصصة وأكتر. تغليف فاخر وتوصيل سريع في أنحاء مصر."
+      }
+    },
+    "anniversaryGifts": {
+      "title": "هدايا الذكرى السنوية",
+      "heading": "بوكسات هدايا ذكرى سنوية وهدايا رومانسية",
+      "description": "احتفل بلحظاتك المميزة مع هدايا ذكرى سنوية فاخرة. بوكسات مخصصة بأسماء وتواريخ محفورة ورسائل حب لشريك حياتك.",
+      "cta": "تسوق هدايا الذكرى السنوية",
+      "seo": {
+        "title": "هدايا الذكرى السنوية مصر — بوكسات هدايا رومانسية مخصصة",
+        "description": "تسوق هدايا ذكرى سنوية فاخرة — بوكسات هدايا مخصصة بأسماء وتواريخ محفورة وهدايا كابلز متطابقة وهدايا رومانسية. توصيل سريع في أنحاء مصر."
+      }
+    },
+    "personalizedMug": {
+      "title": "مجات مخصصة",
+      "heading": "مجات محفورة مخصصة — بالأسماء والتواريخ",
+      "description": "مجاتنا المخصصة الفاخرة هي الهدية المثالية لأي مناسبة. محفورة بالأسماء والتواريخ والرسائل الخاصة على مجات بجودة ممتازة.",
+      "cta": "تصفح المجات المخصصة",
+      "seo": {
+        "title": "مجات مخصصة مصر — مجات محفورة بالأسماء",
+        "description": "اطلب مجات مخصصة بحفر — أسماء وتواريخ ورسائل. مجات كابلز ومجات عيد ميلاد وهدايا مجات. جودة ممتازة وتوصيل سريع في مصر."
+      }
+    },
+    "photoGifts": {
+      "title": "هدايا بالصور",
+      "heading": "هدايا بالصور — مخصصة بلحظاتك المميزة",
+      "description": "حوّل ذكرياتك المفضلة لهدايا مخصصة جميلة. هدايا صور مخصصة تشمل مجات وبراويز وأكتر — مثالية لحفظ اللحظات المميزة.",
+      "cta": "تصفح هدايا الصور",
+      "seo": {
+        "title": "هدايا بالصور مصر — هدايا صور مخصصة",
+        "description": "اصنع هدايا صور مخصصة — مجات صور مخصصة وبراويز وهدايا محفورة بصورك المفضلة. هدايا تذكارية مثالية مع توصيل سريع في مصر."
+      }
+    }
+  }
+}
