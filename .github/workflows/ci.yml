@@ -18,15 +18,19 @@ jobs:
         dotnet-version: '10.x'
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: |
+        dotnet restore SoulmateStore.csproj
+        dotnet restore Tests/SoulmateStore.Tests.csproj
       working-directory: backend
       
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: |
+        dotnet build SoulmateStore.csproj --no-restore --configuration Release
+        dotnet build Tests/SoulmateStore.Tests.csproj --no-restore --configuration Release
       working-directory: backend
       
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
+      run: dotnet test Tests/SoulmateStore.Tests.csproj --no-build --verbosity normal --configuration Release
       working-directory: backend
 
   frontend:
