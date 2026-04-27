@@ -85,7 +85,7 @@ export class SeoService {
     const pageUrl = `${this.BASE_URL}${cleanPath}`;
     const separator = cleanPath.includes('?') ? '&' : '?';
 
-    const hreflangs: Array<{ hreflang: string; href: string }> = [
+    const hreflangs: { hreflang: string; href: string }[] = [
       { hreflang: 'ar', href: `${pageUrl}${separator}hl=ar` },
       { hreflang: 'en', href: `${pageUrl}${separator}hl=en` },
       { hreflang: 'x-default', href: pageUrl },

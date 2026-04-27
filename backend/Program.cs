@@ -291,6 +291,10 @@ try
 
     app.Run();
 }
+catch (Exception ex) when (ex is HostAbortedException)
+{
+    // Ignore - Expected for EF Core tooling
+}
 catch (Exception ex)
 {
     Log.Fatal(ex, "Application terminated unexpectedly");

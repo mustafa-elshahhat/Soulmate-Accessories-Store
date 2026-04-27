@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injectable, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injectable, signal, inject } from '@angular/core';
 
 export interface ToastMessage {
   id: number;
@@ -56,5 +56,5 @@ export class ToastService {
   `,
 })
 export class ToastComponent {
-  constructor(public toastService: ToastService) {}
+  public toastService = inject(ToastService);
 }

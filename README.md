@@ -17,7 +17,7 @@ Soulmate Accessories Store provides a seamless shopping experience where custome
 
 ## Tech Stack
 
-- **Backend**: ASP.NET Core 9.0 Web API, Entity Framework Core, SQL Server.
+- **Backend**: ASP.NET Core 10.0 Web API, Entity Framework Core, SQL Server.
 - **Frontend**: Angular 21 (Standalone components), SSR (Server-Side Rendering), Tailwind CSS.
 - **Microservices**: Node.js Express service for WhatsApp integration (via whatsapp-web.js).
 - **Storage**: Cloudinary for product and payment receipt images.
@@ -57,20 +57,21 @@ The project follows a clean architecture pattern:
 
 ### Backend Setup
 1. Navigate to `/backend`.
-2. Configure `appsettings.json` with your credentials.
-3. Run `dotnet ef database update` to apply migrations.
-4. Run `dotnet run` to start the API.
+2. Configure `appsettings.json` with your credentials (e.g. SQL Server connection, JWT Secret, Cloudinary keys).
+3. Run `dotnet restore`.
+4. Run `dotnet ef database update` to apply migrations via local SQL Server/LocalDB.
+5. Run `dotnet run` or `dotnet build --configuration Release` to start or build the API.
 
 ### Frontend Setup
 1. Navigate to `/frontend`.
-2. Run `npm install`.
-3. Configure `proxy.conf.json` if needed.
-4. Run `npm start` for development.
+2. Run `npm ci`.
+3. Verify `environment.development.ts` points to your backend.
+4. Run `npm run start` for development or `npm run build` for production.
 
 ### WhatsApp Service Setup
 1. Navigate to `/whatsapp-service`.
-2. Run `npm install`.
-3. Configure `.env` based on `.env.example`.
+2. Run `npm ci`.
+3. Configure `.env` based on `.env.example` ensuring `INTERNAL_API_KEY` matches backend and `ENABLE_WHATSAPP_PAIRING_UI=true` for initial pairing.
 4. Run `npm start`.
 
 ## Testing
@@ -78,13 +79,14 @@ The project follows a clean architecture pattern:
 Run backend tests using:
 ```bash
 cd backend
-dotnet test Tests/SoulmateStore.Tests.csproj
+dotnet test Tests/SoulmateStore.Tests.csproj --configuration Release
 ```
 
-Run frontend linting:
+Run frontend linting and building:
 ```bash
 cd frontend
 npm run lint
+npm run build
 ```
 
 ## Security Notes

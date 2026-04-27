@@ -125,7 +125,7 @@ export class AuthService {
     return this.http.get<void>(`${this.apiUrl}/csrf`);
   }
 
-  forgotPassword(email: string, lang: string = 'ar'): Observable<string> {
+  forgotPassword(email: string, lang = 'ar'): Observable<string> {
     return this.http.post<ApiResponse<object>>(`${this.apiUrl}/forgot-password`, { email, lang }).pipe(
       map(res => res.message ?? '')
     );

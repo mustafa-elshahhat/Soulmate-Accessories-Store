@@ -156,7 +156,7 @@ export class GiftCategoryComponent implements OnInit {
   config = signal<CategoryConfig | null>(null);
   slug = signal('');
   relatedProducts = signal<Product[]>([]);
-  otherCategories = signal<Array<{ slug: string; key: string }>>([]);
+  otherCategories = signal<{ slug: string; key: string }[]>([]);
 
   ngOnInit(): void {
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {

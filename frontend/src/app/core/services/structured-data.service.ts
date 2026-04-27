@@ -118,7 +118,7 @@ export class StructuredDataService {
     });
   }
 
-  setFAQSchema(faqs: Array<{ question: string; answer: string }>): void {
+  setFAQSchema(faqs: { question: string; answer: string }[]): void {
     this.setSchema('sd-faq', {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',

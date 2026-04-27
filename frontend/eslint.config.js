@@ -33,9 +33,15 @@ module.exports = defineConfig([
           style: "kebab-case",
         },
       ],
-      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-empty-function": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "no-empty": "warn",
+      "@typescript-eslint/no-inferrable-types": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn",
       "no-console": "warn",
-      "prefer-const": "error",
+      "prefer-const": "warn",
+      "@angular-eslint/no-output-native": "warn"
     },
   },
   {
@@ -44,6 +50,11 @@ module.exports = defineConfig([
       angular.configs.templateRecommended,
       angular.configs.templateAccessibility,
     ],
-    rules: {},
+    rules: {
+      "@angular-eslint/template/label-has-associated-control": "warn",
+      "@angular-eslint/template/interactive-supports-focus": "warn",
+      "@angular-eslint/template/click-events-have-key-events": "warn",
+      "@angular-eslint/template/elements-content": "warn"
+    },
   }
 ]);

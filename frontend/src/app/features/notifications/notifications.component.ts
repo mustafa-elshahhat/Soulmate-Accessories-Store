@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NotificationService, Notification } from '../../core/services/notification.service';
 import { DatePipe } from '@angular/common';
@@ -18,7 +18,7 @@ import { TranslationService } from '../../core/services/translation.service';
         <h1 class="font-playfair text-3xl md:text-4xl font-bold text-foreground mb-3">{{ 'notifications.pageTitle' | t }}</h1>
       </div>
 
-      @if (notifications().some(n => !n.is_read)) {
+      @if (hasUnread()) {
         <div class="flex justify-end mb-6">
           <button (click)="markAllRead()" class="text-sm text-primary hover:text-primary-dark font-medium transition-colors min-h-[44px] px-3">{{ 'notifications.markAllReadBtn' | t }}</button>
         </div>
@@ -82,6 +82,7 @@ export class NotificationsComponent implements OnInit {
   readonly currentLang = this.t.currentLang;
   private notificationService = inject(NotificationService);
   notifications = signal<Notification[]>([]);
+  hasUnread = computed(() => this.notifications().some(n => !n.is_read));
   loading = signal(true);
   loadingMore = signal(false);
   hasMore = signal(false);
