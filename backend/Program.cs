@@ -231,7 +231,8 @@ try
     }
     catch (Exception ex)
     {
-        Log.Error(ex, "Database migration failed. The application will continue without migration.");
+        Log.Fatal(ex, "Database migration failed. Resolving database setup error is required to start.");
+        throw;
     }
 
     // ── Middleware Pipeline ──
