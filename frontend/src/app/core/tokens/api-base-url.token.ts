@@ -6,6 +6,6 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
   providedIn: 'root',
   factory: () => {
     const platformId = inject(PLATFORM_ID);
-    return isPlatformBrowser(platformId) ? '' : environment.apiUrl;
+    return environment.apiUrl;
   }
 });

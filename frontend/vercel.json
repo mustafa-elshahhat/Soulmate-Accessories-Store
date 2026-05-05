@@ -12,7 +12,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://soulmate-store.runasp.net/api/:path*"
+      "destination": "https://soulmate.runasp.net/api/:path*"
     },
     {
       "source": "/(.*)",

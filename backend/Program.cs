@@ -242,10 +242,11 @@ try
 
     app.UseSerilogRequestLogging();
 
-    if (app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment() || true) // Temporarily allow Swagger in Production
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.UseDeveloperExceptionPage();
     }
 
     app.UseHttpsRedirection();
