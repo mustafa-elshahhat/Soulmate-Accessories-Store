@@ -34,6 +34,7 @@
     "@angular/ssr": "^21.1.2",
     "@tailwindcss/postcss": "^4.2.1",
     "autoprefixer": "^10.4.27",
+    "bcryptjs": "^3.0.3",
     "express": "^5.1.0",
     "leaflet": "^1.9.4",
     "postcss": "^8.5.8",

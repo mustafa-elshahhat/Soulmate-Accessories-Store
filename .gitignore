@@ -85,3 +85,4 @@ tree.txt
 *.bak
 *.tmp
 temp/
+backend/Properties/PublishProfiles/MonsterASP.pubxml

@@ -71,7 +71,7 @@ public static class SeedData
             Name = "Admin",
             Email = AdminEmail,
             Phone = "01000000000",
-            PasswordHash = "$2a$11$9Z5R6K39Y4AWgmB6aFyvh.CjYm6EEESBzyuBTGQrguHhFa48c642S", // This is 'Password123!'
+            PasswordHash = "$2a$11$DBgNiEWFnv7.aYlDIv/yLeJFnnc8o4JReQvFVVmllfbHo31VYqozq", // This is 'Password123!'
             Role = UserRole.Admin,
             CreatedAt = SeedDate,
         });
