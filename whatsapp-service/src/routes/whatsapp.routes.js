@@ -7,7 +7,10 @@ const { normalizePhone, validateMessage } = require("../utils");
 const config = require("../config");
 
 const pairingCheck = (req, res, next) => {
-  if (!config.ENABLE_WHATSAPP_PAIRING_UI) {
+  if (
+    process.env.NODE_ENV === 'production' &&
+    process.env.ENABLE_PAIRING !== 'true'
+  ) {
     return res.status(403).send("WhatsApp Pairing UI is disabled in production for security.");
   }
   
