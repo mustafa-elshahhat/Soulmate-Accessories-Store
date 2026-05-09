@@ -55,6 +55,7 @@ backend/appsettings.Local.json
 whatsapp-service/.wwebjs_auth/
 whatsapp-service/.wwebjs_cache/
 whatsapp-service/chrome/
+whatsapp-service/.puppeteer-cache/
 whatsapp-service/session.json
 **/chrome/
 **/\$PWD/

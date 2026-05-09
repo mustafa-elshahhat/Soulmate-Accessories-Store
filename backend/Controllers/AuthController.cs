@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -15,11 +16,13 @@ public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
     private readonly IConfiguration _config;
+    private readonly IAntiforgery _antiforgery;
 
-    public AuthController(IAuthService authService, IConfiguration config)
+    public AuthController(IAuthService authService, IConfiguration config, IAntiforgery antiforgery)
     {
         _authService = authService;
         _config = config;
+        _antiforgery = antiforgery;
     }
 
     [HttpPost("register")]
@@ -64,7 +67,15 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("csrf")]
-    public IActionResult GetCsrfToken() => NoContent();
+    public IActionResult GetCsrfToken()
+    {
+        // CsrfTokenMiddleware already called GetAndStoreTokens for this GET request
+        // (result is cached in HttpContext.Items), so this call returns the same token.
+        // Returning it in the body lets cross-origin Angular apps read it without
+        // relying on document.cookie, which cannot access cookies from another domain.
+        var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+        return Ok(new ApiResponse<object> { Data = new { csrf_token = tokens.RequestToken } });
+    }
 
     [HttpPost("refresh")]
     [ValidateCsrfToken]

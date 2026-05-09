@@ -34,11 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor, errorInterceptor]),
-      withXsrfConfiguration({
-        cookieName: 'XSRF-TOKEN',
-        headerName: 'X-XSRF-TOKEN',
-      })
+      withInterceptors([authInterceptor, errorInterceptor])
     ),
     provideNoopAnimations(),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },

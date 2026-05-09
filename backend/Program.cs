@@ -244,6 +244,10 @@ try
     }
 
     // ── Middleware Pipeline ──
+    app.UseForwardedHeaders(new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    });
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<ExceptionMiddleware>();
     app.UseMiddleware<SecurityHeadersMiddleware>();

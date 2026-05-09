@@ -1,48 +1,21 @@
 const path = require("path");
-const fs = require("fs");
 
+/**
+ * Returns the Chrome executable path managed by Puppeteer.
+ * Puppeteer resolves the path from .puppeteerrc.cjs (cacheDirectory) so both
+ * `npx puppeteer browsers install chrome` (build step) and the runtime always
+ * agree on the same location.
+ */
 function findChromePath() {
-  const localChrome = path.join(__dirname, "../../chrome");
-  if (fs.existsSync(localChrome)) {
-    const walkDir = (dir) => {
-      const files = fs.readdirSync(dir);
-      for (const file of files) {
-        const fullPath = path.join(dir, file);
-        const isDir = fs.statSync(fullPath).isDirectory();
-        if ((file === "chrome" || file === "chrome.exe") && !isDir) {
-          console.log("Using Chrome at:", fullPath);
-          return fullPath;
-        }
-        if (isDir) {
-          const found = walkDir(fullPath);
-          if (found) return found;
-        }
-      }
-      return null;
-    };
-    const found = walkDir(localChrome);
-    if (found) return found;
+  try {
+    const puppeteer = require("puppeteer");
+    const execPath = puppeteer.executablePath();
+    console.log("Using Chrome at:", execPath);
+    return execPath;
+  } catch (err) {
+    console.warn("Could not resolve Chrome path via Puppeteer:", err.message);
+    return undefined;
   }
-
-  // Fallback to Puppeteer cache path for Render/cloud environments
-  const puppeteerCache = path.join(__dirname, "../../node_modules/puppeteer/.cache");
-  if (fs.existsSync(puppeteerCache)) {
-    try {
-      const files = fs.readdirSync(puppeteerCache, { recursive: true });
-      for (const f of files) {
-        const name = path.basename(f);
-        if (name === "chrome" || name === "chrome.exe") {
-          const fullPath = path.join(puppeteerCache, f);
-          if (!fs.statSync(fullPath).isDirectory()) {
-            console.log("Using Puppeteer cache Chrome at:", fullPath);
-            return fullPath;
-          }
-        }
-      }
-    } catch {}
-  }
-
-  return undefined;
 }
 
 const config = {

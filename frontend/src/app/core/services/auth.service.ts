@@ -15,6 +15,10 @@ export class AuthService {
   private cartService = inject(CartService);
   private apiUrl = `${inject(API_BASE_URL)}/api/auth`;
   private accessToken: string | null = null;
+  /** In-memory CSRF token fetched from GET /api/auth/csrf (response body).
+   *  Using the response body instead of document.cookie because the cookie is
+   *  set by the backend domain and is not readable cross-origin via JS. */
+  private csrfToken: string | null = null;
   private static readonly SESSION_KEY = 'has_session';
 
   /** Tracks whether the initial session restoration attempt has completed */
@@ -121,8 +125,15 @@ export class AuthService {
     );
   }
 
+  getCsrfToken(): string | null {
+    return this.csrfToken;
+  }
+
   private ensureCsrfToken(): Observable<void> {
-    return this.http.get<void>(`${this.apiUrl}/csrf`);
+    return this.http.get<ApiResponse<{ csrf_token: string }>>(`${this.apiUrl}/csrf`).pipe(
+      tap(res => { this.csrfToken = res.data.csrf_token; }),
+      map(() => undefined)
+    );
   }
 
   forgotPassword(email: string, lang = 'ar'): Observable<string> {

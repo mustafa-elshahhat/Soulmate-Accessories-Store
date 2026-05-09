@@ -10,11 +10,13 @@ public class CsrfTokenMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IAntiforgery _antiforgery;
+    private readonly IWebHostEnvironment _env;
 
-    public CsrfTokenMiddleware(RequestDelegate next, IAntiforgery antiforgery)
+    public CsrfTokenMiddleware(RequestDelegate next, IAntiforgery antiforgery, IWebHostEnvironment env)
     {
         _next = next;
         _antiforgery = antiforgery;
+        _env = env;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -24,11 +26,12 @@ public class CsrfTokenMiddleware
         if (HttpMethods.IsGet(context.Request.Method))
         {
             var tokens = _antiforgery.GetAndStoreTokens(context);
+            var isProduction = !_env.IsDevelopment();
             context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!, new CookieOptions
             {
                 HttpOnly = false,   // Angular must be able to read this
-                Secure = context.Request.IsHttps,
-                SameSite = context.Request.IsHttps ? SameSiteMode.None : SameSiteMode.Lax,
+                Secure = isProduction || context.Request.IsHttps,
+                SameSite = isProduction ? SameSiteMode.None : SameSiteMode.Lax,
                 Path = "/"
             });
         }
