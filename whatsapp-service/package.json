@@ -7,9 +7,12 @@
     "start": "node --expose-gc --max-old-space-size=200 index.js",
     "build": "npx puppeteer browsers install chrome --path $PWD/chrome"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "archiver": "^7.0.0",
-    "dotenv": "^17.4.2",
+    "dotenv": "^16.4.7",
     "express": "^4.21.0",
     "puppeteer": "^24.31.0",
     "qrcode": "^1.5.4",

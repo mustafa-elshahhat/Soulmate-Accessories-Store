@@ -39,7 +39,7 @@ try
     builder.WebHost.ConfigureKestrel(options =>
     {
         options.AddServerHeader = false;
-        options.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // 10MB global limit
+        options.Limits.MaxRequestBodySize = 100 * 1024 * 1024; // 100MB global limit for WA session backups
     });
 
     // ── Database ──

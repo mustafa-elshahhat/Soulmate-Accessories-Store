@@ -9,11 +9,11 @@ const config = require("../config");
 const pairingCheck = (req, res, next) => {
   if (
     process.env.NODE_ENV === 'production' &&
-    process.env.ENABLE_PAIRING !== 'true'
+    !config.ENABLE_WHATSAPP_PAIRING_UI
   ) {
     return res.status(403).send("WhatsApp Pairing UI is disabled in production for security.");
   }
-  
+
   if (config.PAIRING_ADMIN_TOKEN) {
     const token = req.query.token || req.headers["x-pairing-token"];
     if (token !== config.PAIRING_ADMIN_TOKEN) {
@@ -64,12 +64,8 @@ router.post("/send-message", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/health", (_req, res) => {
-  res.json({
-    status: whatsappService.isReady ? "ready" : "not_ready",
-    uptime: Math.floor(process.uptime()),
-    memoryMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
-  });
+router.get("/status", (_req, res) => {
+  res.json(whatsappService.getStatus());
 });
 
 router.get("/qr", pairingCheck, async (_req, res) => {
