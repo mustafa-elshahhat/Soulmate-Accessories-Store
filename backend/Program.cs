@@ -15,6 +15,7 @@ using SoulmateStore.Services.Implementations;
 using SoulmateStore.Services.Interfaces;
 using SoulmateStore.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 // ── Serilog Bootstrap ──

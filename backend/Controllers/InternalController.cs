@@ -44,7 +44,7 @@ public class InternalController : ControllerBase
         var sizeKb = dto.Value?.Length > 0 ? dto.Value.Length / 1024 : 0;
         _logger.LogInformation("Internal KV put requested for key '{Key}' ({SizeKb}KB) from {RemoteIp}", key, sizeKb, HttpContext.Connection.RemoteIpAddress);
 
-        await _internalService.SetSettingAsync(key, dto.Value);
+        await _internalService.SetSettingAsync(key, dto.Value ?? string.Empty);
         _logger.LogInformation("Internal KV put succeeded for key '{Key}'", key);
         return Ok();
     }

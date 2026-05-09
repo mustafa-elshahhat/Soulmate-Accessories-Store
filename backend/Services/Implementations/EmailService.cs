@@ -41,13 +41,13 @@ public class EmailService : IEmailService
 
             using var client = new SmtpClient();
             await client.ConnectAsync(
-                _config["Mail:Host"],
+                _config["Mail:Host"] ?? throw new InvalidOperationException("Mail:Host is not configured"),
                 int.Parse(_config["Mail:Port"] ?? "587"),
                 SecureSocketOptions.StartTls);
 
             await client.AuthenticateAsync(
-                _config["Mail:User"],
-                _config["Mail:Password"]);
+                _config["Mail:User"] ?? throw new InvalidOperationException("Mail:User is not configured"),
+                _config["Mail:Password"] ?? throw new InvalidOperationException("Mail:Password is not configured"));
 
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
