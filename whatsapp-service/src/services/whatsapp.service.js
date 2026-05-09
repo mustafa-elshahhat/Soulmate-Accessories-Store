@@ -63,21 +63,46 @@ class WhatsAppService {
   }
 
   // ── Startup diagnostics ────────────────────────────────────────────────────
+  // Runs at construction time so the very first lines of the Render log confirm
+  // whether the build step installed Chrome correctly.
   _logBrowserDiagnostics() {
     if (!config.chromePath) {
-      log("error", "browser_path_unresolved", {
+      log("error", "browser_diagnostics", {
+        chromePath: null,
+        browserExists: false,
+        browserVersion: null,
         hint: "puppeteer.executablePath() returned undefined — check .puppeteerrc.cjs",
       });
       return;
     }
-    const exists = fs.existsSync(config.chromePath);
-    log(exists ? "info" : "error", "browser_path_resolved", {
-      path: config.chromePath,
-      exists,
-      ...(exists
+
+    const browserExists = fs.existsSync(config.chromePath);
+    const browserVersion = browserExists ? this._getChromeVersion(config.chromePath) : null;
+
+    log(browserExists ? "info" : "error", "browser_diagnostics", {
+      chromePath: config.chromePath,
+      browserExists,
+      browserVersion,
+      ...(browserExists
         ? {}
-        : { hint: "Chrome binary missing — npm run build did not complete successfully" }),
+        : { hint: "Chrome binary missing — rm -rf .puppeteer-cache/chrome in build did not finish" }),
     });
+  }
+
+  // Runs the Chrome binary with --version and returns the output string, or
+  // null if the binary is missing or the invocation fails.
+  _getChromeVersion(execPath) {
+    try {
+      const { execSync } = require("child_process");
+      return execSync(`"${execPath}" --version`, {
+        timeout: 5000,
+        stdio: ["ignore", "pipe", "ignore"],
+      })
+        .toString()
+        .trim();
+    } catch {
+      return null;
+    }
   }
 
   // ── Browser validation ─────────────────────────────────────────────────────
