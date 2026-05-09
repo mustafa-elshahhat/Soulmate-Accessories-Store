@@ -50,7 +50,7 @@ const config = {
   RENDER_URL: process.env.RENDER_EXTERNAL_URL || null,
   BACKEND_URL: process.env.BACKEND_URL || "http://localhost:5000",
   INTERNAL_KEY: process.env.INTERNAL_API_KEY || "dev-internal-key-change-in-production",
-  ENABLE_WHATSAPP_PAIRING_UI: process.env.ENABLE_WHATSAPP_PAIRING_UI === "true",
+  ENABLE_WHATSAPP_PAIRING_UI: process.env.ENABLE_WHATSAPP_PAIRING_UI === "true" || process.env.ENABLE_PAIRING === "true",
   PAIRING_ADMIN_TOKEN: process.env.PAIRING_ADMIN_TOKEN || null,
   KEEP_ALIVE_INTERVAL: 4 * 60 * 1000,
   MAX_MESSAGE_LENGTH: 1000,
