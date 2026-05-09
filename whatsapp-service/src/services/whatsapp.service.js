@@ -4,21 +4,40 @@ const path = require("path");
 const config = require("../config");
 const { backupSession, restoreSession, clearLocalSession } = require("./backup.service");
 
-function log(level, msg, meta = {}) {
-  const timestamp = new Date().toISOString();
-  const memMB = Math.floor(process.memoryUsage().rss / 1024 / 1024);
-  console.log(JSON.stringify({ timestamp, level, message: msg, memMB, ...meta }));
+// ── Structured logger ─────────────────────────────────────────────────────────
+function log(level, event, meta = {}) {
+  console.log(
+    JSON.stringify({
+      timestamp: new Date().toISOString(),
+      level,
+      event,
+      memMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
+      ...meta,
+    })
+  );
 }
 
+// ── WhatsApp service ──────────────────────────────────────────────────────────
 class WhatsAppService {
   constructor() {
+    // Client reference — null until first initialize() call.
     this.client = null;
+
+    // Readiness / QR state.
     this.isReady = false;
     this.latestQr = null;
-    this.reconnecting = false;
+    this.qrGeneratedAt = null;   // Date.now() when the current QR was generated.
+
+    // Lifecycle flags.
     this.initializing = false;
+    this.reconnecting = false;
+    this.reconnectTimer = null;
+
+    // Interval handles.
     this.backupInterval = null;
     this.cacheCleanupInterval = null;
+
+    // Counters / metrics.
     this.qrCount = 0;
     this.reconnectAttempt = 0;
     this.lastReconnectTime = 0;
@@ -31,151 +50,189 @@ class WhatsAppService {
       startTime: Date.now(),
     };
 
-    this.createClient();
+    // Human-readable state labels exposed on /status.
+    // idle | restoring | launching | qr | authenticated | ready
+    // | disconnected | reconnecting | error
+    this.sessionState = "idle";
+    // none | launching | open | closed | error
+    this.browserState = "none";
+
+    // Startup diagnostics — log Chrome path availability immediately so the
+    // very first lines of the Render log tell us whether the build worked.
+    this._logBrowserDiagnostics();
   }
 
-  createClient() {
+  // ── Startup diagnostics ────────────────────────────────────────────────────
+  _logBrowserDiagnostics() {
+    if (!config.chromePath) {
+      log("error", "browser_path_unresolved", {
+        hint: "puppeteer.executablePath() returned undefined — check .puppeteerrc.cjs",
+      });
+      return;
+    }
+    const exists = fs.existsSync(config.chromePath);
+    log(exists ? "info" : "error", "browser_path_resolved", {
+      path: config.chromePath,
+      exists,
+      ...(exists
+        ? {}
+        : { hint: "Chrome binary missing — npm run build did not complete successfully" }),
+    });
+  }
+
+  // ── Browser validation ─────────────────────────────────────────────────────
+  // Called at the start of every initialize() so failures are caught early and
+  // produce an actionable log entry rather than an opaque Puppeteer error.
+  _validateBrowser() {
+    if (!config.chromePath) {
+      throw new Error(
+        "Chrome path could not be resolved — check Puppeteer configuration and .puppeteerrc.cjs"
+      );
+    }
+    if (!fs.existsSync(config.chromePath)) {
+      throw new Error(
+        `Chrome executable not found at: ${config.chromePath}\n` +
+          "The Render build step (npm run build) did not install Chrome. " +
+          "Check build logs for PUPPETEER_SKIP_DOWNLOAD or network errors."
+      );
+    }
+  }
+
+  // ── Client factory ─────────────────────────────────────────────────────────
+  // Creates a fresh Client instance on every initialize() attempt so stale
+  // Puppeteer state from a failed attempt cannot contaminate the next one.
+  _createClient() {
     if (this.client) {
-      this.detachListeners();
+      try { this.client.removeAllListeners(); } catch {}
+      this.client = null;
     }
 
     this.client = new Client({
-      authStrategy: new LocalAuth({
-        dataPath: config.AUTH_DIR,
-      }),
+      authStrategy: new LocalAuth({ dataPath: config.AUTH_DIR }),
       puppeteer: {
-        headless: "new",
-        args: config.puppeteerArgs,
-        protocolTimeout: 180000,
+        headless: true,
         executablePath: config.chromePath,
+        protocolTimeout: 180_000,
         defaultViewport: null,
+        args: config.puppeteerArgs,
       },
       qrMaxRetries: 3,
     });
 
-    this.initListeners();
+    this._attachListeners();
   }
 
-  detachListeners() {
-    if (!this.client) return;
-    this.client.removeAllListeners("qr");
-    this.client.removeAllListeners("ready");
-    this.client.removeAllListeners("authenticated");
-    this.client.removeAllListeners("disconnected");
-    this.client.removeAllListeners("auth_failure");
-  }
-
-  initListeners() {
+  // ── Event listeners ────────────────────────────────────────────────────────
+  _attachListeners() {
     this.client.on("qr", (qr) => {
       this.latestQr = qr;
+      this.qrGeneratedAt = Date.now();
       this.qrCount++;
       this.metrics.qrGenerations++;
-      if (this.qrCount === 1 || this.qrCount % 6 === 0) {
-        log("info", `QR generated #${this.qrCount}`, { qrCount: this.qrCount });
-      }
+      this.sessionState = "qr";
+      log("info", "qr_generated", { qrCount: this.qrCount });
+    });
+
+    this.client.on("authenticated", () => {
+      this.latestQr = null;
+      this.qrGeneratedAt = null;
+      this.qrCount = 0;
+      this.sessionState = "authenticated";
+      log("info", "whatsapp_authenticated");
+      backupSession().catch((err) =>
+        log("error", "auth_backup_failed", { error: err.message })
+      );
     });
 
     this.client.on("ready", () => {
       this.isReady = true;
       this.latestQr = null;
+      this.qrGeneratedAt = null;
       this.qrCount = 0;
       this.reconnecting = false;
       this.reconnectAttempt = 0;
-      log("info", "WhatsApp client ready");
+      this.sessionState = "ready";
+      this.browserState = "open";
+      log("info", "whatsapp_ready");
 
       if (this.backupInterval) clearInterval(this.backupInterval);
       this.backupInterval = setInterval(() => {
         this.metrics.backups++;
-        backupSession().catch((err) => log("error", "Scheduled backup failed", { error: err.message }));
+        backupSession().catch((err) =>
+          log("error", "scheduled_backup_failed", { error: err.message })
+        );
       }, config.BACKUP_INTERVAL);
 
-      this.startCacheCleanup();
+      this._startCacheCleanup();
     });
 
-    this.client.on("authenticated", () => {
-      this.latestQr = null;
-      this.qrCount = 0;
-      log("info", "WhatsApp authenticated — backing up session...");
-      backupSession().catch((err) => log("error", "Auth backup failed", { error: err.message }));
+    this.client.on("auth_failure", (msg) => {
+      this.isReady = false;
+      this.sessionState = "error";
+      this.browserState = "closed";
+      if (this.backupInterval) clearInterval(this.backupInterval);
+      log("error", "auth_failure", { msg });
+      clearLocalSession();
+      this.scheduleReconnect("auth_failure");
     });
 
     this.client.on("disconnected", (reason) => {
       this.isReady = false;
+      this.sessionState = "disconnected";
+      this.browserState = "closed";
       if (this.backupInterval) clearInterval(this.backupInterval);
-      log("warn", "WhatsApp disconnected", { reason });
+      log("warn", "whatsapp_disconnected", { reason });
       this.scheduleReconnect("disconnected");
     });
-
-    this.client.on("auth_failure", (message) => {
-      log("error", "WhatsApp auth failure", { message });
-      this.latestQr = null;
-      this.isReady = false;
-      if (this.backupInterval) clearInterval(this.backupInterval);
-      clearLocalSession();
-      this.scheduleReconnect("auth_failure");
-    });
   }
 
-  getReconnectDelay() {
-    const base = config.RECONNECT_BASE_DELAY_MS;
-    const max = config.RECONNECT_MAX_DELAY_MS;
-    const jitter = Math.floor(Math.random() * config.RECONNECT_JITTER_MS);
-    const delay = Math.min(base + this.reconnectAttempt * 15000 + jitter, max);
-    return delay;
-  }
-
-  scheduleReconnect(reason) {
-    if (this.reconnecting || this.initializing) {
-      log("info", "Reconnect already scheduled or initializing, skipping", { reason });
-      return;
-    }
-
-    const now = Date.now();
-    const timeSinceLastReconnect = now - this.lastReconnectTime;
-    if (timeSinceLastReconnect < config.RECONNECT_BASE_DELAY_MS) {
-      log("info", "Reconnect requested too soon after last attempt, skipping", {
-        timeSinceLastReconnect,
-        reason,
-      });
-      return;
-    }
-
-    this.reconnecting = true;
-    this.reconnectAttempt++;
-    this.metrics.reconnects++;
-    const delay = this.getReconnectDelay();
-
-    log("info", `Scheduling reconnect in ${delay}ms`, {
-      attempt: this.reconnectAttempt,
-      reason,
-    });
-
-    setTimeout(() => {
-      this.lastReconnectTime = Date.now();
-      this.reconnecting = false;
-      this.initialize().catch((err) => {
-        log("error", "Re-initialize failed after scheduled delay", { error: err.message });
-      });
-    }, delay);
-  }
-
+  // ── Initialize ─────────────────────────────────────────────────────────────
   async initialize() {
     if (this.initializing) {
-      log("info", "Initialize already in progress");
+      log("info", "whatsapp_init_skipped", { reason: "already_initializing" });
       return;
     }
     this.initializing = true;
+    log("info", "whatsapp_init_start");
 
     try {
-      const restored = await restoreSession();
-      if (restored) {
-        this.metrics.restorations++;
+      // 1. Validate Chrome exists (fast, no side effects).
+      this._validateBrowser();
+      log("info", "browser_validated", { path: config.chromePath });
+
+      // 2. Restore session from backend if no local session exists.
+      this.sessionState = "restoring";
+      try {
+        const restored = await restoreSession();
+        if (restored) this.metrics.restorations++;
+      } catch (restoreErr) {
+        log("warn", "session_restore_error", { error: restoreErr.message });
       }
 
+      // 3. Create a fresh Client and launch the browser.
+      this.sessionState = "launching";
+      this.browserState = "launching";
+      this._createClient();
+
+      log("info", "browser_launch_start");
       await this.client.initialize();
-      log("info", "WhatsApp client initialized successfully");
+      this.browserState = "open";
+      log("info", "browser_launch_success");
     } catch (err) {
-      log("error", "WhatsApp initialization failed", { error: err.message });
+      this.browserState = "error";
+      this.sessionState = "error";
+
+      const isChromeError =
+        /executablePath|not found|Chrome|Chromium|ENOENT/i.test(err.message || "");
+
+      log("error", "whatsapp_init_failure", {
+        error: err.message,
+        isChromeError,
+        ...(isChromeError && {
+          hint: "Chrome binary missing — verify npm run build in Render build logs",
+        }),
+      });
+
       this.initializing = false;
       this.scheduleReconnect("init_error");
       return;
@@ -184,21 +241,71 @@ class WhatsAppService {
     this.initializing = false;
   }
 
-  startCacheCleanup() {
-    if (this.cacheCleanupInterval) clearInterval(this.cacheCleanupInterval);
-    this.cacheCleanupInterval = setInterval(() => this.cleanupMemory(), config.CACHE_CLEANUP_INTERVAL);
+  // ── Reconnect ──────────────────────────────────────────────────────────────
+  scheduleReconnect(reason) {
+    if (this.reconnecting || this.initializing) {
+      log("info", "reconnect_skipped", {
+        reason,
+        reconnecting: this.reconnecting,
+        initializing: this.initializing,
+      });
+      return;
+    }
+
+    const timeSince = Date.now() - this.lastReconnectTime;
+    if (timeSince < config.RECONNECT_BASE_DELAY_MS) {
+      log("info", "reconnect_skipped", {
+        reason,
+        cooldownRemainingMs: config.RECONNECT_BASE_DELAY_MS - timeSince,
+      });
+      return;
+    }
+
+    this.reconnecting = true;
+    this.reconnectAttempt++;
+    this.metrics.reconnects++;
+    this.sessionState = "reconnecting";
+
+    const delay = this._getReconnectDelay();
+    log("info", "reconnect_scheduled", {
+      reason,
+      delayMs: delay,
+      attempt: this.reconnectAttempt,
+    });
+
+    if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
+    this.reconnectTimer = setTimeout(async () => {
+      this.lastReconnectTime = Date.now();
+      this.reconnecting = false;
+      await this.initialize();
+    }, delay);
   }
 
-  async cleanupMemory() {
-    const sessionDir = config.SESSION_DIR;
-    const safeCacheDirs = [
-      "GPUCache", "DawnCache", "GrShaderCache", "ShaderCache", "blob_storage",
-      "Code Cache", "optimization_guide",
-    ];
+  _getReconnectDelay() {
+    const jitter = Math.floor(Math.random() * config.RECONNECT_JITTER_MS);
+    return Math.min(
+      config.RECONNECT_BASE_DELAY_MS + (this.reconnectAttempt - 1) * 15_000 + jitter,
+      config.RECONNECT_MAX_DELAY_MS
+    );
+  }
 
+  // ── Memory management ──────────────────────────────────────────────────────
+  _startCacheCleanup() {
+    if (this.cacheCleanupInterval) clearInterval(this.cacheCleanupInterval);
+    this.cacheCleanupInterval = setInterval(
+      () => this._cleanupMemory(),
+      config.CACHE_CLEANUP_INTERVAL
+    );
+  }
+
+  async _cleanupMemory() {
+    const safeDirs = [
+      "GPUCache", "DawnCache", "GrShaderCache", "ShaderCache",
+      "blob_storage", "Code Cache", "optimization_guide",
+    ];
     let cleaned = 0;
-    for (const dir of safeCacheDirs) {
-      const fullPath = path.join(sessionDir, "Default", dir);
+    for (const dir of safeDirs) {
+      const fullPath = path.join(config.SESSION_DIR, "Default", dir);
       try {
         if (fs.existsSync(fullPath)) {
           fs.rmSync(fullPath, { recursive: true, force: true });
@@ -206,52 +313,62 @@ class WhatsAppService {
         }
       } catch {}
     }
-
     if (global.gc) global.gc();
-    const memMB = Math.floor(process.memoryUsage().rss / 1024 / 1024);
-    const heapMB = Math.floor(process.memoryUsage().heapUsed / 1024 / 1024);
-    log("info", "Memory cleanup done", { rssMB: memMB, heapMB, cleaned });
+    const mem = process.memoryUsage();
+    log("info", "memory_cleanup", {
+      rssMB: Math.floor(mem.rss / 1024 / 1024),
+      heapMB: Math.floor(mem.heapUsed / 1024 / 1024),
+      cleaned,
+    });
   }
 
+  // ── Graceful destroy ───────────────────────────────────────────────────────
   async destroy() {
-    log("info", "Destroying WhatsApp service...");
+    log("info", "graceful_shutdown_start");
+
+    if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
     if (this.backupInterval) clearInterval(this.backupInterval);
     if (this.cacheCleanupInterval) clearInterval(this.cacheCleanupInterval);
 
     try {
       await Promise.race([
         backupSession(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error("backup timeout")), 10000)),
+        new Promise((_, rej) =>
+          setTimeout(() => rej(new Error("backup timeout")), 10_000)
+        ),
       ]);
     } catch (err) {
-      log("error", "Shutdown backup failed or timed out", { error: err.message });
+      log("warn", "shutdown_backup_failed", { error: err.message });
     }
 
-    try {
-      await this.client.destroy();
-      log("info", "WhatsApp client destroyed");
-    } catch (err) {
-      log("error", "Client destroy failed", { error: err.message });
-    }
-
-    try {
-      if (this.client.pupBrowser) {
-        await this.client.pupBrowser.close();
-        log("info", "Browser closed");
+    if (this.client) {
+      try {
+        await this.client.destroy();
+        log("info", "browser_closed");
+      } catch (err) {
+        log("warn", "browser_close_failed", { error: err.message });
       }
-    } catch (err) {
-      log("error", "Browser close failed", { error: err.message });
     }
+
+    log("info", "graceful_shutdown_complete");
   }
 
+  // ── Status / Public API ────────────────────────────────────────────────────
   getStatus() {
+    const mem = process.memoryUsage();
     return {
+      status: this.isReady ? "ready" : this.initializing ? "initializing" : "not_ready",
       isReady: this.isReady,
-      reconnecting: this.reconnecting,
       initializing: this.initializing,
-      latestQr: !!this.latestQr,
-      metrics: this.metrics,
+      reconnecting: this.reconnecting,
+      sessionState: this.sessionState,
+      browserState: this.browserState,
+      hasQr: !!this.latestQr,
+      qrAgeMs: this.qrGeneratedAt ? Date.now() - this.qrGeneratedAt : null,
+      memMB: Math.floor(mem.rss / 1024 / 1024),
       uptimeSec: Math.floor((Date.now() - this.metrics.startTime) / 1000),
+      reconnectAttempt: this.reconnectAttempt,
+      metrics: this.metrics,
     };
   }
 
@@ -263,19 +380,16 @@ class WhatsAppService {
   }
 
   async requestPairingCode(phone) {
-    if (this.isReady) throw new Error("Already connected");
-    if (!this.latestQr) throw new Error("Client not ready yet — QR not generated");
-
+    if (this.isReady) throw new Error("Already connected — no pairing needed");
+    if (!this.latestQr) throw new Error("QR not yet generated — wait for initialization");
     try {
       const code = await this.client.requestPairingCode(phone, true);
       return code;
     } catch (err) {
-      if (err.message && err.message.includes("onCodeReceivedEvent")) {
-        log("warn", "Pairing code unsupported in this WhatsApp Web version", { phone: phone.slice(0, 6) + "****" });
-        throw new Error("Pairing code is not available. Please use QR code authentication.");
+      if (err.message?.includes("onCodeReceivedEvent")) {
+        throw new Error("Pairing code unavailable in this WhatsApp version — use QR instead");
       }
-      log("error", "Pairing code request failed", { error: err.message });
-      throw new Error("Failed to request pairing code: " + err.message);
+      throw new Error(`Failed to request pairing code: ${err.message}`);
     }
   }
 }

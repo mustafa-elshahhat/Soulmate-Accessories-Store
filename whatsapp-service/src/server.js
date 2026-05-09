@@ -2,90 +2,104 @@ const app = require("./app");
 const config = require("./config");
 const whatsappService = require("./services/whatsapp.service");
 
-function log(level, msg, meta = {}) {
-  const timestamp = new Date().toISOString();
-  const memMB = Math.floor(process.memoryUsage().rss / 1024 / 1024);
-  console.log(JSON.stringify({ timestamp, level, message: msg, memMB, ...meta }));
+// ── Structured logger ─────────────────────────────────────────────────────────
+function log(level, event, meta = {}) {
+  console.log(
+    JSON.stringify({
+      timestamp: new Date().toISOString(),
+      level,
+      event,
+      memMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
+      ...meta,
+    })
+  );
 }
 
+// ── State ─────────────────────────────────────────────────────────────────────
 let server = null;
 let shutdownInProgress = false;
 
-// Graceful Shutdown with timeout
+// ── Graceful shutdown ─────────────────────────────────────────────────────────
 const gracefulShutdown = async (signal) => {
   if (shutdownInProgress) return;
   shutdownInProgress = true;
+  log("warn", "shutdown_start", { signal });
 
-  log("warn", `${signal} received — starting graceful shutdown...`);
-
-  const shutdownTimer = setTimeout(() => {
-    log("error", "Shutdown timed out, forcing exit");
+  const timer = setTimeout(() => {
+    log("error", "shutdown_timeout", { signal });
     process.exit(1);
   }, config.SHUTDOWN_TIMEOUT_MS);
 
   try {
-    if (server) {
-      server.close(() => log("info", "HTTP server closed"));
-    }
+    if (server) server.close(() => log("info", "http_server_closed"));
   } catch (err) {
-    log("error", "Error closing HTTP server", { error: err.message });
+    log("error", "http_server_close_failed", { error: err.message });
   }
 
   try {
     await whatsappService.destroy();
   } catch (err) {
-    log("error", "Error during WhatsApp destroy", { error: err.message });
+    log("error", "whatsapp_destroy_failed", { error: err.message });
   }
 
-  clearTimeout(shutdownTimer);
-  log("info", "Graceful shutdown complete");
+  clearTimeout(timer);
+  log("info", "shutdown_complete");
   process.exit(0);
 };
 
 process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 process.on("SIGINT", () => gracefulShutdown("SIGINT"));
 process.on("uncaughtException", (err) => {
-  log("fatal", "Uncaught exception", { error: err.message, stack: err.stack });
+  log("fatal", "uncaught_exception", { error: err.message, stack: err.stack });
   gracefulShutdown("uncaughtException");
 });
 process.on("unhandledRejection", (reason) => {
-  log("fatal", "Unhandled rejection", { reason: String(reason) });
+  log("fatal", "unhandled_rejection", { reason: String(reason) });
 });
 
-// Health endpoint on app so keep-alive can work before WA init
+// ── Health endpoint ───────────────────────────────────────────────────────────
+// Registered before WA init starts so Render's health checks pass immediately.
 app.get("/health", (_req, res) => {
-  const status = whatsappService.getStatus();
+  const st = whatsappService.getStatus();
   res.json({
-    status: status.isReady ? "ready" : "not_ready",
-    uptime: Math.floor(process.uptime()),
-    memoryMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
-    ...status,
+    status: st.status,
+    uptimeSec: Math.floor(process.uptime()),
+    memMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
+    sessionState: st.sessionState,
+    browserState: st.browserState,
+    isReady: st.isReady,
+    reconnectAttempt: st.reconnectAttempt,
   });
 });
 
-// Start Server first, then initialize WhatsApp to avoid race conditions
+// ── Start server ──────────────────────────────────────────────────────────────
 server = app.listen(config.PORT, "0.0.0.0", () => {
-  log("info", `WhatsApp service running on port ${config.PORT}`);
+  log("info", "http_server_start", { port: config.PORT });
 
-  // Delay WhatsApp initialization slightly to ensure HTTP is ready first
+  // Brief delay so the HTTP listener is fully ready before Puppeteer adds load.
   setTimeout(() => {
-    log("info", "Starting WhatsApp initialization...");
+    log("info", "whatsapp_init_scheduled");
     whatsappService.initialize().catch((err) => {
-      log("error", "Initial WhatsApp initialization failed", { error: err.message });
+      log("error", "whatsapp_init_error", { error: err.message });
     });
   }, 2000);
 
-  // Self-ping keep-alive for Render free tier
+  // Self-ping keep-alive (Render free tier spins down after 15 min idle).
   if (config.RENDER_URL) {
+    log("info", "keep_alive_enabled", {
+      url: `${config.RENDER_URL}/health`,
+      intervalMs: config.KEEP_ALIVE_INTERVAL,
+    });
     setInterval(async () => {
       try {
-        const res = await fetch(`${config.RENDER_URL}/health`, { signal: AbortSignal.timeout(15000) });
-        const data = await res.json().catch(() => ({}));
-        log("info", "Keep-alive ping", { httpStatus: res.status, ...data });
+        const res = await fetch(`${config.RENDER_URL}/health`, {
+          signal: AbortSignal.timeout(15_000),
+        });
+        const ok = res.ok;
+        log(ok ? "info" : "warn", "keep_alive_ping", { httpStatus: res.status });
       } catch (err) {
-        log("error", "Keep-alive ping failed", { error: err.message });
+        log("error", "keep_alive_failed", { error: err.message });
       }
     }, config.KEEP_ALIVE_INTERVAL);
-    log("info", `Keep-alive enabled: ${config.RENDER_URL}/health every ${config.KEEP_ALIVE_INTERVAL / 1000}s`);
   }
 });

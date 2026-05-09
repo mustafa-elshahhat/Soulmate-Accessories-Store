@@ -4,6 +4,14 @@ const archiver = require("archiver");
 const unzipper = require("unzipper");
 const config = require("../config");
 
+// ── Structured logger ─────────────────────────────────────────────────────────
+function log(level, event, meta = {}) {
+  console.log(
+    JSON.stringify({ timestamp: new Date().toISOString(), level, event, ...meta })
+  );
+}
+
+// ── Session content filters ───────────────────────────────────────────────────
 const ESSENTIAL_DIRS = new Set([
   "IndexedDB",
   "Local Storage",
@@ -31,12 +39,12 @@ const SKIP_DIRS = new Set([
   "optimization_guide",
   "Platform Notifications",
   "webrtc_event_logs",
-  "Default\GPUCache",
-  "Default\DawnCache",
-  "Default\GrShaderCache",
-  "Default\ShaderCache",
-  "Default\blob_storage",
-  "Default\Code Cache",
+  "Default\\GPUCache",
+  "Default\\DawnCache",
+  "Default\\GrShaderCache",
+  "Default\\ShaderCache",
+  "Default\\blob_storage",
+  "Default\\Code Cache",
 ]);
 
 function shouldSkip(entryPath) {
@@ -55,6 +63,7 @@ function isEssentialPath(entryName, prefix) {
   return true;
 }
 
+// ── Zip helpers ───────────────────────────────────────────────────────────────
 async function zipSessionEssentials(sessionDir) {
   return new Promise((resolve, reject) => {
     const buffers = [];
@@ -64,7 +73,7 @@ async function zipSessionEssentials(sessionDir) {
     archive.on("error", reject);
     archive.on("warning", (err) => {
       if (err.code === "ENOENT") {
-        console.warn("Archive warning (skipping):", err.message);
+        log("warn", "archive_warning", { message: err.message });
       } else {
         reject(err);
       }
@@ -102,17 +111,17 @@ async function zipSessionEssentials(sessionDir) {
   });
 }
 
+// ── Fetch with retry ──────────────────────────────────────────────────────────
 async function fetchWithRetry(url, options, maxRetries = 2) {
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const res = await fetch(url, options);
-      return res;
+      return await fetch(url, options);
     } catch (err) {
       lastError = err;
       if (attempt < maxRetries) {
         const delay = (attempt + 1) * 2000;
-        console.warn(`Fetch attempt ${attempt + 1} failed, retrying in ${delay}ms...`);
+        log("warn", "fetch_retry", { attempt: attempt + 1, delayMs: delay, error: err.message });
         await new Promise((r) => setTimeout(r, delay));
       }
     }
@@ -120,11 +129,12 @@ async function fetchWithRetry(url, options, maxRetries = 2) {
   throw lastError;
 }
 
+// ── Backup ────────────────────────────────────────────────────────────────────
 let backupInProgress = false;
 
 async function backupSession() {
   if (backupInProgress) {
-    console.log("[backup] Already in progress, skipping");
+    log("info", "backup_skipped", { reason: "already_in_progress" });
     return;
   }
   backupInProgress = true;
@@ -132,7 +142,7 @@ async function backupSession() {
   try {
     const sessionDir = config.SESSION_DIR;
     if (!fs.existsSync(sessionDir)) {
-      console.log("[backup] No session directory to backup");
+      log("info", "backup_skipped", { reason: "no_session_directory" });
       return;
     }
 
@@ -144,7 +154,10 @@ async function backupSession() {
     const zipMs = Date.now() - start;
 
     if (base64.length > config.BACKUP_MAX_SIZE_MB * 1024 * 1024) {
-      console.error(`[backup] Session backup too large (${base64MB}MB base64 > ${config.BACKUP_MAX_SIZE_MB}MB limit), skipping`);
+      log("error", "backup_too_large", {
+        base64MB,
+        limitMB: config.BACKUP_MAX_SIZE_MB,
+      });
       return;
     }
 
@@ -158,25 +171,29 @@ async function backupSession() {
           "X-Internal-Key": config.INTERNAL_KEY,
         },
         body: JSON.stringify({ value: base64 }),
-        signal: AbortSignal.timeout(60000),
+        signal: AbortSignal.timeout(60_000),
       },
       2
     );
 
     const uploadMs = Date.now() - uploadStart;
     if (res.ok) {
-      console.log(`[backup] Session backed up OK (raw:${rawMB}MB, b64:${base64MB}MB, zip:${zipMs}ms, upload:${uploadMs}ms)`);
+      log("info", "backup_success", { rawMB, base64MB, zipMs, uploadMs });
     } else {
       const body = await res.text().catch(() => "");
-      console.error(`[backup] Backup failed: HTTP ${res.status} - ${body.slice(0, 300)}`);
+      log("error", "backup_upload_failed", {
+        httpStatus: res.status,
+        body: body.slice(0, 300),
+      });
     }
   } catch (err) {
-    console.error("[backup] Backup failed:", err.message);
+    log("error", "backup_failed", { error: err.message });
   } finally {
     backupInProgress = false;
   }
 }
 
+// ── Restore ───────────────────────────────────────────────────────────────────
 async function restoreSession() {
   const sessionDir = config.SESSION_DIR;
 
@@ -184,44 +201,44 @@ async function restoreSession() {
     if (fs.existsSync(sessionDir)) {
       const files = fs.readdirSync(sessionDir);
       if (files.length > 0) {
-        console.log("[restore] Local session exists, skipping restore");
+        log("info", "restore_skipped", { reason: "local_session_exists" });
         return true;
       }
-      console.log("[restore] Local session directory empty, will attempt restore");
+      log("info", "restore_start", { reason: "local_session_empty" });
+    } else {
+      log("info", "restore_start", { reason: "no_local_session" });
     }
 
-    console.log("[restore] No local session, attempting restore from backend...");
     const res = await fetchWithRetry(
       `${config.BACKEND_URL}/api/internal/kv/${config.BACKUP_KEY}`,
       {
         headers: { "X-Internal-Key": config.INTERNAL_KEY },
-        signal: AbortSignal.timeout(60000),
+        signal: AbortSignal.timeout(60_000),
       },
       2
     );
 
     if (res.status === 404) {
-      console.log("[restore] No session backup found in backend (404)");
+      log("info", "restore_skipped", { reason: "no_backup_in_backend" });
       return false;
     }
-
     if (!res.ok) {
-      console.log(`[restore] Backend returned HTTP ${res.status}, skipping restore`);
+      log("warn", "restore_skipped", { reason: "backend_error", httpStatus: res.status });
       return false;
     }
 
     const data = await res.json();
     if (!data.value || typeof data.value !== "string" || data.value.length < 100) {
-      console.log("[restore] Session backup is empty/invalid");
+      log("warn", "restore_skipped", { reason: "invalid_backup_payload" });
       return false;
     }
 
     const sizeMB = (data.value.length / 1024 / 1024).toFixed(2);
-    console.log(`[restore] Restoring session backup (${sizeMB}MB)...`);
+    log("info", "restore_extracting", { sizeMB });
 
     const zipBuffer = Buffer.from(data.value, "base64");
     if (zipBuffer.length < 50) {
-      console.error("[restore] Decoded buffer too small, likely corrupted");
+      log("error", "restore_failed", { reason: "decoded_buffer_too_small" });
       return false;
     }
 
@@ -240,37 +257,33 @@ async function restoreSession() {
       throw new Error("Restored session directory is empty after extraction");
     }
 
-    console.log(`[restore] Session restored from backend successfully (${restoredFiles.length} top-level entries)`);
+    log("info", "restore_success", { topLevelEntries: restoredFiles.length });
     return true;
   } catch (err) {
-    console.error("[restore] Session restore failed:", err.message);
+    log("error", "restore_failed", { error: err.message });
     try { fs.rmSync(sessionDir, { recursive: true, force: true }); } catch {}
     return false;
   }
 }
 
+// ── Clear local session ───────────────────────────────────────────────────────
 function clearLocalSession() {
   try {
     if (fs.existsSync(config.SESSION_DIR)) {
       fs.rmSync(config.SESSION_DIR, { recursive: true, force: true });
-      console.log("[session] Cleared local session directory");
+      log("info", "session_cleared", { path: config.SESSION_DIR });
     }
     if (fs.existsSync(config.AUTH_DIR)) {
-      const remaining = fs.readdirSync(config.AUTH_DIR);
-      for (const item of remaining) {
-        const itemPath = path.join(config.AUTH_DIR, item);
+      for (const item of fs.readdirSync(config.AUTH_DIR)) {
         if (item !== "session") {
+          const itemPath = path.join(config.AUTH_DIR, item);
           fs.rmSync(itemPath, { recursive: true, force: true });
         }
       }
     }
   } catch (err) {
-    console.error("[session] Failed to clear local session:", err.message);
+    log("error", "session_clear_failed", { error: err.message });
   }
 }
 
-module.exports = {
-  backupSession,
-  restoreSession,
-  clearLocalSession,
-};
+module.exports = { backupSession, restoreSession, clearLocalSession };
