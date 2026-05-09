@@ -32,9 +32,9 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     }
   }
 
-  let authReq = req;
+  let authReq = req.clone({ withCredentials: true });
   if (Object.keys(headers).length > 0) {
-    authReq = req.clone({ setHeaders: headers });
+    authReq = authReq.clone({ setHeaders: headers });
   }
 
   return next(authReq).pipe(
@@ -56,7 +56,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
               const retryHeaders: Record<string, string> = { Authorization: `Bearer ${response.access_token}` };
               const xsrf = getXsrfToken(platformId);
               if (xsrf && req.method !== 'GET' && req.method !== 'HEAD') retryHeaders['X-XSRF-TOKEN'] = xsrf;
-              const newReq = req.clone({ setHeaders: retryHeaders });
+              const newReq = req.clone({ setHeaders: retryHeaders, withCredentials: true });
               return next(newReq);
             }),
             catchError((refreshError) => {
@@ -79,7 +79,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
             const retryHeaders: Record<string, string> = { Authorization: `Bearer ${newToken}` };
             const xsrf = getXsrfToken(platformId);
             if (xsrf && req.method !== 'GET' && req.method !== 'HEAD') retryHeaders['X-XSRF-TOKEN'] = xsrf;
-            const newReq = req.clone({ setHeaders: retryHeaders });
+            const newReq = req.clone({ setHeaders: retryHeaders, withCredentials: true });
             return next(newReq);
           })
         );
