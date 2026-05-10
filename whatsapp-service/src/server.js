@@ -24,7 +24,7 @@ server = app.listen(config.PORT, "0.0.0.0", () => {
     });
   }, 3000);
 
-  // Keep-alive ping to prevent Render Free tier from sleeping (45-min interval)
+  // Keep-alive ping to prevent Render Free tier from sleeping (10-min interval)
   if (config.RENDER_URL) {
     setInterval(async () => {
       try {

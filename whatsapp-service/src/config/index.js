@@ -16,8 +16,8 @@ const config = {
     process.env.ENABLE_WHATSAPP_PAIRING_UI === "true" ||
     process.env.ENABLE_PAIRING === "true",
   PAIRING_ADMIN_TOKEN: process.env.PAIRING_ADMIN_TOKEN || null,
-  // 45 minutes — avoids aggressive pings on Render Free tier
-  KEEP_ALIVE_INTERVAL: 45 * 60 * 1000,
+  // 10 minutes — keeps Render Free container awake without aggressive spam
+  KEEP_ALIVE_INTERVAL: 10 * 60 * 1000,
   MAX_MESSAGE_LENGTH: 1000,
   MONGODB_URI: process.env.MONGODB_URI || null,
   MAX_RECONNECT_ATTEMPTS: 3,

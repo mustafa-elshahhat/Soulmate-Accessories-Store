@@ -20,6 +20,9 @@ class WhatsAppService {
     // Session state
     this.sessionState = "idle";
     this.sessionSaved = false;
+
+    // Memory monitor handle (started on ready, cleared on destroy)
+    this.memoryMonitorInterval = null;
   }
 
   // ── Initialization ──────────────────────────────────────────────────────────
@@ -81,10 +84,19 @@ class WhatsAppService {
       authTimeoutMs: 60_000,
     });
 
+    // Guarantee a clean listener slate before binding — prevents duplicate handlers
+    // if the Client constructor or internals register anything beforehand.
+    this.client.removeAllListeners();
     this._attachListeners();
   }
 
   async _destroyClient() {
+    // Stop memory monitor before tearing down the client
+    if (this.memoryMonitorInterval) {
+      clearInterval(this.memoryMonitorInterval);
+      this.memoryMonitorInterval = null;
+    }
+
     if (!this.client) return;
     const c = this.client;
     this.client = null;
@@ -114,6 +126,8 @@ class WhatsAppService {
     this.client.on("remote_session_saved", () => {
       this.sessionSaved = true;
       log("info", "remote_session_saved", {});
+      // Lightweight post-sync verification — logs an error if GridFS/metadata is missing
+      this._verifySessionSync();
     });
 
     this.client.on("auth_failure", (msg) => {
@@ -128,6 +142,7 @@ class WhatsAppService {
       this.isInitializing = false;
       this.reconnectAttempt = 0;
       log("info", "ready", { pushname: this.client.info?.pushname });
+      this._startMemoryMonitor();
     });
 
     this.client.on("disconnected", (reason) => {
@@ -136,6 +151,49 @@ class WhatsAppService {
       log("warn", "disconnected", { reason });
       this._scheduleReconnect("disconnected");
     });
+  }
+
+  // ── RemoteAuth Persistence Verification ─────────────────────────────────────
+  // Called after every remote_session_saved. Verifies GridFS files and metadata
+  // exist in MongoDB. Logs an error if either is missing — always visible in prod.
+  _verifySessionSync() {
+    if (mongoose.connection.readyState !== 1) return;
+    const db = mongoose.connection.db;
+
+    Promise.all([
+      db.collection("whatsapp-main.files").countDocuments(),
+      db.collection("whatsapp-sessions").findOne({ id: "main" }),
+    ])
+      .then(([filesCount, metaDoc]) => {
+        if (!filesCount || !metaDoc) {
+          log("error", "remote_session_save_failed", {
+            filesCount,
+            hasMeta: !!metaDoc,
+          });
+        } else if (config.DEBUG_WHATSAPP) {
+          log("debug", "session_sync_verified", { filesCount });
+        }
+      })
+      .catch((err) => {
+        log("error", "remote_session_save_failed", { error: err.message });
+      });
+  }
+
+  // ── Memory Pressure Monitor ──────────────────────────────────────────────────
+  // Runs every 5 minutes while the client is active. Emits a warning (always
+  // visible in prod) if RSS exceeds 350 MB. Does NOT auto-restart.
+  _startMemoryMonitor() {
+    if (this.memoryMonitorInterval) return; // already running
+    this.memoryMonitorInterval = setInterval(() => {
+      const mem = process.memoryUsage();
+      if (mem.rss > 350 * 1024 * 1024) {
+        log("warn", "memory_pressure_warning", {
+          rss: Math.floor(mem.rss / 1024 / 1024),
+          heapUsed: Math.floor(mem.heapUsed / 1024 / 1024),
+          heapTotal: Math.floor(mem.heapTotal / 1024 / 1024),
+        });
+      }
+    }, 5 * 60 * 1000);
   }
 
   // ── Reconnection ────────────────────────────────────────────────────────────
@@ -166,12 +224,17 @@ class WhatsAppService {
 
   // ── Graceful Shutdown ───────────────────────────────────────────────────────
   async destroy(source = "unknown") {
-    // Wait for pending RemoteAuth sync before shutdown (up to 15s)
-    if (this.sessionState === "authenticated" && !this.sessionSaved) {
+    // Wait for any pending RemoteAuth sync before tearing down (up to 15s).
+    // Covers: (a) first-time QR auth before ready, (b) re-auth after reconnect.
+    // Mongo is disconnected AFTER this wait to guarantee sync completes first.
+    if (this.client && !this.sessionSaved) {
       let waited = 0;
       while (!this.sessionSaved && waited < 15000) {
         await new Promise((r) => setTimeout(r, 500));
         waited += 500;
+      }
+      if (!this.sessionSaved) {
+        log("warn", "shutdown_sync_timeout", {});
       }
     }
 
@@ -180,8 +243,10 @@ class WhatsAppService {
       this.reconnectTimer = null;
     }
 
+    // _destroyClient also clears memoryMonitorInterval
     await this._destroyClient();
 
+    // Mongo disconnect is intentionally AFTER client destroy and sync wait
     if (mongoose.connection.readyState === 1) {
       try { await mongoose.disconnect(); } catch (_) {}
     }
