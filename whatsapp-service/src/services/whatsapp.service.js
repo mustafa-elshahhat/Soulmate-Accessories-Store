@@ -59,8 +59,36 @@ class WhatsAppService {
       socketTimeoutMS: 45000,
     });
 
+    const db = mongoose.connection.db;
+    
+    // 1. Automatic Cleanup: Delete all malformed collections
+    const collections = await db.listCollections().toArray();
+    const malformed = collections.filter(c => 
+      c.name.includes("/opt/render/") || 
+      c.name.includes(".wwebjs_auth") || 
+      c.name.includes("RemoteAuth-")
+    );
+
+    if (malformed.length > 0) {
+      log("info", "cleanup_malformed_collections_start", { count: malformed.length });
+      for (const coll of malformed) {
+        await db.dropCollection(coll.name);
+        log("info", "malformed_collection_dropped", { name: coll.name });
+      }
+    }
+
+    // 2. Namespace Validation Guard
+    const finalCollections = await db.listCollections().toArray();
+    const invalid = finalCollections.find(c => c.name.includes("/") || c.name.includes(".wwebjs_auth"));
+    if (invalid) {
+      log("fatal", "invalid_remoteauth_namespace", { sample: invalid.name });
+      process.exit(1);
+    }
+
     this.store = new MongoStore({ mongoose });
-    log("info", "mongodb_connected", {});
+    log("info", "mongodb_connected", { 
+      activeCollections: finalCollections.map(c => c.name) 
+    });
   }
 
   _createClient() {
@@ -73,19 +101,23 @@ class WhatsAppService {
       puppeteerOptions.executablePath = config.chromePath;
     }
 
+    const authStrategy = new RemoteAuth({
+      clientId: "main",
+      store: this.store,
+      backupSyncIntervalMs: 300000,
+    });
+
+    // CRITICAL: Override the forced 'RemoteAuth-' prefix to ensure clean 
+    // GridFS collections (whatsapp-main.files/chunks)
+    authStrategy.sessionName = "main";
+
     this.client = new Client({
-      authStrategy: new RemoteAuth({
-        clientId: "main",
-        store: this.store,
-        backupSyncIntervalMs: 60000,
-      }),
+      authStrategy,
       puppeteer: puppeteerOptions,
       qrMaxRetries: 3,
       authTimeoutMs: 60_000,
     });
 
-    // Guarantee a clean listener slate before binding — prevents duplicate handlers
-    // if the Client constructor or internals register anything beforehand.
     this.client.removeAllListeners();
     this._attachListeners();
   }
