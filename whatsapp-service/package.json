@@ -11,13 +11,13 @@
     "node": "20.x"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^4.21.0",
-    "mongodb": "^6.10.0",
-    "mongoose": "^8.8.0",
-    "puppeteer": "^24.31.0",
-    "qrcode": "^1.5.4",
-    "whatsapp-web.js": "^1.26.0",
-    "wwebjs-mongo": "^1.1.0"
+    "dotenv": "16.4.7",
+    "express": "4.21.0",
+    "mongodb": "6.10.0",
+    "mongoose": "8.8.0",
+    "puppeteer": "24.31.0",
+    "qrcode": "1.5.4",
+    "whatsapp-web.js": "1.26.0",
+    "wwebjs-mongo": "1.1.0"
   }
 }

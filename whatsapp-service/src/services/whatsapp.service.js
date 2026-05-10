@@ -4,6 +4,17 @@ const mongoose = require("mongoose");
 const config = require("../config");
 const log = require("../utils/logger");
 
+// Runtime Version Diagnostic
+const pkg = require("../../package.json");
+log("info", "dependency_versions", {
+  "whatsapp-web.js": require("whatsapp-web.js/package.json").version,
+  "wwebjs-mongo": require("wwebjs-mongo/package.json").version,
+  "mongodb": require("mongodb/package.json").version,
+  "mongoose": require("mongoose/package.json").version,
+  "puppeteer": require("puppeteer/package.json").version,
+  package_json: pkg.dependencies
+});
+
 class WhatsAppService {
   constructor() {
     this.client = null;
@@ -107,6 +118,14 @@ class WhatsAppService {
       backupSyncIntervalMs: 300000,
     });
 
+    // CRITICAL: Introspection logs to diagnose RemoteAuth sync failure
+    log("info", "remoteauth_introspection", {
+      typeof_store_save: typeof authStrategy.store?.save,
+      typeof_strategy_compress: typeof authStrategy.compressSession,
+      typeof_strategy_afterAuth: typeof authStrategy.afterAuthReady,
+      has_backupSyncInterval: !!authStrategy.backupSyncIntervalMs,
+    });
+
     // CRITICAL: Override the forced 'RemoteAuth-' prefix to ensure clean 
     // GridFS collections (whatsapp-main.files/chunks)
     authStrategy.sessionName = "main";
@@ -152,11 +171,25 @@ class WhatsAppService {
       this.sessionState = "authenticated";
       this.latestQr = null;
       this.qrGeneratedAt = null;
-      log("info", "authenticated", {});
+      this.syncInProgress = true;
+      log("info", "authenticated", { pid: config.PID });
+
+      // Fallback: Manually trigger RemoteAuth backup if it hasn't started within 5s
+      setTimeout(async () => {
+        if (this.syncInProgress && this.client?.authStrategy?.backup) {
+          log("info", "triggering_manual_remote_backup", { pid: config.PID });
+          try {
+            await this.client.authStrategy.backup();
+          } catch (err) {
+            log("error", "manual_backup_failed", { error: err.message });
+          }
+        }
+      }, 5000);
     });
 
     this.client.on("remote_session_saved", () => {
       this.sessionSaved = true;
+      this.syncInProgress = false;
       log("info", "remote_session_saved", {});
       // Lightweight post-sync verification — logs an error if GridFS/metadata is missing
       this._verifySessionSync();
