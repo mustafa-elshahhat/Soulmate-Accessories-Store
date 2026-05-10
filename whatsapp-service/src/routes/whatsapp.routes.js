@@ -87,8 +87,7 @@ router.get("/qr", pairingCheck, async (_req, res) => {
     return res.send(html(
       "Waiting for QR",
       `<h1>Waiting for QR code…</h1>
-       <p>State: <strong>${st.sessionState}</strong>
-          &nbsp;|&nbsp; Browser: <strong>${st.browserState}</strong></p>
+       <p>State: <strong>${st.sessionState}</strong></p>
        <p>The page will refresh automatically.</p>
        <script>setTimeout(()=>location.reload(),5000)</script>`
     ));

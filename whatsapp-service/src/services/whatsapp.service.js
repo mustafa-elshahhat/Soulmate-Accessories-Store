@@ -1,8 +1,6 @@
 const { Client, RemoteAuth } = require("whatsapp-web.js");
 const { MongoStore } = require("wwebjs-mongo");
 const mongoose = require("mongoose");
-const fs = require("fs");
-const path = require("path");
 const config = require("../config");
 const log = require("../utils/logger");
 
@@ -14,196 +12,69 @@ class WhatsAppService {
     this.qrGeneratedAt = null;
     this.store = null;
 
-    // Lifecycle control
-    this.initializing = false;
-    this.reconnecting = false;
+    // Single-instance guards
+    this.isInitializing = false;
     this.reconnectTimer = null;
     this.reconnectAttempt = 0;
-    this.lastReconnectTime = 0;
 
-    // Intervals
-    this.cacheCleanupInterval = null;
-
-    this.metrics = {
-      qrGenerations: 0,
-      reconnects: 0,
-      messagesSent: 0,
-      startTime: Date.now(),
-    };
-
+    // Session state
     this.sessionState = "idle";
-    this.browserState = "none";
+    this.sessionSaved = false;
   }
 
-  // ── Initialization ─────────────────────────────────────────────────────────
+  // ── Initialization ──────────────────────────────────────────────────────────
   async initialize(source = "unknown") {
-    if (this.initializing) {
-      log("warn", "whatsapp_init_skipped", { 
-        reason: "already_initializing", 
-        source,
-        pid: config.PID 
-      });
+    // Hard guard: no duplicate clients or concurrent initialization
+    if (this.client || this.isInitializing) {
       return;
     }
 
-    if (this.isReady && this.client) {
-      log("info", "whatsapp_init_skipped", { 
-        reason: "already_ready", 
-        source,
-        pid: config.PID 
-      });
-      return;
-    }
-
-    this.initializing = true;
+    this.isInitializing = true;
     this.sessionState = "launching";
-    log("info", "whatsapp_init_start", { source, pid: config.PID });
+    log("info", "whatsapp_init_start", { source });
 
     try {
-      // 1. Connect to MongoDB and initialize Store
       await this._connectMongo();
-
-      // 2. Explicitly verify session existence
-      const sessionExists = await this._verifyRemoteSession();
-      if (sessionExists) {
-        log("info", "remote_session_exists", { clientId: "main", pid: config.PID });
-      } else {
-        log("info", "remote_session_not_found", { clientId: "main", pid: config.PID });
-      }
-
-      // 3. Clear old client if exists
-      await this._destroyClient("initialization");
-
-      // 4. Create fresh client
-      this._createClient(source);
-
-      // 5. Launch browser
-      this.browserState = "launching";
-      log("info", "browser_launch_start", { source, pid: config.PID });
-      
-      // We wrap initialize to detect successful restoration
+      this._createClient();
       await this.client.initialize();
-      
-      this.initializing = false;
+      this.isInitializing = false;
     } catch (err) {
-      log("error", "whatsapp_init_failure", { 
-        error: err.message, 
-        source, 
-        pid: config.PID 
-      });
-      this.initializing = false;
+      log("error", "whatsapp_init_failure", { error: err.message, source });
+      this.isInitializing = false;
       this.sessionState = "error";
-      this.browserState = "error";
-      this.scheduleReconnect("init_failure");
+      this._scheduleReconnect("init_failure");
     }
   }
 
   async _connectMongo() {
     if (mongoose.connection.readyState === 1 && this.store) return;
 
-    if (!config.MONGODB_URI) {
-      throw new Error("MONGODB_URI is not configured");
-    }
+    if (!config.MONGODB_URI) throw new Error("MONGODB_URI not configured");
 
-    log("info", "mongodb_connecting", { pid: config.PID });
-    
-    try {
-      await mongoose.connect(config.MONGODB_URI, {
-        serverSelectionTimeoutMS: 15000,
-        socketTimeoutMS: 45000,
-      });
-      
-      // Cleanup malformed collections before initializing Store
-      await this._cleanupMalformedCollections();
-
-      // Diagnostics: List final collections
-      const collections = await mongoose.connection.db.listCollections().toArray();
-      const collectionNames = collections.map(c => c.name);
-      log("info", "mongodb_connected", { 
-        pid: config.PID, 
-        collections: collectionNames 
-      });
-
-      this.store = new MongoStore({ mongoose: mongoose });
-      log("info", "remote_store_connected", { pid: config.PID });
-    } catch (err) {
-      log("error", "mongodb_connection_failed", { error: err.message });
-      throw err;
-    }
-  }
-
-  async _cleanupMalformedCollections() {
-    try {
-      const collections = await mongoose.connection.db.listCollections().toArray();
-      const malformed = collections.filter(c => 
-        c.name.includes("/") || 
-        c.name.includes(".wwebjs_auth") ||
-        (c.name.startsWith("whatsapp-") && c.name.length > 50) // Path-based names are usually very long
-      );
-
-      if (malformed.length > 0) {
-        log("warn", "cleanup_malformed_collections_start", { count: malformed.length });
-        for (const coll of malformed) {
-          await mongoose.connection.db.dropCollection(coll.name);
-          log("info", "malformed_collection_dropped", { name: coll.name });
-        }
-        log("info", "cleanup_malformed_collections_complete");
-      }
-    } catch (err) {
-      log("error", "cleanup_malformed_collections_failed", { error: err.message });
-    }
-  }
-
-  async _verifyRemoteSession() {
-    try {
-      if (!this.store) return false;
-      
-      // Diagnostics: check sessions in the store
-      // wwebjs-mongo usually creates a 'whatsapp-sessions' collection for metadata
-      const sessionColl = mongoose.connection.db.collection("whatsapp-sessions");
-      const sessionDoc = await sessionColl.findOne({ id: "main" });
-      
-      if (sessionDoc) {
-        log("info", "remote_session_doc_found", { 
-          pid: config.PID, 
-          id: sessionDoc.id,
-          updatedAt: sessionDoc.updatedAt 
-        });
-      }
-
-      const exists = await this.store.sessionExists({ session: "main" });
-      return exists;
-    } catch (err) {
-      log("warn", "session_verification_failed", { error: err.message });
-      return false;
-    }
-  }
-
-  _createClient(source) {
-    log("info", "client_creation", { 
-      authStrategy: "RemoteAuth",
-      clientId: "main", 
-      namespace: "whatsapp-main",
-      source 
+    await mongoose.connect(config.MONGODB_URI, {
+      serverSelectionTimeoutMS: 15000,
+      socketTimeoutMS: 45000,
     });
-    
+
+    this.store = new MongoStore({ mongoose });
+    log("info", "mongodb_connected", {});
+  }
+
+  _createClient() {
     const puppeteerOptions = {
       headless: true,
-      protocolTimeout: 180_000,
-      defaultViewport: null,
       args: config.puppeteerArgs,
     };
 
     if (config.chromePath) {
       puppeteerOptions.executablePath = config.chromePath;
-      log("info", "using_custom_executable_path", { path: config.chromePath });
     }
 
     this.client = new Client({
       authStrategy: new RemoteAuth({
         clientId: "main",
         store: this.store,
-        backupSyncIntervalMs: 300_000,
+        backupSyncIntervalMs: 15000,
       }),
       puppeteer: puppeteerOptions,
       qrMaxRetries: 3,
@@ -213,210 +84,126 @@ class WhatsAppService {
     this._attachListeners();
   }
 
-  async _destroyClient(source = "unknown") {
-    if (this.client) {
-      log("info", "destroying_client", { source, pid: config.PID });
-      try {
-        this.client.removeAllListeners();
-        if (this.client.pupBrowser) {
-          await this.client.pupBrowser.close().catch(() => {});
-        }
-        await this.client.destroy();
-      } catch (err) {
-        log("warn", "client_destroy_error", { error: err.message, source });
-      }
-      this.client = null;
-    }
-    
-    if (this.cacheCleanupInterval) {
-      clearInterval(this.cacheCleanupInterval);
-      this.cacheCleanupInterval = null;
-    }
+  async _destroyClient() {
+    if (!this.client) return;
+    const c = this.client;
+    this.client = null;
+    this.isReady = false;
+    try {
+      c.removeAllListeners();
+      await c.destroy();
+    } catch (_) {}
   }
 
-  // ── Event Listeners ────────────────────────────────────────────────────────
+  // ── Event Listeners ─────────────────────────────────────────────────────────
   _attachListeners() {
-    if (!this.client) return;
-
     this.client.on("qr", (qr) => {
       this.latestQr = qr;
       this.qrGeneratedAt = Date.now();
-      this.metrics.qrGenerations++;
       this.sessionState = "qr";
-
-      // If we thought a session existed but got a QR, it might be expired or corrupted
-      const wasExpected = this.sessionState === "launching" && this.isReady === false; 
-      log("info", "qr_generated", { 
-        pid: config.PID, 
-        attempt: this.metrics.qrGenerations,
-        unexpected: wasExpected
-      });
+      log("info", "qr_generated", {});
     });
 
     this.client.on("authenticated", () => {
       this.sessionState = "authenticated";
       this.latestQr = null;
       this.qrGeneratedAt = null;
-      log("info", "authenticated", { pid: config.PID });
+      log("info", "authenticated", {});
     });
 
     this.client.on("remote_session_saved", () => {
-      log("info", "remote_session_saved", { pid: config.PID });
+      this.sessionSaved = true;
+      log("info", "remote_session_saved", {});
     });
 
     this.client.on("auth_failure", (msg) => {
-      this.sessionState = "error";
       this.isReady = false;
-      log("error", "auth_failure", { message: msg, pid: config.PID });
-      this.scheduleReconnect("auth_failure");
+      log("error", "auth_failure", { message: msg });
+      this._scheduleReconnect("auth_failure");
     });
 
     this.client.on("ready", () => {
-      const wasRestored = this.metrics.qrGenerations === 0;
       this.isReady = true;
       this.sessionState = "ready";
-      this.browserState = "open";
+      this.isInitializing = false;
       this.reconnectAttempt = 0;
-      this.reconnecting = false;
-      
-      log("info", "ready", { 
-        pid: config.PID,
-        pushname: this.client.info?.pushname,
-        restored: wasRestored
-      });
-
-      if (wasRestored) {
-        log("info", "remote_session_restored", { pid: config.PID });
-      }
-
-      this._setupIntervals();
+      log("info", "ready", { pushname: this.client.info?.pushname });
     });
 
     this.client.on("disconnected", (reason) => {
       this.isReady = false;
       this.sessionState = "disconnected";
-      this.browserState = "closed";
-      log("warn", "disconnected", { reason, pid: config.PID });
-      this.scheduleReconnect("disconnected");
+      log("warn", "disconnected", { reason });
+      this._scheduleReconnect("disconnected");
     });
   }
 
-  _setupIntervals() {
-    if (this.cacheCleanupInterval) clearInterval(this.cacheCleanupInterval);
-    this.cacheCleanupInterval = setInterval(() => {
-      this._cleanupMemory();
-    }, config.CACHE_CLEANUP_INTERVAL);
-  }
+  // ── Reconnection ────────────────────────────────────────────────────────────
+  _scheduleReconnect(reason) {
+    // Prevent reconnect storms: skip if already initializing or a timer is pending
+    if (this.isInitializing || this.reconnectTimer) return;
 
-  // ── Reconnection Logic ─────────────────────────────────────────────────────
-  scheduleReconnect(reason) {
-    if (this.reconnecting || this.initializing) {
-      log("info", "reconnect_skipped", { 
-        reason, 
-        reconnecting: this.reconnecting, 
-        initializing: this.initializing 
-      });
-      return;
-    }
-    
     if (this.reconnectAttempt >= config.MAX_RECONNECT_ATTEMPTS) {
-      log("fatal", "max_reconnect_attempts_reached", { 
-        attempts: this.reconnectAttempt,
-        pid: config.PID 
-      });
+      log("error", "max_reconnect_attempts_reached", { attempts: this.reconnectAttempt });
       this.sessionState = "error";
       return;
     }
 
-    this.reconnecting = true;
     this.reconnectAttempt++;
-    this.metrics.reconnects++;
-    this.sessionState = "reconnecting";
+    // Simple linear backoff: 30s, 60s, 90s … capped at 5 minutes
+    const delay = Math.min(30_000 * this.reconnectAttempt, 300_000);
 
-    const delay = this._calculateReconnectDelay();
-    log("info", "reconnect_scheduled", { 
-      reason, 
-      attempt: this.reconnectAttempt, 
-      delayMs: delay,
-      pid: config.PID
-    });
+    if (config.DEBUG_WHATSAPP) {
+      log("debug", "reconnect_scheduled", { reason, attempt: this.reconnectAttempt, delayMs: delay });
+    }
 
-    if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
     this.reconnectTimer = setTimeout(async () => {
-      this.reconnecting = false;
-      this.lastReconnectTime = Date.now();
+      this.reconnectTimer = null;
+      await this._destroyClient();
       await this.initialize("reconnect");
     }, delay);
   }
 
-  _calculateReconnectDelay() {
-    const base = config.RECONNECT_BASE_DELAY_MS;
-    const jitter = Math.floor(Math.random() * config.RECONNECT_JITTER_MS);
-    const exponential = Math.pow(2, Math.min(this.reconnectAttempt - 1, 4)) * 1000;
-    return Math.min(base + exponential + jitter, config.RECONNECT_MAX_DELAY_MS);
-  }
-
-  // ── Memory & Cleanup ───────────────────────────────────────────────────────
-  async _cleanupMemory() {
-    try {
-      if (global.gc) global.gc();
-      const mem = process.memoryUsage();
-      log("info", "memory_cleanup", {
-        rssMB: Math.floor(mem.rss / 1024 / 1024),
-        heapMB: Math.floor(mem.heapUsed / 1024 / 1024),
-        pid: config.PID
-      });
-    } catch (err) {
-      log("warn", "memory_cleanup_error", { error: err.message });
-    }
-  }
-
+  // ── Graceful Shutdown ───────────────────────────────────────────────────────
   async destroy(source = "unknown") {
-    log("info", "whatsapp_destroy_start", { source, pid: config.PID });
-    
-    if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
-    if (this.cacheCleanupInterval) clearInterval(this.cacheCleanupInterval);
-
-    await this._destroyClient(source);
-    
-    try {
-      if (mongoose.connection.readyState === 1) {
-        await mongoose.disconnect();
-        log("info", "mongodb_disconnected", { pid: config.PID });
+    // Wait for pending RemoteAuth sync before shutdown (up to 15s)
+    if (this.sessionState === "authenticated" && !this.sessionSaved) {
+      let waited = 0;
+      while (!this.sessionSaved && waited < 15000) {
+        await new Promise((r) => setTimeout(r, 500));
+        waited += 500;
       }
-    } catch (err) {
-      log("error", "mongodb_disconnect_failed", { error: err.message });
     }
 
-    log("info", "whatsapp_destroy_complete", { source, pid: config.PID });
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+
+    await this._destroyClient();
+
+    if (mongoose.connection.readyState === 1) {
+      try { await mongoose.disconnect(); } catch (_) {}
+    }
   }
 
-  // ── Status & Helpers ───────────────────────────────────────────────────────
+  // ── Status & API ────────────────────────────────────────────────────────────
   getStatus() {
     return {
-      status: this.isReady ? "ready" : this.initializing ? "initializing" : "not_ready",
+      status: this.isReady ? "ready" : this.isInitializing ? "initializing" : "not_ready",
       isReady: this.isReady,
       sessionState: this.sessionState,
-      browserState: this.browserState,
       reconnectAttempt: this.reconnectAttempt,
-      metrics: this.metrics,
       hasQr: !!this.latestQr,
       qrAgeMs: this.qrGeneratedAt ? Date.now() - this.qrGeneratedAt : null,
-      uptimeSec: Math.floor((Date.now() - this.metrics.startTime) / 1000),
-      pid: config.PID
+      uptimeSec: Math.floor(process.uptime()),
+      memMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
     };
   }
 
   async sendMessage(chatId, message) {
     if (!this.isReady) throw new Error("WhatsApp client not ready");
-    try {
-      const result = await this.client.sendMessage(chatId, message);
-      this.metrics.messagesSent++;
-      return result;
-    } catch (err) {
-      log("error", "send_message_failure", { chatId, error: err.message, pid: config.PID });
-      throw err;
-    }
+    return await this.client.sendMessage(chatId, message);
   }
 
   async requestPairingCode(phone) {
