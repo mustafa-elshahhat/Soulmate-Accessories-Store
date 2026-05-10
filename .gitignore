@@ -52,11 +52,16 @@ backend/appsettings.Development.json
 backend/appsettings.Local.json
 
 # WhatsApp Service Specific
+whatsapp-service/node_modules/
 whatsapp-service/.wwebjs_auth/
 whatsapp-service/.wwebjs_cache/
+whatsapp-service/sessions/
 whatsapp-service/chrome/
 whatsapp-service/.puppeteer-cache/
 whatsapp-service/session.json
+whatsapp-service/.env
+whatsapp-service/$PWD/
+whatsapp-service/structure.txt
 **/chrome/
 **/\$PWD/
 
