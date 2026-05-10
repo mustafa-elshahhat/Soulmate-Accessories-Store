@@ -31,26 +31,68 @@ class WhatsAppService {
     // Session state
     this.sessionState = "idle";
     this.sessionSaved = false;
+    this.syncInProgress = false;
+    this.wasAuthenticatedThisSession = false;
 
-    // Memory monitor handle (started on ready, cleared on destroy)
+    // Memory monitor handle
     this.memoryMonitorInterval = null;
+
+    this._logMemory("service_constructor");
+  }
+
+  _logMemory(event, meta = {}) {
+    const mem = process.memoryUsage();
+    const stats = {
+      rssMB: Math.floor(mem.rss / 1024 / 1024),
+      heapUsedMB: Math.floor(mem.heapUsed / 1024 / 1024),
+      heapTotalMB: Math.floor(mem.heapTotal / 1024 / 1024),
+      externalMB: Math.floor(mem.external / 1024 / 1024),
+      arrayBuffersMB: Math.floor(mem.arrayBuffers / 1024 / 1024),
+      pid: process.pid,
+      uptimeSec: Math.floor(process.uptime()),
+    };
+
+    log("info", "memory_diagnostic", { event, ...stats, ...meta });
+
+    if (stats.rssMB > 400) {
+      log("warn", "memory_critical_warning", { event, rssMB: stats.rssMB });
+    } else if (stats.rssMB > 300) {
+      log("warn", "memory_pressure_warning", { event, rssMB: stats.rssMB });
+    }
+  }
+
+  _triggerGC(event) {
+    if (global.gc) {
+      log("info", "manual_gc_start", { event });
+      global.gc();
+      this._logMemory(`post_gc_${event}`);
+    }
   }
 
   // ── Initialization ──────────────────────────────────────────────────────────
   async initialize(source = "unknown") {
-    // Hard guard: no duplicate clients or concurrent initialization
+    this._logMemory("initialization_start", { source });
+
     if (this.client || this.isInitializing) {
+      log("warn", "duplicate_init_blocked", { source, hasClient: !!this.client, isInitializing: this.isInitializing });
       return;
     }
 
     this.isInitializing = true;
     this.sessionState = "launching";
+    this.wasAuthenticatedThisSession = false;
     log("info", "whatsapp_init_start", { source });
 
     try {
       await this._connectMongo();
       this._createClient();
+      
+      this._logMemory("client_launch_pre_init");
       await this.client.initialize();
+      
+      const browserPid = this.client.puppeteer?.process()?.pid;
+      this._logMemory("client_launch_post_init", { chromium_pid: browserPid });
+
       this.isInitializing = false;
     } catch (err) {
       log("error", "whatsapp_init_failure", { error: err.message, source });
@@ -65,14 +107,16 @@ class WhatsAppService {
 
     if (!config.MONGODB_URI) throw new Error("MONGODB_URI not configured");
 
+    log("info", "connecting_mongodb", { pid: process.pid });
     await mongoose.connect(config.MONGODB_URI, {
       serverSelectionTimeoutMS: 15000,
       socketTimeoutMS: 45000,
+      maxPoolSize: 5,
     });
 
     const db = mongoose.connection.db;
     
-    // 1. Automatic Cleanup: Delete all malformed collections
+    // Cleanup malformed collections
     const collections = await db.listCollections().toArray();
     const malformed = collections.filter(c => 
       c.name.includes("/opt/render/") || 
@@ -83,29 +127,40 @@ class WhatsAppService {
     if (malformed.length > 0) {
       log("info", "cleanup_malformed_collections_start", { count: malformed.length });
       for (const coll of malformed) {
-        await db.dropCollection(coll.name);
-        log("info", "malformed_collection_dropped", { name: coll.name });
+        await db.dropCollection(coll.name).catch(() => {});
       }
-    }
-
-    // 2. Namespace Validation Guard
-    const finalCollections = await db.listCollections().toArray();
-    const invalid = finalCollections.find(c => c.name.includes("/") || c.name.includes(".wwebjs_auth"));
-    if (invalid) {
-      log("fatal", "invalid_remoteauth_namespace", { sample: invalid.name });
-      process.exit(1);
     }
 
     this.store = new MongoStore({ mongoose });
     log("info", "mongodb_connected", { 
-      activeCollections: finalCollections.map(c => c.name) 
+      activeCollections: (await db.listCollections().toArray()).map(c => c.name) 
     });
   }
 
   _createClient() {
     const puppeteerOptions = {
       headless: true,
-      args: config.puppeteerArgs,
+      args: [
+        ...config.puppeteerArgs,
+        "--disable-extensions",
+        "--disable-component-update",
+        "--disable-features=Translate",
+        "--disable-background-networking",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-breakpad",
+        "--disable-client-side-phishing-detection",
+        "--disable-default-apps",
+        "--disable-hang-monitor",
+        "--disable-ipc-flooding-protection",
+        "--disable-notifications",
+        "--disable-prompt-on-repost",
+        "--disable-renderer-backgrounding",
+        "--disable-sync",
+        "--password-store=basic",
+        "--use-gl=swiftshader",
+        "--js-flags=--max-old-space-size=200",
+      ],
     };
 
     if (config.chromePath) {
@@ -118,23 +173,13 @@ class WhatsAppService {
       backupSyncIntervalMs: 300000,
     });
 
-    // CRITICAL: Introspection logs to diagnose RemoteAuth sync failure
-    log("info", "remoteauth_introspection", {
-      typeof_store_save: typeof authStrategy.store?.save,
-      typeof_strategy_compress: typeof authStrategy.compressSession,
-      typeof_strategy_afterAuth: typeof authStrategy.afterAuthReady,
-      has_backupSyncInterval: !!authStrategy.backupSyncIntervalMs,
-    });
-
-    // CRITICAL: Override the forced 'RemoteAuth-' prefix to ensure clean 
-    // GridFS collections (whatsapp-main.files/chunks)
     authStrategy.sessionName = "main";
 
     this.client = new Client({
       authStrategy,
       puppeteer: puppeteerOptions,
       qrMaxRetries: 15,
-      authTimeoutMs: 300_000, // 5 minutes
+      authTimeoutMs: 300_000,
     });
 
     this.client.removeAllListeners();
@@ -142,7 +187,8 @@ class WhatsAppService {
   }
 
   async _destroyClient() {
-    // Stop memory monitor before tearing down the client
+    this._logMemory("client_destroy_start");
+    
     if (this.memoryMonitorInterval) {
       clearInterval(this.memoryMonitorInterval);
       this.memoryMonitorInterval = null;
@@ -152,10 +198,16 @@ class WhatsAppService {
     const c = this.client;
     this.client = null;
     this.isReady = false;
+    this.latestQr = null;
+
     try {
       c.removeAllListeners();
       await c.destroy();
-    } catch (_) {}
+    } catch (err) {
+      log("warn", "client_destroy_error", { error: err.message });
+    }
+
+    this._triggerGC("after_client_destroy");
   }
 
   // ── Event Listeners ─────────────────────────────────────────────────────────
@@ -164,25 +216,22 @@ class WhatsAppService {
       this.latestQr = qr;
       this.qrGeneratedAt = Date.now();
       this.sessionState = "awaiting_qr_scan";
-      
-      const ageSeconds = Math.floor((Date.now() - this.qrGeneratedAt) / 1000);
-      log("info", "qr_generated", { 
-        qr_age_seconds: ageSeconds,
-        qr_generated_at: new Date(this.qrGeneratedAt).toISOString()
-      });
+      this._logMemory("qr_generated");
     });
 
     this.client.on("authenticated", () => {
       this.sessionState = "authenticated";
+      this.wasAuthenticatedThisSession = true;
       this.latestQr = null;
       this.qrGeneratedAt = null;
       this.syncInProgress = true;
-      log("info", "authenticated", { pid: config.PID });
+      log("info", "remote_session_save_started", { pid: process.pid });
+      this._logMemory("authenticated");
 
-      // Fallback: Manually trigger RemoteAuth backup if it hasn't started within 5s
+      // Fallback: Trigger RemoteAuth backup if it hasn't started within 5s
       setTimeout(async () => {
         if (this.syncInProgress && this.client?.authStrategy?.backup) {
-          log("info", "triggering_manual_remote_backup", { pid: config.PID });
+          log("info", "triggering_manual_remote_backup", {});
           try {
             await this.client.authStrategy.backup();
           } catch (err) {
@@ -195,14 +244,16 @@ class WhatsAppService {
     this.client.on("remote_session_saved", () => {
       this.sessionSaved = true;
       this.syncInProgress = false;
-      log("info", "remote_session_saved", {});
-      // Lightweight post-sync verification — logs an error if GridFS/metadata is missing
+      log("info", "remote_session_saved", { clientId: "main" });
+      this._logMemory("remote_session_saved");
       this._verifySessionSync();
+      this._triggerGC("after_sync");
     });
 
     this.client.on("auth_failure", (msg) => {
       this.isReady = false;
       log("error", "auth_failure", { message: msg });
+      this._logMemory("auth_failure");
       this._scheduleReconnect("auth_failure");
     });
 
@@ -211,33 +262,32 @@ class WhatsAppService {
       this.sessionState = "ready";
       this.isInitializing = false;
       this.reconnectAttempt = 0;
-      log("info", "ready", { pushname: this.client.info?.pushname });
+
+      // Restoration Detection: If 'ready' fires without 'authenticated', it was restored from Mongo
+      if (!this.wasAuthenticatedThisSession) {
+        log("info", "remote_session_restored", { clientId: "main" });
+      }
+
+      this._logMemory("ready", { pushname: this.client.info?.pushname });
       this._startMemoryMonitor();
+      this._triggerGC("after_ready");
     });
 
     this.client.on("disconnected", (reason) => {
       this.isReady = false;
+      this._logMemory("disconnected", { reason });
       
-      // PASSIVE MODE: If QR retries are exhausted, do NOT reconnect or destroy.
-      // Wait indefinitely for a manual scan if the browser is still alive.
       if (reason === "Max qrcode retries reached") {
         this.sessionState = "awaiting_qr_scan";
-        log("warn", "qr_retries_exhausted_passive_mode", { 
-          reason, 
-          status: "waiting_indefinitely_for_manual_scan" 
-        });
         return; 
       }
 
       this.sessionState = "disconnected";
-      log("warn", "disconnected", { reason });
       this._scheduleReconnect("disconnected");
     });
   }
 
   // ── RemoteAuth Persistence Verification ─────────────────────────────────────
-  // Called after every remote_session_saved. Verifies GridFS files and metadata
-  // exist in MongoDB. Logs an error if either is missing — always visible in prod.
   _verifySessionSync() {
     if (mongoose.connection.readyState !== 1) return;
     const db = mongoose.connection.db;
@@ -248,39 +298,24 @@ class WhatsAppService {
     ])
       .then(([filesCount, metaDoc]) => {
         if (!filesCount || !metaDoc) {
-          log("error", "remote_session_save_failed", {
-            filesCount,
-            hasMeta: !!metaDoc,
-          });
-        } else if (config.DEBUG_WHATSAPP) {
-          log("debug", "session_sync_verified", { filesCount });
+          log("error", "remote_session_save_failed", { filesCount, hasMeta: !!metaDoc });
+        } else {
+          log("info", "session_persistence_confirmed", { filesFound: filesCount });
         }
       })
       .catch((err) => {
-        log("error", "remote_session_save_failed", { error: err.message });
+        log("error", "remote_session_restore_failed", { error: err.message });
       });
   }
 
-  // ── Memory Pressure Monitor ──────────────────────────────────────────────────
-  // Runs every 5 minutes while the client is active. Emits a warning (always
-  // visible in prod) if RSS exceeds 350 MB. Does NOT auto-restart.
   _startMemoryMonitor() {
-    if (this.memoryMonitorInterval) return; // already running
+    if (this.memoryMonitorInterval) return;
     this.memoryMonitorInterval = setInterval(() => {
-      const mem = process.memoryUsage();
-      if (mem.rss > 350 * 1024 * 1024) {
-        log("warn", "memory_pressure_warning", {
-          rss: Math.floor(mem.rss / 1024 / 1024),
-          heapUsed: Math.floor(mem.heapUsed / 1024 / 1024),
-          heapTotal: Math.floor(mem.heapTotal / 1024 / 1024),
-        });
-      }
+      this._logMemory("periodic_monitor");
     }, 5 * 60 * 1000);
   }
 
-  // ── Reconnection ────────────────────────────────────────────────────────────
   _scheduleReconnect(reason) {
-    // Prevent reconnect storms: skip if already initializing or a timer is pending
     if (this.isInitializing || this.reconnectTimer) return;
 
     if (this.reconnectAttempt >= config.MAX_RECONNECT_ATTEMPTS) {
@@ -290,12 +325,8 @@ class WhatsAppService {
     }
 
     this.reconnectAttempt++;
-    // Simple linear backoff: 30s, 60s, 90s … capped at 5 minutes
     const delay = Math.min(30_000 * this.reconnectAttempt, 300_000);
-
-    if (config.DEBUG_WHATSAPP) {
-      log("debug", "reconnect_scheduled", { reason, attempt: this.reconnectAttempt, delayMs: delay });
-    }
+    this._logMemory("reconnect_scheduled", { reason, delay });
 
     this.reconnectTimer = setTimeout(async () => {
       this.reconnectTimer = null;
@@ -304,19 +335,15 @@ class WhatsAppService {
     }, delay);
   }
 
-  // ── Graceful Shutdown ───────────────────────────────────────────────────────
   async destroy(source = "unknown") {
-    // Wait for any pending RemoteAuth sync before tearing down (up to 15s).
-    // Covers: (a) first-time QR auth before ready, (b) re-auth after reconnect.
-    // Mongo is disconnected AFTER this wait to guarantee sync completes first.
-    if (this.client && !this.sessionSaved) {
+    this._logMemory("shutdown_start", { source });
+    
+    if (this.syncInProgress) {
+      log("info", "shutdown_waiting_for_sync", { timeout: "15s" });
       let waited = 0;
-      while (!this.sessionSaved && waited < 15000) {
+      while (this.syncInProgress && waited < 15000) {
         await new Promise((r) => setTimeout(r, 500));
         waited += 500;
-      }
-      if (!this.sessionSaved) {
-        log("warn", "shutdown_sync_timeout", {});
       }
     }
 
@@ -325,18 +352,21 @@ class WhatsAppService {
       this.reconnectTimer = null;
     }
 
-    // _destroyClient also clears memoryMonitorInterval
     await this._destroyClient();
 
-    // Mongo disconnect is intentionally AFTER client destroy and sync wait
     if (mongoose.connection.readyState === 1) {
-      try { await mongoose.disconnect(); } catch (_) {}
+      try { 
+        log("info", "disconnecting_mongodb");
+        await mongoose.disconnect(); 
+      } catch (_) {}
     }
+
+    this._logMemory("shutdown_complete");
   }
 
-  // ── Status & API ────────────────────────────────────────────────────────────
   getStatus() {
     const ageSeconds = this.qrGeneratedAt ? Math.floor((Date.now() - this.qrGeneratedAt) / 1000) : null;
+    const mem = process.memoryUsage();
     return {
       status: this.isReady ? "ready" : this.isInitializing ? "initializing" : "not_ready",
       isReady: this.isReady,
@@ -344,9 +374,11 @@ class WhatsAppService {
       reconnectAttempt: this.reconnectAttempt,
       hasQr: !!this.latestQr,
       qr_age_seconds: ageSeconds,
-      qr_generated_at: this.qrGeneratedAt ? new Date(this.qrGeneratedAt).toISOString() : null,
       uptimeSec: Math.floor(process.uptime()),
-      memMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
+      memory: {
+        rssMB: Math.floor(mem.rss / 1024 / 1024),
+        heapUsedMB: Math.floor(mem.heapUsed / 1024 / 1024),
+      },
     };
   }
 
