@@ -60,18 +60,28 @@ class WhatsAppService {
     log("info", "whatsapp_init_start", { source, pid: config.PID });
 
     try {
-      // 1. Connect to MongoDB if not connected
+      // 1. Connect to MongoDB and initialize Store
       await this._connectMongo();
 
-      // 2. Clear old client if exists
+      // 2. Explicitly verify session existence
+      const sessionExists = await this._verifyRemoteSession();
+      if (sessionExists) {
+        log("info", "remote_session_exists", { clientId: "main", pid: config.PID });
+      } else {
+        log("info", "remote_session_not_found", { clientId: "main", pid: config.PID });
+      }
+
+      // 3. Clear old client if exists
       await this._destroyClient("initialization");
 
-      // 3. Create fresh client
+      // 4. Create fresh client
       this._createClient(source);
 
-      // 4. Launch browser
+      // 5. Launch browser
       this.browserState = "launching";
       log("info", "browser_launch_start", { source, pid: config.PID });
+      
+      // We wrap initialize to detect successful restoration
       await this.client.initialize();
       
       this.initializing = false;
@@ -89,13 +99,13 @@ class WhatsAppService {
   }
 
   async _connectMongo() {
-    if (mongoose.connection.readyState === 1) return;
+    if (mongoose.connection.readyState === 1 && this.store) return;
 
     if (!config.MONGODB_URI) {
       throw new Error("MONGODB_URI is not configured");
     }
 
-    log("info", "mongodb_connecting", { uri: config.MONGODB_URI.split("@")[1] || "hidden" });
+    log("info", "mongodb_connecting", { pid: config.PID });
     
     try {
       await mongoose.connect(config.MONGODB_URI, {
@@ -103,11 +113,40 @@ class WhatsAppService {
         socketTimeoutMS: 45000,
       });
       
+      // Diagnostics: List collections
+      const collections = await mongoose.connection.db.listCollections().toArray();
+      const collectionNames = collections.map(c => c.name);
+      log("info", "mongodb_connected", { 
+        pid: config.PID, 
+        collections: collectionNames 
+      });
+
       this.store = new MongoStore({ mongoose: mongoose });
       log("info", "remote_store_connected", { pid: config.PID });
     } catch (err) {
       log("error", "mongodb_connection_failed", { error: err.message });
       throw err;
+    }
+  }
+
+  async _verifyRemoteSession() {
+    try {
+      if (!this.store) return false;
+      
+      // Diagnostics: check all sessions in the store
+      const allSessions = await mongoose.connection.db.collection("whatsapp-sessions").find({}).toArray();
+      const sessionIds = allSessions.map(s => s.id);
+      
+      log("info", "session_detection_diagnostics", { 
+        pid: config.PID, 
+        foundIds: sessionIds 
+      });
+
+      const exists = await this.store.sessionExists({ session: "main" });
+      return exists;
+    } catch (err) {
+      log("warn", "session_verification_failed", { error: err.message });
+      return false;
     }
   }
 
@@ -134,7 +173,7 @@ class WhatsAppService {
       authStrategy: new RemoteAuth({
         clientId: "main",
         store: this.store,
-        backupSyncIntervalMs: 300_000, // 5 minutes
+        backupSyncIntervalMs: 300_000,
       }),
       puppeteer: puppeteerOptions,
       qrMaxRetries: 3,
@@ -174,9 +213,13 @@ class WhatsAppService {
       this.qrGeneratedAt = Date.now();
       this.metrics.qrGenerations++;
       this.sessionState = "qr";
+
+      // If we thought a session existed but got a QR, it might be expired or corrupted
+      const wasExpected = this.sessionState === "launching" && this.isReady === false; 
       log("info", "qr_generated", { 
         pid: config.PID, 
-        attempt: this.metrics.qrGenerations 
+        attempt: this.metrics.qrGenerations,
+        unexpected: wasExpected
       });
     });
 
@@ -199,15 +242,22 @@ class WhatsAppService {
     });
 
     this.client.on("ready", () => {
+      const wasRestored = this.metrics.qrGenerations === 0;
       this.isReady = true;
       this.sessionState = "ready";
       this.browserState = "open";
       this.reconnectAttempt = 0;
       this.reconnecting = false;
+      
       log("info", "ready", { 
         pid: config.PID,
-        pushname: this.client.info?.pushname 
+        pushname: this.client.info?.pushname,
+        restored: wasRestored
       });
+
+      if (wasRestored) {
+        log("info", "remote_session_restored", { pid: config.PID });
+      }
 
       this._setupIntervals();
     });
