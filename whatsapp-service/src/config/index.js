@@ -23,6 +23,7 @@ function resolveChromePath() {
 
 const config = {
   PORT: process.env.PORT || 3001,
+  PID: process.pid,
   RENDER_URL: process.env.RENDER_EXTERNAL_URL || null,
   BACKEND_URL: process.env.BACKEND_URL || "http://localhost:5000",
   INTERNAL_KEY: process.env.INTERNAL_API_KEY || "dev-internal-key-change-in-production",
@@ -32,17 +33,20 @@ const config = {
   PAIRING_ADMIN_TOKEN: process.env.PAIRING_ADMIN_TOKEN || null,
   KEEP_ALIVE_INTERVAL: 4 * 60 * 1000,
   MAX_MESSAGE_LENGTH: 1000,
-  AUTH_DIR: path.join(__dirname, "../../sessions"),
-  SESSION_DIR: path.join(__dirname, "../../sessions/session-main"),
-  BACKUP_KEY: "wa-session-backup",
+  // Use /var/data/whatsapp on Render for persistent storage, otherwise local sessions
+  AUTH_DIR: process.env.RENDER_EXTERNAL_URL 
+    ? "/var/data/whatsapp" 
+    : path.join(__dirname, "../../sessions"),
+  SESSION_DIR: process.env.RENDER_EXTERNAL_URL
+    ? "/var/data/whatsapp/session-main"
+    : path.join(__dirname, "../../sessions/session-main"),
   BACKUP_INTERVAL: 10 * 60 * 1000,
-  CACHE_CLEANUP_INTERVAL: 5 * 60 * 1000,
-  RECONNECT_BASE_DELAY_MS: 30_000,
-  RECONNECT_MAX_DELAY_MS: 300_000,
-  RECONNECT_JITTER_MS: 5_000,
-  MAX_RECONNECT_ATTEMPTS: 10,
-  SHUTDOWN_TIMEOUT_MS: 15_000,
-  BACKUP_MAX_SIZE_MB: 100,
+  CACHE_CLEANUP_INTERVAL: 10 * 60 * 1000,
+  RECONNECT_BASE_DELAY_MS: 60_000, // Increased base delay
+  RECONNECT_MAX_DELAY_MS: 600_000, // Increased max delay
+  RECONNECT_JITTER_MS: 10_000,
+  MAX_RECONNECT_ATTEMPTS: 5, // Reduced max attempts for safety during debug
+  SHUTDOWN_TIMEOUT_MS: 20_000, // Increased for graceful browser close
   // Resolved once at startup; only used if explicitly needed (e.g. Render)
   chromePath: process.env.PUPPETEER_EXECUTABLE_PATH || resolveChromePath(),
   puppeteerArgs: [
@@ -56,8 +60,6 @@ const config = {
     "--disable-extensions",
     "--disable-notifications",
     "--disable-remote-fonts",
-    "--disable-setuid-sandbox",
-    "--no-sandbox",
     "--disable-accelerated-2d-canvas",
     "--disable-background-networking",
     "--disable-background-timer-throttling",
@@ -70,6 +72,7 @@ const config = {
     "--disable-software-rasterizer",
     "--metrics-recording-only",
     "--mute-audio",
+    "--no-default-browser-check",
   ],
 };
 

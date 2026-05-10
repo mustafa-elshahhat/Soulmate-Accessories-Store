@@ -6,12 +6,7 @@ const authMiddleware = require("../middleware/auth");
 const { normalizePhone, validateMessage } = require("../utils");
 const config = require("../config");
 
-// ── Structured logger ─────────────────────────────────────────────────────────
-function log(level, event, meta = {}) {
-  console.log(
-    JSON.stringify({ timestamp: new Date().toISOString(), level, event, ...meta })
-  );
-}
+const log = require("../utils/logger");
 
 // ── Pairing UI guard ──────────────────────────────────────────────────────────
 const pairingCheck = (req, res, next) => {
