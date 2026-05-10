@@ -77,7 +77,7 @@ class WhatsAppService {
       authStrategy: new RemoteAuth({
         clientId: "main",
         store: this.store,
-        backupSyncIntervalMs: 15000,
+        backupSyncIntervalMs: 60000,
       }),
       puppeteer: puppeteerOptions,
       qrMaxRetries: 3,
