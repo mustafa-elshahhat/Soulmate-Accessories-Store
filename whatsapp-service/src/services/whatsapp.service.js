@@ -133,8 +133,8 @@ class WhatsAppService {
     this.client = new Client({
       authStrategy,
       puppeteer: puppeteerOptions,
-      qrMaxRetries: 3,
-      authTimeoutMs: 60_000,
+      qrMaxRetries: 15,
+      authTimeoutMs: 300_000, // 5 minutes
     });
 
     this.client.removeAllListeners();
@@ -163,8 +163,13 @@ class WhatsAppService {
     this.client.on("qr", (qr) => {
       this.latestQr = qr;
       this.qrGeneratedAt = Date.now();
-      this.sessionState = "qr";
-      log("info", "qr_generated", {});
+      this.sessionState = "awaiting_qr_scan";
+      
+      const ageSeconds = Math.floor((Date.now() - this.qrGeneratedAt) / 1000);
+      log("info", "qr_generated", { 
+        qr_age_seconds: ageSeconds,
+        qr_generated_at: new Date(this.qrGeneratedAt).toISOString()
+      });
     });
 
     this.client.on("authenticated", () => {
@@ -212,6 +217,18 @@ class WhatsAppService {
 
     this.client.on("disconnected", (reason) => {
       this.isReady = false;
+      
+      // PASSIVE MODE: If QR retries are exhausted, do NOT reconnect or destroy.
+      // Wait indefinitely for a manual scan if the browser is still alive.
+      if (reason === "Max qrcode retries reached") {
+        this.sessionState = "awaiting_qr_scan";
+        log("warn", "qr_retries_exhausted_passive_mode", { 
+          reason, 
+          status: "waiting_indefinitely_for_manual_scan" 
+        });
+        return; 
+      }
+
       this.sessionState = "disconnected";
       log("warn", "disconnected", { reason });
       this._scheduleReconnect("disconnected");
@@ -319,13 +336,15 @@ class WhatsAppService {
 
   // ── Status & API ────────────────────────────────────────────────────────────
   getStatus() {
+    const ageSeconds = this.qrGeneratedAt ? Math.floor((Date.now() - this.qrGeneratedAt) / 1000) : null;
     return {
       status: this.isReady ? "ready" : this.isInitializing ? "initializing" : "not_ready",
       isReady: this.isReady,
       sessionState: this.sessionState,
       reconnectAttempt: this.reconnectAttempt,
       hasQr: !!this.latestQr,
-      qrAgeMs: this.qrGeneratedAt ? Date.now() - this.qrGeneratedAt : null,
+      qr_age_seconds: ageSeconds,
+      qr_generated_at: this.qrGeneratedAt ? new Date(this.qrGeneratedAt).toISOString() : null,
       uptimeSec: Math.floor(process.uptime()),
       memMB: Math.floor(process.memoryUsage().rss / 1024 / 1024),
     };
