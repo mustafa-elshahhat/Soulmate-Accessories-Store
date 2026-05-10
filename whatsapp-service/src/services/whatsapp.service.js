@@ -175,6 +175,48 @@ class WhatsAppService {
 
     authStrategy.sessionName = "main";
 
+    // ── TASK 4: RemoteAuth Execution Tracing (Monkey-patching) ──
+    if (this.store && typeof this.store.save === "function") {
+      const originalSave = this.store.save.bind(this.store);
+      this.store.save = async (...args) => {
+        log("info", "remoteauth_trace_store_save_started", { argsLength: args.length });
+        const start = Date.now();
+        try {
+          await originalSave(...args);
+          log("info", "remoteauth_trace_store_save_success", { duration_ms: Date.now() - start });
+        } catch (err) {
+          log("error", "remoteauth_trace_store_save_error", { error: err.message });
+          throw err;
+        }
+      };
+    }
+
+    // Wrap compressSession if it exists
+    if (typeof authStrategy.compressSession === "function") {
+      const originalCompress = authStrategy.compressSession.bind(authStrategy);
+      authStrategy.compressSession = async () => {
+        log("info", "remoteauth_trace_compress_started");
+        const start = Date.now();
+        await originalCompress();
+        log("info", "remoteauth_trace_compress_success", { duration_ms: Date.now() - start });
+      };
+    }
+
+    // The backup() method might be added dynamically or exist on prototype. We wrap it later in authenticated event if it appears, or try now if it exists.
+    if (typeof authStrategy.backup === "function") {
+      const originalBackup = authStrategy.backup.bind(authStrategy);
+      authStrategy.backup = async () => {
+        log("info", "remoteauth_trace_backup_started");
+        try {
+          await originalBackup();
+          log("info", "remoteauth_trace_backup_success");
+        } catch (err) {
+          log("error", "remoteauth_trace_backup_error", { error: err.message });
+          throw err;
+        }
+      };
+    }
+
     this.client = new Client({
       authStrategy,
       puppeteer: puppeteerOptions,
@@ -220,13 +262,37 @@ class WhatsAppService {
     });
 
     this.client.on("authenticated", () => {
+      // ── TASK 3: Auth Flow Timing ──
+      const authDurationS = this.qrGeneratedAt ? ((Date.now() - this.qrGeneratedAt) / 1000).toFixed(2) : "unknown";
+      
       this.sessionState = "authenticated";
       this.wasAuthenticatedThisSession = true;
       this.latestQr = null;
       this.qrGeneratedAt = null;
       this.syncInProgress = true;
-      log("info", "remote_session_save_started", { pid: process.pid });
+      this.authCompleteAt = Date.now(); // Track when auth finished
+      
+      log("info", "remote_session_save_started", { 
+        pid: process.pid,
+        auth_duration_seconds: authDurationS
+      });
       this._logMemory("authenticated");
+
+      // Check if backup method was added dynamically and trace it
+      if (this.client.authStrategy && typeof this.client.authStrategy.backup === "function" && !this.client.authStrategy.backup.isWrapped) {
+        const originalBackup = this.client.authStrategy.backup.bind(this.client.authStrategy);
+        this.client.authStrategy.backup = async () => {
+          log("info", "remoteauth_trace_backup_started_dynamic");
+          try {
+            await originalBackup();
+            log("info", "remoteauth_trace_backup_success_dynamic");
+          } catch (err) {
+            log("error", "remoteauth_trace_backup_error_dynamic", { error: err.message });
+            throw err;
+          }
+        };
+        this.client.authStrategy.backup.isWrapped = true;
+      }
 
       // Fallback: Trigger RemoteAuth backup if it hasn't started within 5s
       setTimeout(async () => {
@@ -242,9 +308,16 @@ class WhatsAppService {
     });
 
     this.client.on("remote_session_saved", () => {
+      // ── TASK 3: Save Flow Timing ──
+      const saveDurationS = this.authCompleteAt ? ((Date.now() - this.authCompleteAt) / 1000).toFixed(2) : "unknown";
+
+      this.sessionState = "saved";
       this.sessionSaved = true;
       this.syncInProgress = false;
-      log("info", "remote_session_saved", { clientId: "main" });
+      log("info", "remote_session_saved", { 
+        clientId: "main",
+        save_duration_seconds: saveDurationS
+      });
       this._logMemory("remote_session_saved");
       this._verifySessionSync();
       this._triggerGC("after_sync");

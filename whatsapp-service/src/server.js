@@ -3,12 +3,34 @@ const config = require("./config");
 const log = require("./utils/logger");
 const whatsappService = require("./services/whatsapp.service");
 const lifecycleManager = require("./services/lifecycle.manager");
+const { monitorEventLoopDelay } = require("perf_hooks");
 
 let server = null;
 
+// ── Event Loop Diagnostics ──────────────────────────────────────────────────
+const elHistogram = monitorEventLoopDelay({ resolution: 20 });
+elHistogram.enable();
+
+setInterval(() => {
+  log("info", "system_heartbeat", { 
+    event_loop_lag_mean_ms: Math.floor(elHistogram.mean / 1e6),
+    event_loop_lag_p99_ms: Math.floor(elHistogram.percentile(99) / 1e6),
+    active_handles: process._getActiveHandles ? process._getActiveHandles().length : 0,
+    active_requests: process._getActiveRequests ? process._getActiveRequests().length : 0,
+    uptime_s: Math.floor(process.uptime())
+  });
+  elHistogram.reset();
+}, 5000);
+
 // ── Health endpoint ────────────────────────────────────────────────────────────
-app.get("/health", (_req, res) => {
-  res.json(whatsappService.getStatus());
+app.get("/health", (req, res) => {
+  const start = process.hrtime.bigint();
+  const status = whatsappService.getStatus();
+  const end = process.hrtime.bigint();
+  const latencyMs = Number(end - start) / 1e6;
+  
+  log("info", "healthcheck_accessed", { latencyMs });
+  res.json({ ...status, healthcheck_latency_ms: latencyMs });
 });
 
 // ── Start server ───────────────────────────────────────────────────────────────
