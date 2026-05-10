@@ -1,4 +1,6 @@
-const { Client, LocalAuth } = require("whatsapp-web.js");
+const { Client, RemoteAuth } = require("whatsapp-web.js");
+const { MongoStore } = require("wwebjs-mongo");
+const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
 const config = require("../config");
@@ -10,6 +12,7 @@ class WhatsAppService {
     this.isReady = false;
     this.latestQr = null;
     this.qrGeneratedAt = null;
+    this.store = null;
 
     // Lifecycle control
     this.initializing = false;
@@ -57,11 +60,8 @@ class WhatsAppService {
     log("info", "whatsapp_init_start", { source, pid: config.PID });
 
     try {
-      // 1. Ensure auth directory exists (especially on Render persistent disk)
-      if (!fs.existsSync(config.AUTH_DIR)) {
-        log("info", "creating_auth_dir", { path: config.AUTH_DIR });
-        fs.mkdirSync(config.AUTH_DIR, { recursive: true });
-      }
+      // 1. Connect to MongoDB if not connected
+      await this._connectMongo();
 
       // 2. Clear old client if exists
       await this._destroyClient("initialization");
@@ -88,10 +88,33 @@ class WhatsAppService {
     }
   }
 
+  async _connectMongo() {
+    if (mongoose.connection.readyState === 1) return;
+
+    if (!config.MONGODB_URI) {
+      throw new Error("MONGODB_URI is not configured");
+    }
+
+    log("info", "mongodb_connecting", { uri: config.MONGODB_URI.split("@")[1] || "hidden" });
+    
+    try {
+      await mongoose.connect(config.MONGODB_URI, {
+        serverSelectionTimeoutMS: 15000,
+        socketTimeoutMS: 45000,
+      });
+      
+      this.store = new MongoStore({ mongoose: mongoose });
+      log("info", "remote_store_connected", { pid: config.PID });
+    } catch (err) {
+      log("error", "mongodb_connection_failed", { error: err.message });
+      throw err;
+    }
+  }
+
   _createClient(source) {
     log("info", "client_creation", { 
+      authStrategy: "RemoteAuth",
       clientId: "main", 
-      dataPath: config.AUTH_DIR,
       source 
     });
     
@@ -102,16 +125,16 @@ class WhatsAppService {
       args: config.puppeteerArgs,
     };
 
-    // Use executablePath on Render
     if (config.chromePath) {
       puppeteerOptions.executablePath = config.chromePath;
       log("info", "using_custom_executable_path", { path: config.chromePath });
     }
 
     this.client = new Client({
-      authStrategy: new LocalAuth({
+      authStrategy: new RemoteAuth({
         clientId: "main",
-        dataPath: config.AUTH_DIR,
+        store: this.store,
+        backupSyncIntervalMs: 300_000, // 5 minutes
       }),
       puppeteer: puppeteerOptions,
       qrMaxRetries: 3,
@@ -126,7 +149,6 @@ class WhatsAppService {
       log("info", "destroying_client", { source, pid: config.PID });
       try {
         this.client.removeAllListeners();
-        // Force close browser if possible to prevent zombies
         if (this.client.pupBrowser) {
           await this.client.pupBrowser.close().catch(() => {});
         }
@@ -137,7 +159,6 @@ class WhatsAppService {
       this.client = null;
     }
     
-    // Clear intervals
     if (this.cacheCleanupInterval) {
       clearInterval(this.cacheCleanupInterval);
       this.cacheCleanupInterval = null;
@@ -164,6 +185,10 @@ class WhatsAppService {
       this.latestQr = null;
       this.qrGeneratedAt = null;
       log("info", "authenticated", { pid: config.PID });
+    });
+
+    this.client.on("remote_session_saved", () => {
+      log("info", "remote_session_saved", { pid: config.PID });
     });
 
     this.client.on("auth_failure", (msg) => {
@@ -273,6 +298,16 @@ class WhatsAppService {
     if (this.cacheCleanupInterval) clearInterval(this.cacheCleanupInterval);
 
     await this._destroyClient(source);
+    
+    try {
+      if (mongoose.connection.readyState === 1) {
+        await mongoose.disconnect();
+        log("info", "mongodb_disconnected", { pid: config.PID });
+      }
+    } catch (err) {
+      log("error", "mongodb_disconnect_failed", { error: err.message });
+    }
+
     log("info", "whatsapp_destroy_complete", { source, pid: config.PID });
   }
 

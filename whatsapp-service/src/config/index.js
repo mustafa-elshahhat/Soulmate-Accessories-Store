@@ -33,13 +33,7 @@ const config = {
   PAIRING_ADMIN_TOKEN: process.env.PAIRING_ADMIN_TOKEN || null,
   KEEP_ALIVE_INTERVAL: 4 * 60 * 1000,
   MAX_MESSAGE_LENGTH: 1000,
-  // Use /var/data/whatsapp on Render for persistent storage, otherwise local sessions
-  AUTH_DIR: process.env.RENDER_EXTERNAL_URL 
-    ? "/var/data/whatsapp" 
-    : path.join(__dirname, "../../sessions"),
-  SESSION_DIR: process.env.RENDER_EXTERNAL_URL
-    ? "/var/data/whatsapp/session-main"
-    : path.join(__dirname, "../../sessions/session-main"),
+  MONGODB_URI: process.env.MONGODB_URI || null,
   BACKUP_INTERVAL: 10 * 60 * 1000,
   CACHE_CLEANUP_INTERVAL: 10 * 60 * 1000,
   RECONNECT_BASE_DELAY_MS: 60_000, // Increased base delay
