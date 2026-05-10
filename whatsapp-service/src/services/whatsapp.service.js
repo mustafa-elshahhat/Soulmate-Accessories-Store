@@ -113,7 +113,10 @@ class WhatsAppService {
         socketTimeoutMS: 45000,
       });
       
-      // Diagnostics: List collections
+      // Cleanup malformed collections before initializing Store
+      await this._cleanupMalformedCollections();
+
+      // Diagnostics: List final collections
       const collections = await mongoose.connection.db.listCollections().toArray();
       const collectionNames = collections.map(c => c.name);
       log("info", "mongodb_connected", { 
@@ -129,18 +132,44 @@ class WhatsAppService {
     }
   }
 
+  async _cleanupMalformedCollections() {
+    try {
+      const collections = await mongoose.connection.db.listCollections().toArray();
+      const malformed = collections.filter(c => 
+        c.name.includes("/") || 
+        c.name.includes(".wwebjs_auth") ||
+        (c.name.startsWith("whatsapp-") && c.name.length > 50) // Path-based names are usually very long
+      );
+
+      if (malformed.length > 0) {
+        log("warn", "cleanup_malformed_collections_start", { count: malformed.length });
+        for (const coll of malformed) {
+          await mongoose.connection.db.dropCollection(coll.name);
+          log("info", "malformed_collection_dropped", { name: coll.name });
+        }
+        log("info", "cleanup_malformed_collections_complete");
+      }
+    } catch (err) {
+      log("error", "cleanup_malformed_collections_failed", { error: err.message });
+    }
+  }
+
   async _verifyRemoteSession() {
     try {
       if (!this.store) return false;
       
-      // Diagnostics: check all sessions in the store
-      const allSessions = await mongoose.connection.db.collection("whatsapp-sessions").find({}).toArray();
-      const sessionIds = allSessions.map(s => s.id);
+      // Diagnostics: check sessions in the store
+      // wwebjs-mongo usually creates a 'whatsapp-sessions' collection for metadata
+      const sessionColl = mongoose.connection.db.collection("whatsapp-sessions");
+      const sessionDoc = await sessionColl.findOne({ id: "main" });
       
-      log("info", "session_detection_diagnostics", { 
-        pid: config.PID, 
-        foundIds: sessionIds 
-      });
+      if (sessionDoc) {
+        log("info", "remote_session_doc_found", { 
+          pid: config.PID, 
+          id: sessionDoc.id,
+          updatedAt: sessionDoc.updatedAt 
+        });
+      }
 
       const exists = await this.store.sessionExists({ session: "main" });
       return exists;
@@ -154,6 +183,7 @@ class WhatsAppService {
     log("info", "client_creation", { 
       authStrategy: "RemoteAuth",
       clientId: "main", 
+      namespace: "whatsapp-main",
       source 
     });
     
