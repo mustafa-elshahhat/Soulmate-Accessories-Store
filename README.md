@@ -39,17 +39,26 @@ The project follows a clean architecture pattern:
 ## Environment Variables
 
 ### Backend
-- `ConnectionStrings:DefaultConnection`: SQL Server connection string.
-- `Jwt:Secret`: Secret key for token signing.
-- `Cloudinary`: Credentials for image storage.
-- `Mail`: SMTP credentials for outbound email notifications.
-- `InternalApi:Key`: Key used for internal administrative tasks.
+Production configuration is supplied **exclusively via environment variables** -
+`backend/appsettings.Production.json` is gitignored and must never be committed.
+Use `backend/appsettings.Example.json` as a reference for the full configuration
+shape (including non-secret settings). ASP.NET Core maps `Section__Key`
+environment variables to `"Section": { "Key": ... }` configuration values, so set:
+
+- `ConnectionStrings__DefaultConnection`: SQL Server connection string (includes DB credentials).
+- `Jwt__Secret`: Secret key for token signing (min 32 chars).
+- `Jwt__Issuer` / `Jwt__Audience`: Token issuer/audience values.
+- `Cloudinary__CloudName`, `Cloudinary__ApiKey`, `Cloudinary__ApiSecret`: Credentials for image storage.
+- `Mail__User`, `Mail__Password`: SMTP credentials for outbound email (use a Gmail App Password).
+- `InternalApi__Key`: Key used for internal/administrative service-to-service calls.
 
 ## Setup Instructions
 
 ### Backend Setup
 1. Navigate to `/backend`.
-2. Configure `appsettings.json` with your credentials (e.g. SQL Server connection, JWT Secret, Cloudinary keys).
+2. Copy `appsettings.Example.json` for the configuration shape, then either fill in
+   `appsettings.Development.json` (gitignored) for local development or set the
+   environment variables listed above for production. Never commit real credentials.
 3. Run `dotnet restore`.
 4. Run `dotnet ef database update` to apply migrations via local SQL Server/LocalDB.
 5. Run `dotnet run` or `dotnet build --configuration Release` to start or build the API.
@@ -77,7 +86,14 @@ npm run build
 
 ## Security Notes
 
-- **Secrets**: sensitive configurations (JWT secrets, API keys, etc.) should be managed via Environment Variables or Secret Manager in production.
+- **Secrets**: Production secrets (database password, JWT secret, Cloudinary API secret,
+  Gmail app password, internal API key, etc.) must be supplied **only** via environment
+  variables or a secret manager - never via committed files. `backend/appsettings.Production.json`
+  is gitignored for this reason.
+- **Leaked credentials**: If a credential is ever committed to version control (including
+  git history), treat it as compromised and rotate it immediately at the source (database
+  provider, Cloudinary, Gmail, etc.). Removing a file from the repository does not invalidate
+  the values it contained.
 - **CSRF**: Endpoints relying on cookies (like logout and token refresh) are protected by CSRF tokens.
 
 ## Deployment Notes
