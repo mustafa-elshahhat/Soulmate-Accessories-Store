@@ -28,7 +28,7 @@ A full-stack e-commerce platform specializing in customizable accessory gift box
 /frontend           - Angular SSR app (self-contained, deploys to Vercel)
   /e2e              - Playwright smoke tests (run against dev server)
   /e2e-integration  - Playwright integration tests (require a running backend)
-  /seo              - SEO strategy documentation
+/docs/seo           - SEO strategy documentation
 /.github/workflows  - CI (backend build + tests, frontend lint + build)
 ```
 

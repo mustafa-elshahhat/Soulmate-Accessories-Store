@@ -26,4 +26,4 @@ Disallow: /*?sort=
 Disallow: /*?page=
 Disallow: /*?limit=
 
-Sitemap: https://soulmate-store.com/sitemap.xml
+Sitemap: https://soulmate.runasp.net/api/seo/sitemap.xml
