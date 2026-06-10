@@ -11,6 +11,7 @@ describe('BuilderStateService', () => {
   const mockBoxType: BoxType = {
     id: 'box-1',
     name: 'For Him',
+    name_en: 'For Him',
     slug: 'for-him',
     gender: 'male',
     base_price: 150,
@@ -18,17 +19,20 @@ describe('BuilderStateService', () => {
   };
 
   const mockSlots: BoxSlot[] = [
-    { id: 'slot-1', slot_key: 'perfume', label_ar: 'عطر', is_required: true, sort_order: 1, filter_gender: 'male' },
-    { id: 'slot-2', slot_key: 'watch', label_ar: 'ساعة', is_required: false, sort_order: 2, filter_gender: null },
+    { id: 'slot-1', slot_key: 'perfume', label_ar: 'عطر', label_en: 'Perfume', is_required: true, sort_order: 1, filter_gender: 'male' },
+    { id: 'slot-2', slot_key: 'watch', label_ar: 'ساعة', label_en: 'Watch', is_required: false, sort_order: 2, filter_gender: null },
   ];
 
   const mockProduct: SlotProduct = {
     id: 'prod-1',
     name: 'Perfume X',
+    name_en: 'Perfume X',
     price: 200,
     image_url: 'url',
     category: 'watch',
     gender: 'male',
+    is_customizable: false,
+    customization_price: 0,
   };
 
   it('should start with null box type', () => {

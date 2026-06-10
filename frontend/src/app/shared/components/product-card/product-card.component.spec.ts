@@ -10,8 +10,10 @@ describe('ProductCardComponent', () => {
   const mockProduct: Product = {
     id: '1',
     name: 'Test Perfume',
+    name_en: 'Test Perfume',
     slug: 'test-perfume',
     description: 'A nice perfume for testing',
+    description_en: 'A nice perfume for testing',
     price: 250,
     image_url: '/images/perfume.jpg',
     gallery_json: null,
@@ -19,6 +21,15 @@ describe('ProductCardComponent', () => {
     gender: 'male',
     is_active: true,
     is_standalone: true,
+    is_builder_item: false,
+    is_customizable: false,
+    stock_quantity: 10,
+    original_price: null,
+    final_price: null,
+    discount_percentage: null,
+    customization_price: 0,
+    average_rating: 0,
+    review_count: 0,
     created_at: '2026-01-01',
     updated_at: '2026-01-01',
   };
@@ -52,7 +63,7 @@ describe('ProductCardComponent', () => {
 
   it('should display product price with currency', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('ج.م');
+    expect(compiled.textContent).toContain('EGP');
   });
 
   it('should render product image with correct src', () => {

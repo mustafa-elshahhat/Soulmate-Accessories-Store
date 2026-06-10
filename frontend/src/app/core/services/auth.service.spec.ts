@@ -3,6 +3,15 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { provideHttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 
+/** Flushes the /api/cart GET request that AuthService triggers via
+ *  CartService.loadFromServer() after a successful login/register. */
+function flushCartRequest(httpMock: HttpTestingController): void {
+  httpMock.expectOne((r) => r.url.includes('/api/cart')).flush({
+    success: true,
+    data: { items_json: '[]', updated_at: '2026-01-01T00:00:00Z' },
+  });
+}
+
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
@@ -48,6 +57,7 @@ describe('AuthService', () => {
       const req = httpMock.expectOne((r) => r.url.includes('/api/auth/register'));
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);
+      flushCartRequest(httpMock);
 
       expect(service.isLoggedIn()).toBe(true);
       expect(service.getAccessToken()).toBe('test-jwt-token');
@@ -72,6 +82,7 @@ describe('AuthService', () => {
       const req = httpMock.expectOne((r) => r.url.includes('/api/auth/login'));
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);
+      flushCartRequest(httpMock);
 
       expect(service.isLoggedIn()).toBe(true);
       expect(service.user()?.email).toBe('login@test.com');
@@ -108,10 +119,15 @@ describe('AuthService', () => {
       };
       service.login({ email: 'e@t.com', password: 'p' }).subscribe();
       httpMock.expectOne((r) => r.url.includes('/api/auth/login')).flush(mockLogin);
+      flushCartRequest(httpMock);
 
       expect(service.isLoggedIn()).toBe(true);
 
       service.logout().subscribe();
+      httpMock.expectOne((r) => r.url.includes('/api/auth/csrf')).flush({
+        success: true,
+        data: { csrf_token: 'test-csrf-token' },
+      });
       httpMock.expectOne((r) => r.url.includes('/api/auth/logout')).flush(null);
 
       expect(service.isLoggedIn()).toBe(false);
@@ -132,6 +148,7 @@ describe('AuthService', () => {
 
       service.login({ email: 'admin@test.com', password: 'p' }).subscribe();
       httpMock.expectOne((r) => r.url.includes('/api/auth/login')).flush(mockResponse);
+      flushCartRequest(httpMock);
 
       expect(service.isAdmin()).toBe(true);
     });
@@ -147,6 +164,7 @@ describe('AuthService', () => {
 
       service.login({ email: 'cust@test.com', password: 'p' }).subscribe();
       httpMock.expectOne((r) => r.url.includes('/api/auth/login')).flush(mockResponse);
+      flushCartRequest(httpMock);
 
       expect(service.isAdmin()).toBe(false);
     });
@@ -160,7 +178,7 @@ describe('AuthService', () => {
 
       const req = httpMock.expectOne((r) => r.url.includes('/api/auth/forgot-password'));
       expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual({ email: 'forgot@test.com' });
+      expect(req.request.body).toEqual({ email: 'forgot@test.com', lang: 'ar' });
       req.flush({ success: true, data: {}, message: 'Check your email' });
     });
   });

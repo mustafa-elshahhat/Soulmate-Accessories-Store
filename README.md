@@ -1,102 +1,122 @@
 # Soulmate Accessories Store
 
-A full-stack e-commerce platform specializing in customizable accessory boxes. The project features a modern architecture with a decoupled backend and frontend.
-
-## Project Overview
-
-Soulmate Accessories Store provides a seamless shopping experience where customers can purchase individual products or build their own customized accessory boxes. The system handles order management, stock control, and automated customer communication via email and in-app notifications.
+A full-stack e-commerce platform specializing in customizable accessory gift boxes. The backend and frontend are decoupled and deploy independently.
 
 ## Features
 
 - **Custom Box Builder**: Interactive interface to select box types and fill them with products from specific categories.
 - **Product Management**: Standalone and builder-specific items with category-based customization prices.
-- **Order System**: Complete lifecycle from pending payment to delivery.
+- **Order System**: Complete lifecycle from pending payment to delivery, with stock control and order expiration.
 - **Notifications**: Email and in-app notifications for order status updates and payment verification.
-- **Security**: JWT-based authentication, CSRF protection, and internal service hardening.
-- **Admin Dashboard**: Manage products, orders, inventory, and system settings.
+- **Security**: JWT-based authentication, CSRF protection, rate limiting, and security headers.
+- **Admin Dashboard**: Manage products, orders, inventory, promotions, coupons, and system settings.
+- **Bilingual**: Arabic/English UI with RTL support and multilingual SEO.
 
 ## Tech Stack
 
-- **Backend**: ASP.NET Core 10.0 Web API, Entity Framework Core, SQL Server.
-- **Frontend**: Angular 21 (Standalone components), SSR (Server-Side Rendering), Tailwind CSS.
+- **Backend**: ASP.NET Core 8 Web API, Entity Framework Core, SQL Server, Serilog.
+- **Frontend**: Angular 21 (standalone components) with SSR, Tailwind CSS.
 - **Storage**: Cloudinary for product and payment receipt images.
-
-## Architecture
-
-The project follows a clean architecture pattern:
-- **Client Side**: Angular handles the UI and state management.
-- **API Layer**: ASP.NET Core provides RESTful endpoints and handles business logic.
-- **Data Layer**: SQL Server managed via EF Core Migrations.
-- **Notification Layer**: Email (SMTP) and in-app database notifications dispatched via a background queue.
 
 ## Project Structure
 
 ```text
-/backend            - ASP.NET Core Web API
-/frontend           - Angular SPA
+/backend            - ASP.NET Core Web API (self-contained, deploys to MonsterASP.NET/IIS)
+  /Tests            - xUnit test project
+  /Migrations       - EF Core migrations (applied automatically on startup)
+  /scripts          - Build and database backup/restore scripts
+/frontend           - Angular SSR app (self-contained, deploys to Vercel)
+  /e2e              - Playwright smoke tests (run against dev server)
+  /e2e-integration  - Playwright integration tests (require a running backend)
+  /seo              - SEO strategy documentation
+/.github/workflows  - CI (backend build + tests, frontend lint + build)
 ```
 
-## Environment Variables
+## Local Development
 
 ### Backend
-Production configuration is supplied **exclusively via environment variables** -
-`backend/appsettings.Production.json` is gitignored and must never be committed.
-Use `backend/appsettings.Example.json` as a reference for the full configuration
-shape (including non-secret settings). ASP.NET Core maps `Section__Key`
-environment variables to `"Section": { "Key": ... }` configuration values, so set:
 
-- `ConnectionStrings__DefaultConnection`: SQL Server connection string (includes DB credentials).
-- `Jwt__Secret`: Secret key for token signing (min 32 chars).
-- `Jwt__Issuer` / `Jwt__Audience`: Token issuer/audience values.
-- `Cloudinary__CloudName`, `Cloudinary__ApiKey`, `Cloudinary__ApiSecret`: Credentials for image storage.
-- `Mail__User`, `Mail__Password`: SMTP credentials for outbound email (use a Gmail App Password).
-- `InternalApi__Key`: Key used for internal/administrative service-to-service calls.
-
-## Setup Instructions
-
-### Backend Setup
 1. Navigate to `/backend`.
-2. Copy `appsettings.Example.json` for the configuration shape, then either fill in
-   `appsettings.Development.json` (gitignored) for local development or set the
-   environment variables listed above for production. Never commit real credentials.
-3. Run `dotnet restore`.
-4. Run `dotnet ef database update` to apply migrations via local SQL Server/LocalDB.
-5. Run `dotnet run` or `dotnet build --configuration Release` to start or build the API.
+2. Create `appsettings.Development.json` (gitignored) using `appsettings.Example.json` as the reference for the full configuration shape. `appsettings.json` contains only safe, non-secret defaults.
+3. `dotnet restore`
+4. `dotnet run` — migrations are applied automatically on startup (local SQL Server/LocalDB required). The API listens on `http://localhost:5291`.
 
-### Frontend Setup
+### Frontend
+
 1. Navigate to `/frontend`.
-2. Run `npm ci`.
-3. Verify `environment.development.ts` points to your backend.
-4. Run `npm run start` for development or `npm run build` for production.
+2. `npm ci`
+3. `npm start` — serves on `http://localhost:4200`; `environment.development.ts` points to the backend at `http://localhost:5291`.
 
-## Testing
+## Build / Lint / Test
 
-Run backend tests using:
 ```bash
-cd backend
+# Backend (from /backend)
+dotnet build --configuration Release
 dotnet test Tests/SoulmateStore.Tests.csproj --configuration Release
-```
 
-Run frontend linting and building:
-```bash
-cd frontend
+# Frontend (from /frontend)
 npm run lint
 npm run build
+npm test                 # unit tests (Vitest)
+npm run test:e2e         # Playwright smoke tests
 ```
+
+`backend/scripts/deploy.sh` runs the full backend build → test → publish → EF migration bundle pipeline.
+
+## Production Environment Variables
+
+### Backend (set on the host, e.g. MonsterASP.NET control panel)
+
+Production configuration is supplied **exclusively via environment variables** — `appsettings.Production.json` is gitignored and must never be committed. ASP.NET Core maps `Section__Key` variables to `"Section": { "Key": ... }` values.
+
+Required:
+
+| Variable | Purpose |
+|---|---|
+| `ConnectionStrings__DefaultConnection` | SQL Server connection string (includes DB credentials) |
+| `Jwt__Secret` | Token signing key (min 32 chars) |
+| `Jwt__Issuer` / `Jwt__Audience` | Token issuer/audience |
+| `Cloudinary__CloudName` / `Cloudinary__ApiKey` / `Cloudinary__ApiSecret` | Image storage credentials |
+| `Mail__User` / `Mail__Password` | SMTP credentials (use a Gmail App Password) |
+| `InternalApi__Key` | Key for internal service-to-service calls |
+
+Also required for a working deployment (non-secret):
+
+| Variable | Purpose |
+|---|---|
+| `Cors__AllowedOrigins__0` | Frontend origin, e.g. `https://your-app.vercel.app` |
+| `FrontendUrl` | Public frontend URL (used in emails and SEO endpoints) |
+| `Payment__VodafoneCashNumber` / `Payment__InstaPayNumber` | Payment account numbers shown at checkout |
+
+### Frontend (set in the Vercel project settings)
+
+| Variable | Purpose |
+|---|---|
+| `API_BASE_URL` | Public backend base URL, e.g. `https://your-api.runasp.net`. Injected at build time by `scripts/set-env.mjs` (runs as part of `npm run build`). |
+
+No backend secrets may ever be placed in frontend variables — everything in the frontend bundle is public.
+
+## Deployment
+
+### Backend → MonsterASP.NET (or any IIS/ASP.NET host)
+
+1. From `/backend`, run `./scripts/deploy.sh` (or `dotnet publish -c Release -o publish`).
+2. Upload the contents of `publish/` to the host (WebDeploy/FTP). `web.config` is included and sets `ASPNETCORE_ENVIRONMENT=Production`.
+3. Set all backend environment variables listed above in the host control panel.
+4. EF Core migrations run automatically on startup; `publish/efbundle` is available as a manual alternative.
+5. Verify: `https://<backend-domain>/api/health`.
+
+### Frontend → Vercel
+
+1. Import the repository in Vercel and set the **Root Directory** to `frontend/` (`vercel.json` provides build settings and security headers).
+2. Set the `API_BASE_URL` environment variable to the deployed backend URL.
+3. Deploy. SSR is served through the Vercel function entry at `api/server.mjs`.
+4. Add the resulting Vercel domain to the backend's `Cors__AllowedOrigins__0` and `FrontendUrl` variables.
 
 ## Security Notes
 
-- **Secrets**: Production secrets (database password, JWT secret, Cloudinary API secret,
-  Gmail app password, internal API key, etc.) must be supplied **only** via environment
-  variables or a secret manager - never via committed files. `backend/appsettings.Production.json`
-  is gitignored for this reason.
-- **Leaked credentials**: If a credential is ever committed to version control (including
-  git history), treat it as compromised and rotate it immediately at the source (database
-  provider, Cloudinary, Gmail, etc.). Removing a file from the repository does not invalidate
-  the values it contained.
-- **CSRF**: Endpoints relying on cookies (like logout and token refresh) are protected by CSRF tokens.
-
-## Deployment Notes
-
-- Use `backend/scripts/deploy.sh` as a reference for production builds.
-- Ensure SQL Server has a scheduled backup task using the provided scripts.
+- **Secrets**: All production secrets (DB password, JWT secret, Cloudinary secret, mail app password, internal API key) come only from host environment variables. `appsettings.Production.json`, `appsettings.Development.json`, `.env*`, and publish profiles are gitignored.
+- **Rotate leaked credentials**: Credentials were committed to git history in the past. Any secret that ever appeared in version control must be treated as compromised and **rotated at the source** (database provider, Cloudinary, Gmail, JWT secret, internal API key). Removing files from the repo does not invalidate the values.
+- **Seeded admin account**: `SeedData.cs` creates a default admin (`admin@soulmate.com`) with a known development password. Change this account's password immediately in any real deployment.
+- **CSRF**: Cookie-based endpoints (logout, token refresh) are protected by CSRF tokens.
+- **Database backups**: `backend/scripts/backup-database.sql`, `restore-database.sql`, and `setup-backup-schedule.bat` provide a scheduled backup reference for self-managed SQL Server.

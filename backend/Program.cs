@@ -254,7 +254,7 @@ try
 
     app.UseSerilogRequestLogging();
 
-    if (app.Environment.IsDevelopment() || true) // Temporarily allow Swagger in Production
+    if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();

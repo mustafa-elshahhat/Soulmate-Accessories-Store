@@ -1,3 +1,6 @@
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CartService, CartItem } from './cart.service';
 
 describe('CartService', () => {
@@ -7,7 +10,10 @@ describe('CartService', () => {
     if (typeof localStorage !== 'undefined') {
       localStorage.clear();
     }
-    service = new CartService();
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
+    service = TestBed.inject(CartService);
   });
 
   const mockItem = (overrides: Partial<CartItem> = {}): CartItem => ({

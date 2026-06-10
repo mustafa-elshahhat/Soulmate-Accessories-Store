@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npx ng build --configuration production",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist/frontend/browser",
   "installCommand": "npm install",
   "framework": null,
@@ -10,10 +10,6 @@
     }
   },
   "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://soulmate.runasp.net/api/:path*"
-    },
     {
       "source": "/(.*)",
       "destination": "/api/server"

@@ -73,9 +73,16 @@ backend/wwwroot/uploads/*
 !backend/wwwroot/uploads/.gitkeep
 frontend/src/assets/temp/*
 
+# Publish profiles (may contain deployment credentials)
+*.pubxml
+*.pubxml.user
+backend/Properties/PublishProfiles/
+
+# Vercel
+.vercel/
+
 # Misc
 tree.txt
 *.bak
 *.tmp
 temp/
-backend/Properties/PublishProfiles/MonsterASP.pubxml

@@ -96,10 +96,12 @@ public class OrderPricingService : IOrderPricingService
 
                 var customData = ParseCustomData(item.CustomDataJson);
                 
-                // Validate required slots
+                // Validate required slots. The Slots dict is keyed by BoxSlot.Id (matching the
+                // frontend builder/preview contract) since SlotKey is not unique per box type
+                // — e.g. the couple box has two "watch" slots — so it cannot be used as a key.
                 foreach (var slot in boxType.BoxSlots.Where(s => s.IsRequired))
                 {
-                    if (customData.Slots == null || !customData.Slots.TryGetValue(slot.SlotKey, out var pid) || pid == Guid.Empty)
+                    if (customData.Slots == null || !customData.Slots.TryGetValue(slot.Id.ToString(), out var pid) || pid == Guid.Empty)
                         throw new BadRequestException("MISSING_REQUIRED_SLOT", $"الخانة '{slot.LabelAr}' مطلوبة في {boxType.Name}");
                 }
 
@@ -108,12 +110,15 @@ public class OrderPricingService : IOrderPricingService
                 {
                     foreach (var slotEntry in customData.Slots)
                     {
-                        var slotKey = slotEntry.Key;
+                        var slotIdKey = slotEntry.Key;
                         var productId = slotEntry.Value;
 
-                        var slotDef = boxType.BoxSlots.FirstOrDefault(s => s.SlotKey == slotKey);
+                        if (!Guid.TryParse(slotIdKey, out var slotId))
+                            throw new BadRequestException("INVALID_SLOT", $"معرف الخانة '{slotIdKey}' غير صالح");
+
+                        var slotDef = boxType.BoxSlots.FirstOrDefault(s => s.Id == slotId);
                         if (slotDef == null)
-                            throw new BadRequestException("INVALID_SLOT", $"الخانة '{slotKey}' غير تابعة لـ {boxType.Name}");
+                            throw new BadRequestException("INVALID_SLOT", $"الخانة '{slotIdKey}' غير تابعة لـ {boxType.Name}");
 
                         if (productId == Guid.Empty) continue;
 
@@ -133,7 +138,7 @@ public class OrderPricingService : IOrderPricingService
                         unitPrice += await GetFinalProductPriceAsync(slotProduct);
 
                         // Check customization
-                        if (customData.AllCustomizedSlots.Contains(slotKey))
+                        if (customData.AllCustomizedSlots.Contains(slotIdKey))
                         {
                             if (!slotProduct.IsCustomizable)
                                 throw new BadRequestException("PRODUCT_NOT_CUSTOMIZABLE", $"المنتج '{slotProduct.Name}' لا يقبل التخصيص");
