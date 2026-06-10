@@ -40,7 +40,7 @@ try
     builder.WebHost.ConfigureKestrel(options =>
     {
         options.AddServerHeader = false;
-        options.Limits.MaxRequestBodySize = 100 * 1024 * 1024; // 100MB global limit for WA session backups
+        options.Limits.MaxRequestBodySize = 100 * 1024 * 1024; // 100MB global request body limit
     });
 
     // ── Database ──
@@ -215,7 +215,6 @@ try
     builder.Services.AddScoped<IOrderPricingService, OrderPricingService>();
     builder.Services.AddScoped<IInventoryService, InventoryService>();
     builder.Services.AddScoped<IOrderNotificationService, OrderNotificationService>();
-    builder.Services.AddHttpClient<IWhatsAppService, WhatsAppService>();
 
     // ── Background Services ──
     builder.Services.AddSingleton<BackgroundNotificationQueue>();

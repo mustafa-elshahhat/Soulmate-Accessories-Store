@@ -141,20 +141,12 @@ public class PaymentService : IPaymentService
         await _notifications.CreateAsync(user.Id, "تم تأكيد الدفع", "Payment Verified", $"تم التحقق من دفع الطلب رقم {order.OrderNumber}", $"Payment verified for order #{order.OrderNumber}", order.Id);
         {
             var userEmail = user.Email;
-            var userPhone = user.Phone;
-            var userName = user.Name;
             var orderNum = order.OrderNumber;
-            var ordId = order.Id;
             var lang = user.PreferredLang;
             await _bgQueue.EnqueueAsync(async (sp, ct) =>
             {
                 var emailSvc = sp.GetRequiredService<IEmailService>();
                 await emailSvc.SendPaymentVerifiedAsync(userEmail, orderNum, lang);
-            });
-            await _bgQueue.EnqueueAsync(async (sp, ct) =>
-            {
-                var whatsApp = sp.GetRequiredService<IWhatsAppService>();
-                await whatsApp.SendPaymentVerifiedAsync(userPhone, userName, orderNum, ordId, lang);
             });
         }
 
@@ -185,20 +177,12 @@ public class PaymentService : IPaymentService
         await _notifications.CreateAsync(user.Id, "تم رفض الدفع", "Payment Rejected", $"تم رفض إيصال الطلب رقم {order.OrderNumber}: {reason}", $"Payment rejected for order #{order.OrderNumber}: {reason}", order.Id);
         {
             var userEmail = user.Email;
-            var userPhone = user.Phone;
-            var userName = user.Name;
             var orderNum = order.OrderNumber;
-            var ordId = order.Id;
             var lang = user.PreferredLang;
             await _bgQueue.EnqueueAsync(async (sp, ct) =>
             {
                 var emailSvc = sp.GetRequiredService<IEmailService>();
                 await emailSvc.SendPaymentRejectedAsync(userEmail, orderNum, reason, lang);
-            });
-            await _bgQueue.EnqueueAsync(async (sp, ct) =>
-            {
-                var whatsApp = sp.GetRequiredService<IWhatsAppService>();
-                await whatsApp.SendPaymentRejectedAsync(userPhone, userName, orderNum, ordId, reason, lang);
             });
         }
 

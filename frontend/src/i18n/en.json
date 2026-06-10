@@ -674,8 +674,6 @@
       "label": "Contact Information",
       "title": "Ways to Reach Us",
       "email": "Email",
-      "whatsappAriaLabel": "Contact us via WhatsApp",
-      "whatsapp": "WhatsApp",
       "workingHours": "Working Hours",
       "workingHoursValue": "Saturday - Thursday: 10 AM - 10 PM"
     },
@@ -706,7 +704,7 @@
     },
     "seo": {
       "title": "Contact Soulmate Store — Get Help & Support",
-      "description": "Contact Soulmate Store for help with orders, gift customization, or any questions. Reach us via email, WhatsApp or contact form."
+      "description": "Contact Soulmate Store for help with orders, gift customization, or any questions. Reach us via email or contact form."
     }
   },
 
@@ -828,7 +826,7 @@
     "section2": {
       "title": "Return Steps",
       "step1Title": "Contact Us",
-      "step1Desc": "Via the contact page or WhatsApp, explaining the reason for return and order number",
+      "step1Desc": "Via the contact page, explaining the reason for return and order number",
       "step2Title": "Review Request",
       "step2Desc": "We'll review your request and respond within 24 business hours",
       "step3Title": "Arrange Pickup",

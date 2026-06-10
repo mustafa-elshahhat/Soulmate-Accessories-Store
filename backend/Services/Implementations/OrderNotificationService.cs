@@ -28,23 +28,14 @@ public class OrderNotificationService : IOrderNotificationService
         await _notifications.CreateAsync(user.Id, "طلب جديد", "New Order", $"تم إنشاء طلبك رقم {order.OrderNumber} بنجاح", $"Your order #{order.OrderNumber} has been created successfully", order.Id);
         
         var userEmail = user.Email;
-        var userPhone = user.Phone;
-        var userName = user.Name;
         var userLang = user.PreferredLang;
         var orderNumber = order.OrderNumber;
-        var orderId = order.Id;
 
         // Background tasks
         await _bgQueue.EnqueueAsync(async (sp, ct) =>
         {
             var email = sp.GetRequiredService<IEmailService>();
             await email.SendOrderCreatedAsync(userEmail, orderNumber, userLang);
-        });
-
-        await _bgQueue.EnqueueAsync(async (sp, ct) =>
-        {
-            var whatsApp = sp.GetRequiredService<IWhatsAppService>();
-            await whatsApp.SendOrderCreatedAsync(userPhone, userName, orderNumber, orderId, userLang);
         });
 
         // Notify admins
@@ -58,8 +49,6 @@ public class OrderNotificationService : IOrderNotificationService
     public async Task NotifyStatusChangedAsync(Order order, User user, OrderStatus newStatus)
     {
         var email = user.Email;
-        var phone = user.Phone;
-        var name = user.Name;
         var orderNumber = order.OrderNumber;
         var orderId = order.Id;
         var lang = user.PreferredLang;
@@ -72,10 +61,6 @@ public class OrderNotificationService : IOrderNotificationService
                     var emailSvc = sp.GetRequiredService<IEmailService>();
                     await emailSvc.SendOrderShippedAsync(email, orderNumber, lang);
                 });
-                await _bgQueue.EnqueueAsync(async (sp, ct) => {
-                    var whatsApp = sp.GetRequiredService<IWhatsAppService>();
-                    await whatsApp.SendOrderShippedAsync(phone, name, orderNumber, orderId, lang);
-                });
                 break;
 
             case OrderStatus.Delivered:
@@ -84,18 +69,10 @@ public class OrderNotificationService : IOrderNotificationService
                     var emailSvc = sp.GetRequiredService<IEmailService>();
                     await emailSvc.SendOrderDeliveredAsync(email, orderNumber, lang);
                 });
-                await _bgQueue.EnqueueAsync(async (sp, ct) => {
-                    var whatsApp = sp.GetRequiredService<IWhatsAppService>();
-                    await whatsApp.SendOrderDeliveredAsync(phone, name, orderNumber, orderId, lang);
-                });
                 break;
 
             case OrderStatus.Cancelled:
                 await _notifications.CreateAsync(user.Id, "تم إلغاء الطلب", "Order Cancelled", $"تم إلغاء طلبك رقم {orderNumber}", $"Your order #{orderNumber} has been cancelled", orderId);
-                await _bgQueue.EnqueueAsync(async (sp, ct) => {
-                    var whatsApp = sp.GetRequiredService<IWhatsAppService>();
-                    await whatsApp.SendOrderCancelledAsync(phone, name, orderNumber, orderId, lang);
-                });
                 break;
         }
     }
