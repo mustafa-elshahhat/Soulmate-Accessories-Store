@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { LanguageSwitcherComponent } from '../../../../shared/components/language-switcher/language-switcher.component';
@@ -8,7 +8,7 @@ import { Notification } from '../../../../core/services/notification.service';
 @Component({
   selector: 'app-admin-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, DatePipe, TranslatePipe, LanguageSwitcherComponent],
+  imports: [RouterLink, DatePipe, TranslatePipe, LanguageSwitcherComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="sticky top-0 z-30 bg-background border-b border-border px-4 md:px-6">

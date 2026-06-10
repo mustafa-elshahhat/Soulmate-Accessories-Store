@@ -5,15 +5,12 @@ import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { filter } from 'rxjs';
 import { TranslationService } from '../../core/services/translation.service';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { BottomNavComponent } from './components/bottom-nav/bottom-nav.component';
 import { NotificationService } from '../../core/services/notification.service';
 import { Notification as AppNotification } from '../../core/models/notification.model';
 import { AudioService } from '../../core/services/audio.service';
 import { CONTACT } from '../../core/constants/contact';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
-import { CurrencyPipe, DatePipe, CommonModule } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LanguageSwitcherComponent } from '../../shared/components/language-switcher/language-switcher.component';
 
@@ -22,11 +19,7 @@ import { LanguageSwitcherComponent } from '../../shared/components/language-swit
   standalone: true,
   imports: [
     RouterOutlet,
-    NavbarComponent,
-    FooterComponent,
-    BottomNavComponent,
     TranslatePipe,
-    CurrencyPipe,
     DatePipe,
     CommonModule,
     RouterLink,

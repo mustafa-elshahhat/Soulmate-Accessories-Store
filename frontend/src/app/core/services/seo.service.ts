@@ -13,7 +13,7 @@ interface SeoConfig {
   noIndex?: boolean;
 }
 
-const DEFAULT_OG_IMAGE = 'https://soulmate-store.com/assets/images/og-default.webp';
+const DEFAULT_OG_IMAGE = 'https://soulmate-store.com/assets/images/logo-lg.webp';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {

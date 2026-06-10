@@ -77,7 +77,7 @@ export class StructuredDataService {
       name: 'Soulmate Store',
       alternateName: 'سولميت ستور',
       url: this.BASE_URL,
-      logo: `${this.BASE_URL}/assets/images/logo.png`,
+      logo: `${this.BASE_URL}/assets/images/logo-lg.webp`,
       description: 'Personalized gifts, custom gift boxes, and engraved couple gifts.',
       contactPoint: {
         '@type': 'ContactPoint',
