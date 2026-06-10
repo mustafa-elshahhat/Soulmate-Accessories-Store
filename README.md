@@ -24,11 +24,7 @@ A full-stack e-commerce platform specializing in customizable accessory gift box
 /backend            - ASP.NET Core Web API (self-contained, deploys to MonsterASP.NET/IIS)
   /Tests            - xUnit test project
   /Migrations       - EF Core migrations (applied automatically on startup)
-  /scripts          - Build and database backup/restore scripts
 /frontend           - Angular SSR app (self-contained, deploys to Vercel)
-  /e2e              - Playwright smoke tests (run against dev server)
-  /e2e-integration  - Playwright integration tests (require a running backend)
-/docs/seo           - SEO strategy documentation
 /.github/workflows  - CI (backend build + tests, frontend lint + build)
 ```
 
@@ -58,10 +54,7 @@ dotnet test Tests/SoulmateStore.Tests.csproj --configuration Release
 npm run lint
 npm run build
 npm test                 # unit tests (Vitest)
-npm run test:e2e         # Playwright smoke tests
 ```
-
-`backend/scripts/deploy.sh` runs the full backend build → test → publish → EF migration bundle pipeline.
 
 ## Production Environment Variables
 
@@ -100,10 +93,10 @@ No backend secrets may ever be placed in frontend variables — everything in th
 
 ### Backend → MonsterASP.NET (or any IIS/ASP.NET host)
 
-1. From `/backend`, run `./scripts/deploy.sh` (or `dotnet publish -c Release -o publish`).
+1. From `/backend`, run `dotnet publish -c Release -o publish`.
 2. Upload the contents of `publish/` to the host (WebDeploy/FTP). `web.config` is included and sets `ASPNETCORE_ENVIRONMENT=Production`.
 3. Set all backend environment variables listed above in the host control panel.
-4. EF Core migrations run automatically on startup; `publish/efbundle` is available as a manual alternative.
+4. EF Core migrations run automatically on startup.
 5. Verify: `https://<backend-domain>/api/health`.
 
 ### Frontend → Vercel
@@ -119,4 +112,3 @@ No backend secrets may ever be placed in frontend variables — everything in th
 - **Rotate leaked credentials**: Credentials were committed to git history in the past. Any secret that ever appeared in version control must be treated as compromised and **rotated at the source** (database provider, Cloudinary, Gmail, JWT secret, internal API key). Removing files from the repo does not invalidate the values.
 - **Seeded admin account**: `SeedData.cs` creates a default admin (`admin@soulmate.com`) with a known development password. Change this account's password immediately in any real deployment.
 - **CSRF**: Cookie-based endpoints (logout, token refresh) are protected by CSRF tokens.
-- **Database backups**: `backend/scripts/backup-database.sql`, `restore-database.sql`, and `setup-backup-schedule.bat` provide a scheduled backup reference for self-managed SQL Server.

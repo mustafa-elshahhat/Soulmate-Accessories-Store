@@ -5,6 +5,7 @@ using SoulmateStore.Exceptions;
 using SoulmateStore.Models;
 using SoulmateStore.Models.Enums;
 using SoulmateStore.Services.Implementations;
+using SoulmateStore.Tests.Helpers;
 using System.Text.Json;
 using Xunit;
 

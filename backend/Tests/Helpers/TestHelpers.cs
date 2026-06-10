@@ -5,7 +5,7 @@ using SoulmateStore.Data;
 using SoulmateStore.Models;
 using SoulmateStore.Models.Enums;
 
-namespace SoulmateStore.Tests;
+namespace SoulmateStore.Tests.Helpers;
 
 public static class TestHelpers
 {

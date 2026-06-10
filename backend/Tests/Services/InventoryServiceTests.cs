@@ -3,6 +3,7 @@ using SoulmateStore.Data;
 using SoulmateStore.Exceptions;
 using SoulmateStore.Models;
 using SoulmateStore.Services.Implementations;
+using SoulmateStore.Tests.Helpers;
 using Xunit;
 
 namespace SoulmateStore.Tests.Services;
@@ -38,6 +39,7 @@ public class InventoryServiceTests
 
         // Assert
         var updatedProduct = await _db.Products.FindAsync(product.Id);
+        Assert.NotNull(updatedProduct);
         Assert.Equal(7, updatedProduct.StockQuantity);
     }
 
@@ -65,6 +67,7 @@ public class InventoryServiceTests
 
         // Assert
         var updatedProduct = await _db.Products.FindAsync(p1.Id);
+        Assert.NotNull(updatedProduct);
         Assert.Equal(3, updatedProduct.StockQuantity); // 5 - (2 boxes * 1 per box)
     }
 
@@ -87,6 +90,7 @@ public class InventoryServiceTests
 
         // Assert
         var updatedProduct = await _db.Products.FindAsync(product.Id);
+        Assert.NotNull(updatedProduct);
         Assert.Equal(15, updatedProduct.StockQuantity);
     }
 
