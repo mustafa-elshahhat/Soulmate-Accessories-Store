@@ -38,7 +38,6 @@ publish/
 **/test-results/
 **/playwright-report/
 **/blob-report/
-**/test-results/
 
 # Environment & Secrets
 .env
@@ -58,7 +57,6 @@ backend/appsettings.Production.json
 *.db
 *.db-shm
 *.db-wal
-backend/Data/SoulmateStore.db
 
 # Logs
 logs/
@@ -69,8 +67,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Uploads & Assets
-backend/wwwroot/uploads/*
-!backend/wwwroot/uploads/.gitkeep
 frontend/src/assets/temp/*
 
 # Publish profiles (may contain deployment credentials)
@@ -82,7 +78,6 @@ backend/Properties/PublishProfiles/
 .vercel/
 
 # Misc
-tree.txt
 *.bak
 *.tmp
 temp/
