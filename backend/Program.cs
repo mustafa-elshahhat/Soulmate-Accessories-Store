@@ -238,17 +238,22 @@ try
     var app = builder.Build();
     // ══════════════════════════════════════════════════════════
 
-    // ── Auto-migrate database ──
-    try
+    // ── Auto-migrate database (config-controlled) ──
+    var applyMigrations = app.Configuration.GetValue<bool>("Database:ApplyMigrations");
+    Log.Information("Database auto-migration is {State}", applyMigrations ? "enabled" : "disabled");
+    if (applyMigrations)
     {
-        using var scope = app.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        db.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        Log.Fatal(ex, "Database migration failed. Resolving database setup error is required to start.");
-        throw;
+        try
+        {
+            using var scope = app.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Database migration failed. Resolving database setup error is required to start.");
+            throw;
+        }
     }
 
     // ── Middleware Pipeline ──
