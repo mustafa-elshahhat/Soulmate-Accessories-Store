@@ -1,14 +1,14 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { CouponValidationResult } from '../models/coupon.model';
 
 @Injectable({ providedIn: 'root' })
 export class CouponService {
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/coupons`;
+  private apiUrl = apiEndpoint('coupons');
 
   appliedCoupon = signal<CouponValidationResult | null>(null);
 

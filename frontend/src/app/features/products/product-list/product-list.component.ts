@@ -1,4 +1,5 @@
 import { Component, inject, signal, OnInit, PLATFORM_ID, HostListener, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -245,6 +246,10 @@ interface DropdownOption {
             </div>
           }
         </div>
+      } @else if (loadError()) {
+        <div class="text-center py-20">
+          <p class="text-muted-foreground text-lg">{{ loadError() }}</p>
+        </div>
       } @else if (products().length === 0) {
         <div class="text-center py-20">
           <p class="text-muted-foreground text-lg">{{ 'products.empty' | t }}</p>
@@ -294,6 +299,7 @@ export class ProductListComponent implements OnInit {
 
   products = signal<Product[]>([]);
   loading = signal(true);
+  loadError = signal('');
   page = 1;
   totalPages = signal(0);
   pages = signal<number[]>([]);
@@ -421,12 +427,25 @@ export class ProductListComponent implements OnInit {
           this.products.set(res.data);
           this.totalPages.set(res.meta.total_pages);
           this.pages.set(Array.from({ length: res.meta.total_pages }, (_, i) => i + 1));
+          this.loadError.set('');
           this.loading.set(false);
         },
-        error: () => {
+        error: (error) => {
+          this.loadError.set(this.productErrorMessage(error));
           this.loading.set(false);
         },
       });
+  }
+
+  private productErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 0) return this.t.get('errors.noConnection');
+      if (error.status === 200) return this.t.get('errors.invalidResponse');
+      if (error.status >= 500) return this.t.get('errors.serverError');
+      return error.error?.message || this.t.get('errors.unexpected');
+    }
+
+    return this.t.get('errors.unexpected');
   }
 
   goToPage(p: number): void {

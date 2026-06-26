@@ -2,14 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { ProductReviewsSummary, Review, CreateReviewRequest, UpdateReviewRequest } from '../models/review.model';
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/reviews`;
+  private apiUrl = apiEndpoint('reviews');
 
   getByProduct(productId: string): Observable<ProductReviewsSummary> {
     return this.http.get<ApiResponse<ProductReviewsSummary>>(`${this.apiUrl}/product/${productId}`).pipe(

@@ -1,4 +1,5 @@
 import { Component, inject, signal, OnInit, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProductService } from '../../core/services/product.service';
@@ -182,6 +183,13 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
               </div>
             }
           </div>
+        } @else if (featuredProductsError()) {
+          <div class="text-center py-16">
+            <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-primary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
+            </div>
+            <p class="text-muted-foreground">{{ featuredProductsError() }}</p>
+          </div>
         } @else if (featuredProducts().length > 0) {
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             @for (product of featuredProducts(); track product.id) {
@@ -354,6 +362,7 @@ export class HomeComponent implements OnInit {
 
   featuredProducts = signal<Product[]>([]);
   productsLoading = signal(true);
+  featuredProductsError = signal('');
   readonly skeletonItems = [1, 2, 3, 4];
 
   ngOnInit(): void {
@@ -370,11 +379,24 @@ export class HomeComponent implements OnInit {
     this.productService.getAll({ page: 1, limit: 4 }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (res) => {
         this.featuredProducts.set(res.data);
+        this.featuredProductsError.set('');
         this.productsLoading.set(false);
       },
-      error: () => {
+      error: (error) => {
+        this.featuredProductsError.set(this.productErrorMessage(error));
         this.productsLoading.set(false);
       },
     });
+  }
+
+  private productErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 0) return this.t.get('errors.noConnection');
+      if (error.status === 200) return this.t.get('errors.invalidResponse');
+      if (error.status >= 500) return this.t.get('errors.serverError');
+      return error.error?.message || this.t.get('errors.unexpected');
+    }
+
+    return this.t.get('errors.unexpected');
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { AudioService } from './audio.service';
 
@@ -28,7 +28,7 @@ export class CartService {
   private readonly STORAGE_KEY = 'soulmate_cart';
   private platformId = inject(PLATFORM_ID);
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/cart`;
+  private apiUrl = apiEndpoint('cart');
   private syncTimer: ReturnType<typeof setTimeout> | null = null;
   private audio = inject(AudioService);
 

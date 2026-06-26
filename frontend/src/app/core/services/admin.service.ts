@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { Promotion, Coupon } from '../models/coupon.model';
 import { BoxReviewAdmin } from '../models/box-review.model';
@@ -29,7 +29,7 @@ export type {
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/admin`;
+  private apiUrl = apiEndpoint('admin');
 
   getDashboard(): Observable<DashboardStats> {
     return this.http.get<ApiResponse<DashboardStats>>(`${this.apiUrl}/dashboard`).pipe(map(r => r.data));

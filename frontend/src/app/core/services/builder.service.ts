@@ -2,14 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { BoxType, BoxSlot, SlotProduct, PreviewResponse, Customization } from '../models/box-type.model';
 
 @Injectable({ providedIn: 'root' })
 export class BuilderService {
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/builder`;
+  private apiUrl = apiEndpoint('builder');
   private boxTypes$: Observable<BoxType[]> | null = null;
 
   getBoxTypes(): Observable<BoxType[]> {

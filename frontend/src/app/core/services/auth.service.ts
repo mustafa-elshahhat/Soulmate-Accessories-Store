@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of, ReplaySubject, switchMap } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { AuthResponse, LoginRequest, RegisterRequest, User } from '../models/user.model';
 import { CartService } from './cart.service';
@@ -13,7 +13,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private platformId = inject(PLATFORM_ID);
   private cartService = inject(CartService);
-  private apiUrl = `${inject(API_BASE_URL)}/api/auth`;
+  private apiUrl = apiEndpoint('auth');
   private accessToken: string | null = null;
   /** In-memory CSRF token fetched from GET /api/auth/csrf (response body).
    *  Using the response body instead of document.cookie because the cookie is

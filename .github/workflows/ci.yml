@@ -60,3 +60,5 @@ jobs:
     - name: Build
       run: npm run build
       working-directory: frontend
+      env:
+        API_BASE_URL: https://soulmate.runasp.net

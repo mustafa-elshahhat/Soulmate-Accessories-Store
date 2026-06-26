@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { Address, CreateAddressDto } from '../models/address.model';
 
@@ -11,7 +11,7 @@ export type { Address, CreateAddressDto } from '../models/address.model';
 @Injectable({ providedIn: 'root' })
 export class AddressService {
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/addresses`;
+  private apiUrl = apiEndpoint('addresses');
 
   getAll(): Observable<Address[]> {
     return this.http.get<ApiResponse<Address[]>>(this.apiUrl).pipe(map(res => res.data));

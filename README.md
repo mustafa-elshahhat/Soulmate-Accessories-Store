@@ -42,6 +42,7 @@ A full-stack e-commerce platform specializing in customizable accessory gift box
 1. Navigate to `/frontend`.
 2. `npm ci`
 3. `npm start` — serves on `http://localhost:4200`; `environment.development.ts` points to the backend at `http://localhost:5291`.
+4. Production builds require `API_BASE_URL`; local development via `npm start` does not.
 
 ## Build / Lint / Test
 
@@ -77,7 +78,7 @@ Also required for a working deployment (non-secret):
 
 | Variable | Purpose |
 |---|---|
-| `Cors__AllowedOrigins__0` | Frontend origin, e.g. `https://your-app.vercel.app` |
+| `Cors__AllowedOrigins__0` | Frontend origin: `https://soulmate-accessories-store.vercel.app` |
 | `FrontendUrl` | Public frontend URL (used in emails and SEO endpoints) |
 | `Payment__VodafoneCashNumber` / `Payment__InstaPayNumber` | Payment account numbers shown at checkout |
 
@@ -85,7 +86,7 @@ Also required for a working deployment (non-secret):
 
 | Variable | Purpose |
 |---|---|
-| `API_BASE_URL` | Public backend base URL, e.g. `https://your-api.runasp.net`. Injected at build time by `scripts/set-env.mjs` (runs as part of `npm run build`). |
+| `API_BASE_URL` | Public backend base URL: `https://soulmate.runasp.net`. Injected at build time by `scripts/set-env.mjs` (runs as part of `npm run build`). |
 
 No backend secrets may ever be placed in frontend variables — everything in the frontend bundle is public.
 
@@ -102,8 +103,8 @@ No backend secrets may ever be placed in frontend variables — everything in th
 ### Frontend → Vercel
 
 1. Import the repository in Vercel and set the **Root Directory** to `frontend/` (`vercel.json` provides build settings and security headers).
-2. Set the `API_BASE_URL` environment variable to the deployed backend URL.
-3. Deploy. SSR is served through the Vercel function entry at `api/server.mjs`.
+2. Set the `API_BASE_URL` environment variable for Production and Preview to `https://soulmate.runasp.net` with no quotes and no trailing path.
+3. Deploy or trigger a fresh production build. Angular embeds the value at build time.
 4. Add the resulting Vercel domain to the backend's `Cors__AllowedOrigins__0` and `FrontendUrl` variables.
 
 ## Security Notes

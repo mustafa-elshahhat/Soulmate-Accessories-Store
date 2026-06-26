@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { ProductService } from './product.service';
+import { API_BASE_URL } from '../tokens/api-base-url.token';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -9,7 +10,12 @@ describe('ProductService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ProductService, provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        ProductService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: API_BASE_URL, useValue: 'https://soulmate.runasp.net' },
+      ],
     });
     service = TestBed.inject(ProductService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -41,7 +47,16 @@ describe('ProductService', () => {
 
       const req = httpMock.expectOne((r) => r.url.includes('/api/products'));
       expect(req.request.method).toBe('GET');
+      expect(req.request.urlWithParams).toBe('https://soulmate.runasp.net/api/products');
       req.flush(mockResponse);
+    });
+
+    it('should request the production products endpoint with pagination', () => {
+      service.getAll({ page: 1, limit: 4 }).subscribe();
+
+      const req = httpMock.expectOne('https://soulmate.runasp.net/api/products?page=1&limit=4');
+      expect(req.request.method).toBe('GET');
+      req.flush({ success: true, data: [], meta: { page: 1, limit: 4, total: 0, total_pages: 0 } });
     });
 
     it('should pass query params when provided', () => {

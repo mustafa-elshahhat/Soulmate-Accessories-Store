@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { PaymentInfo, PaymentStatus } from '../models/payment.model';
 
@@ -11,8 +11,8 @@ export type { PaymentInfo, PaymentStatus } from '../models/payment.model';
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
   private http = inject(HttpClient);
-  private apiBase = inject(API_BASE_URL);
-  private apiUrl = `${this.apiBase}/api/payments`;
+  private apiUrl = apiEndpoint('payments');
+  private paymentInfoUrl = apiEndpoint('payment-info');
 
   uploadReceipt(orderId: string, method: string, screenshot: File): Observable<unknown> {
     const formData = new FormData();
@@ -26,6 +26,6 @@ export class PaymentService {
   }
 
   getPaymentInfo(): Observable<PaymentInfo> {
-    return this.http.get<ApiResponse<PaymentInfo>>(`${this.apiBase}/api/payment-info`).pipe(map(res => res.data));
+    return this.http.get<ApiResponse<PaymentInfo>>(this.paymentInfoUrl).pipe(map(res => res.data));
   }
 }

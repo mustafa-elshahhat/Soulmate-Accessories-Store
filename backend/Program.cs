@@ -71,7 +71,15 @@ try
 
     // ── CORS ──
     var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-        ?? ["http://localhost:4200"];
+        ?? (builder.Environment.IsDevelopment()
+            ? ["http://localhost:4200", "http://localhost:4000"]
+            : ["https://soulmate-accessories-store.vercel.app"]);
+
+    allowedOrigins = allowedOrigins
+        .Where(origin => !string.IsNullOrWhiteSpace(origin))
+        .Select(origin => origin.Trim().TrimEnd('/'))
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .ToArray();
 
     builder.Services.AddCors(options =>
     {

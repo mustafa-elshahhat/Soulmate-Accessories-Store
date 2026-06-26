@@ -2,7 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription, timer } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { Notification, NotificationListData } from '../models/notification.model';
 import { AudioService } from './audio.service';
@@ -12,7 +12,7 @@ export type { Notification, NotificationListData } from '../models/notification.
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/notifications`;
+  private apiUrl = apiEndpoint('notifications');
   private audio = inject(AudioService);
   private pollSub: Subscription | null = null;
 

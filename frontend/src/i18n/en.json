@@ -599,6 +599,7 @@
     "conflict": "Data conflict",
     "tooManyRequests": "Too many requests, please wait",
     "noConnection": "No server connection",
+    "invalidResponse": "Invalid server response",
     "serverError": "An error occurred, please try again",
     "unexpected": "An unexpected error occurred"
   },

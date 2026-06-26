@@ -599,6 +599,7 @@
     "conflict": "تعارض في البيانات",
     "tooManyRequests": "طلبات كتير، استنى شوية",
     "noConnection": "مفيش اتصال بالسيرفر",
+    "invalidResponse": "استجابة السيرفر غير صحيحة",
     "serverError": "حصل خطأ، حاول تاني",
     "unexpected": "حصل خطأ غير متوقع"
   },

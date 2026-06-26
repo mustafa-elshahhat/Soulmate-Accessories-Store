@@ -1,13 +1,13 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API_BASE_URL } from '../tokens/api-base-url.token';
+import { apiEndpoint } from '../tokens/api-base-url.token';
 import { ApiResponse } from '../models/api-response.model';
 import { WishlistItem } from '../models/wishlist.model';
 
 @Injectable({ providedIn: 'root' })
 export class WishlistService {
   private http = inject(HttpClient);
-  private apiUrl = `${inject(API_BASE_URL)}/api/wishlist`;
+  private apiUrl = apiEndpoint('wishlist');
 
   wishlistIds = signal<Set<string>>(new Set());
   count = computed(() => this.wishlistIds().size);
